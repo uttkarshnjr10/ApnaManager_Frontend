@@ -27,21 +27,21 @@ const ManageStationsPage = () => {
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Add New Station</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormField
-              label="Station Name *"
+              label="Station Name "
               name="name"
               value={formState.name}
               onChange={handleInputChange}
               required
             />
             <FormField
-              label="City *"
+              label="City "
               name="city"
               value={formState.city}
               onChange={handleInputChange}
               required
             />
             <FormField
-              label="Pincodes (comma-separated) *"
+              label="Pincodes (comma-separated) "
               name="pincodes"
               value={formState.pincodes}
               onChange={handleInputChange}
