@@ -60,8 +60,6 @@ export const AuthProvider = ({ children }) => {
       console.error("Logout failed", error);
     } finally {
       setUser(null);
-      // Optional: Redirect to login manually if needed
-      // window.location.href = '/login'; 
     }
   };
 

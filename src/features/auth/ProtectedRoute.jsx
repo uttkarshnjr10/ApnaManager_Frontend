@@ -1,6 +1,6 @@
 // src/features/auth/ProtectedRoute.jsx
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { FaSpinner } from 'react-icons/fa';
 
 const ProtectedRoute = () => {

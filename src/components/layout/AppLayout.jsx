@@ -1,7 +1,7 @@
 // src/components/layout/AppLayout.jsx
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom'; 
-import { useAuth } from '../../features/auth/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { navigationConfig } from '../../lib/navigation.jsx';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';

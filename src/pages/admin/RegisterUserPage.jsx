@@ -70,14 +70,14 @@ const RegisterUserPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormField
-            label="Username *"
+            label="Username"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
           <FormField 
-            label="Contact Email *" 
+            label="Contact Email" 
             name="email" // Changed from 'contact'
             type="email" 
             value={formData.email} 
@@ -89,14 +89,14 @@ const RegisterUserPage = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField 
-                  label="Hotel Name *" 
+                  label="Hotel Name" 
                   name="hotelName" // Changed from 'name'
                   value={formData.hotelName} 
                   onChange={handleChange} 
                   required 
                 />
                 <FormField 
-                  label="Owner Name *" 
+                  label="Owner Name" 
                   name="ownerName" 
                   value={formData.ownerName} 
                   onChange={handleChange} 
@@ -105,14 +105,14 @@ const RegisterUserPage = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <FormField 
-                  label="GST Number *" 
+                  label="GST Number" 
                   name="gstNumber" // Changed from 'license'
                   value={formData.gstNumber} 
                   onChange={handleChange} 
                   required 
                 />
                 <FormField 
-                  label="Mobile Number *" 
+                  label="Mobile Number" 
                   name="phone" // Changed from 'license'
                   type="tel"
                   value={formData.phone} 
@@ -122,7 +122,7 @@ const RegisterUserPage = () => {
               </div>
               
               <FormField 
-                label="Full Address *" 
+                label="Full Address" 
                 name="address" 
                 value={formData.address} 
                 onChange={handleChange} 
@@ -131,21 +131,21 @@ const RegisterUserPage = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <FormField 
-                  label="District/City *" 
+                  label="District/City" 
                   name="city" 
                   value={formData.city} 
                   onChange={handleChange} 
                   required 
                 />
                 <FormField 
-                  label="State *" 
+                  label="State" 
                   name="state" 
                   value={formData.state} 
                   onChange={handleChange} 
                   required 
                 />
                 <FormField 
-                  label="Pin Code *" 
+                  label="Pin Code" 
                   name="pinCode" 
                   value={formData.pinCode} 
                   onChange={handleChange} 
@@ -158,18 +158,21 @@ const RegisterUserPage = () => {
                   name="postOffice" 
                   value={formData.postOffice} 
                   onChange={handleChange} 
+                  required
                 />
                 <FormField 
                   label="Local Thana" 
                   name="localThana" 
                   value={formData.localThana} 
                   onChange={handleChange} 
+                  required
                 />
                  <FormField 
                   label="Nationality" 
                   name="nationality" 
                   value={formData.nationality} 
                   onChange={handleChange} 
+                  required
                 />
               </div>
             </>
@@ -177,15 +180,15 @@ const RegisterUserPage = () => {
             
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField label="Station Name *" name="station" value={formData.station} onChange={handleChange} required />
-                <FormField label="Jurisdiction *" name="jurisdiction" value={formData.jurisdiction} onChange={handleChange} required />
+                <FormField label="Station Name" name="station" value={formData.station} onChange={handleChange} required />
+                <FormField label="Jurisdiction" name="jurisdiction" value={formData.jurisdiction} onChange={handleChange} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Assign to Police Station *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assign to Police Station </label>
                 <Select options={policeStations} onChange={handleSelectChange} placeholder="Search and select a station..." required />
               </div>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <FormField label="City *" name="city" value={formData.city} onChange={handleChange} required />
+                 <FormField label="City " name="city" value={formData.city} onChange={handleChange} required />
                  
                </div>
             </>

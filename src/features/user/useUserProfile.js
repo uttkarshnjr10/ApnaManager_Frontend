@@ -1,7 +1,7 @@
 // src/features/user/useUserProfile.js
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../api/apiClient';
 
 export const useUserProfile = () => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import StatCard from '../../components/ui/StatCard';
-import { useAuth } from '../../features/auth/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
 import { FaUserPlus, FaCreditCard, FaBed, FaDoorOpen, FaDoorClosed } from 'react-icons/fa';
 
