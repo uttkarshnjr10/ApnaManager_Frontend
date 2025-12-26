@@ -1,43 +1,36 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import apiClient from '../../api/apiClient'; // Import our new API client
+import { createContext, useState, useEffect, useCallback } from 'react';
+import apiClient from '../../api/apiClient';
 
-const AuthContext = createContext(null);
+// Export the Context so the hook can use it
+export const AuthContext = createContext(null); 
 
 export const AuthProvider = ({ children }) => {
- 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const loadUser = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      try {
-        const response = await apiClient.get('/users/profile'); 
-        setUser(response.data.data);
-      } catch (error) {
-        // If the token is invalid or expired, the interceptor will handle it,
-        localStorage.removeItem('authToken');
-        setUser(null);
-      }
+    try {
+      const response = await apiClient.get('/users/profile'); 
+      setUser(response.data.data);
+    } catch (error) {
+      // 401 is expected if not logged in. Do nothing, just set user null.
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
-
 
   useEffect(() => {
     loadUser();
   }, [loadUser]);
 
- const login = async (email, password) => {
+  const login = async (email, password) => {
     try {
       const response = await apiClient.post('/auth/login', { email, password });
 
-      // Handle successful login (status 200)
       if (response.status === 200 && response.data?.data) {
-        const { _id, username, role, token } = response.data.data; 
-
-        if (_id && username && role && token) {
-          localStorage.setItem('authToken', token);
+        const { _id, username, role } = response.data.data; 
+        if (_id && username && role) {
           const userData = { _id, username, role, needsPasswordReset: false }; 
           setUser(userData);
           return userData; 
@@ -48,19 +41,14 @@ export const AuthProvider = ({ children }) => {
   
       if (response.status === 202) {
          const userId = response.data?.data?.userId;
-         if (userId) {
-            return { needsPasswordReset: true, _id: userId };
-         } else {
-             throw new Error('Password reset required, but user ID is missing.');
-         }
+         if (userId) return { needsPasswordReset: true, _id: userId };
+         throw new Error('Password reset required, but user ID is missing.');
       }
 
-      // Handle any other unexpected 2xx success status
       throw new Error(`Unexpected server response: ${response.status}`);
 
     } catch (error) {
-      // The catch block will now only handle 4xx/5xx errors or logic errors
-      const errorMessage = error.response?.data?.message || error.message || 'Login failed. Please try again.';
+      const errorMessage = error.response?.data?.message || error.message || 'Login failed.';
       throw new Error(errorMessage);
     }
   };
@@ -71,8 +59,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout failed", error);
     } finally {
-      localStorage.removeItem('authToken');
       setUser(null);
+      // Optional: Redirect to login manually if needed
       // window.location.href = '/login'; 
     }
   };
@@ -84,12 +72,4 @@ export const AuthProvider = ({ children }) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

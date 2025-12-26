@@ -1,5 +1,5 @@
 // src/pages/shared/DashboardDispatcherPage.jsx
-import { useAuth } from '../../features/auth/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import HotelDashboardPage from '../hotel/HotelDashboardPage';
 import PoliceDashboardPage from '../police/PoliceDashboardPage';
 import AdminDashboardPage from '../admin/AdminDashboardPage';
