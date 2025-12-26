@@ -18,7 +18,7 @@ const WatchlistPage = () => {
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Add Item to Watchlist</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormField
-              label="ID Number or Phone Number *"
+              label="ID Number or Phone Number "
               name="value"
               value={formState.value}
               onChange={handleInputChange}
@@ -38,7 +38,7 @@ const WatchlistPage = () => {
               </select>
             </div>
             <FormField
-              label="Reason for Watchlist *"
+              label="Reason for Watchlist "
               name="reason"
               value={formState.reason}
               onChange={handleInputChange}
