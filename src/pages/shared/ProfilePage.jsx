@@ -1,4 +1,3 @@
-// src/pages/shared/ProfilePage.jsx
 import { useState } from 'react';
 import { useUserProfile } from '../../features/user/useUserProfile';
 import Button from '../../components/ui/Button';
@@ -6,19 +5,87 @@ import FormField from '../../components/ui/FormField';
 import Modal from '../../components/ui/Modal';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import apiClient from '../../api/apiClient'; 
+import toast from 'react-hot-toast';        
 
 // Sub-component for the password change modal
 const ChangePasswordModal = ({ onClose }) => {
-  // Add logic for changing password here
+  const [passwordData, setPasswordData] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      return toast.error("New passwords do not match!");
+    }
+    if (passwordData.newPassword.length < 6) {
+      return toast.error("Password must be at least 6 characters.");
+    }
+
+    setLoading(true);
+    const toastId = toast.loading("Updating password...");
+
+    try {
+      await apiClient.put('/users/change-password', {
+        oldPassword: passwordData.oldPassword,
+        newPassword: passwordData.newPassword
+      });
+
+      toast.success("Password changed successfully!", { id: toastId });
+      onClose(); // Close modal on success
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || "Failed to change password";
+      toast.error(errorMsg, { id: toastId });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal onClose={onClose}>
       <h2 className="text-xl font-bold mb-4">Change Password</h2>
-      <form className="space-y-4">
-        <FormField label="Old Password" type="password" />
-        <FormField label="New Password" type="password" />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <FormField 
+          label="Old Password" 
+          name="oldPassword"
+          type="password" 
+          value={passwordData.oldPassword}
+          onChange={handleChange}
+          required
+        />
+        <FormField 
+          label="New Password" 
+          name="newPassword"
+          type="password" 
+          value={passwordData.newPassword}
+          onChange={handleChange}
+          required
+        />
+        <FormField 
+          label="Confirm New Password" 
+          name="confirmPassword"
+          type="password" 
+          value={passwordData.confirmPassword}
+          onChange={handleChange}
+          required
+        />
         <div className="flex justify-end gap-4 pt-4">
-          <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save Changes"}
+          </Button>
         </div>
       </form>
     </Modal>
@@ -40,16 +107,23 @@ const ProfilePage = () => {
       case 'Hotel':
         return isEditing ? (
           <>
-            <FormField label="Hotel Name" name="name" value={formData.details.name} onChange={handleInputChange} />
-            <FormField label="City" name="city" value={formData.details.city} onChange={handleInputChange} />
+            <FormField label="Hotel Name" name="hotelName" value={formData.details.hotelName || ''} onChange={handleInputChange} />
+            <FormField label="City" name="city" value={formData.details.city || ''} onChange={handleInputChange} />
           </>
         ) : (
           <>
-            <p><strong>Hotel Name:</strong> {profile.details.name}</p>
+            <p><strong>Hotel Name:</strong> {profile.details.hotelName}</p>
             <p><strong>City:</strong> {profile.details.city}</p>
           </>
         );
-      // Add cases for 'Police' and other roles here
+      case 'Police':
+        // Added Police case based on backend schema
+        return (
+           <>
+             <p><strong>Station:</strong> {profile.details.station}</p>
+             <p><strong>Rank:</strong> {profile.details.rank}</p>
+           </>
+        );
       default: return null;
     }
   };
