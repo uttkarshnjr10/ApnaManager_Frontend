@@ -60,23 +60,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = useCallback(async () => {
+const logout = useCallback(async () => {
     try {
-        // 1. Notify server to clear cookie & blacklist token
         await apiClient.post('/auth/logout');
     } catch (error) {
         console.error("Logout server-side failed:", error);
     } finally {
-        // 2. FORCE CLEANUP (The fix for your issue)
-        localStorage.removeItem('authToken'); // <--- The key you found
-        localStorage.removeItem('token');     // Common alternative
-        localStorage.removeItem('user');      // Just in case
+        // 1. Clear Your Auth
+        localStorage.removeItem('authToken'); 
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
 
-        // 3. Reset State
+        // 2. NEW: Force Clear Stripe Cookies
+        // This loops through all cookies and deletes any starting with '_stripe'
+        document.cookie.split(";").forEach((c) => {
+            if (c.trim().startsWith('_stripe')) {
+                document.cookie = c
+                  .replace(/^ +/, "")
+                  .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            }
+        });
+
         setUser(null);
-        
-        // 4. Optional: Force reload to ensure memory is cleared
-        // window.location.href = '/login'; 
     }
   }, []);
 
