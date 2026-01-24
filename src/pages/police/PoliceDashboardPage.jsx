@@ -1,6 +1,8 @@
 // src/pages/police/PoliceDashboardPage.jsx
+import { useEffect } from 'react'; // ✅ ADDED
 import { Link } from 'react-router-dom';
 import { usePoliceDashboard } from '../../features/police/usePoliceDashboard';
+import { useSocket } from '../../context/SocketContext'; // ✅ ADDED
 import StatCard from '../../components/ui/StatCard';
 import Button from '../../components/ui/Button';
 import { FaUsers, FaBuilding, FaExclamationTriangle, FaUser, FaRegClock } from 'react-icons/fa';
@@ -32,7 +34,26 @@ const RecentAlertsPanel = ({ alerts, loading }) => {
 };
 
 const PoliceDashboardPage = () => {
-  const { stats, loading, error } = usePoliceDashboard();
+  const { stats, loading, error, setStats } = usePoliceDashboard(); // ✅ MODIFIED
+  const socket = useSocket(); // ✅ ADDED
+
+  // ✅ REAL-TIME ALERT LISTENER
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleLiveAlert = (data) => {
+      setStats(prevStats => ({
+        ...prevStats,
+        alerts: [data.alert, ...prevStats.alerts].slice(0, 5)
+      }));
+    };
+
+    socket.on('NEW_ALERT', handleLiveAlert);
+
+    return () => {
+      socket.off('NEW_ALERT', handleLiveAlert);
+    };
+  }, [socket, setStats]);
 
   if (error) {
     return <p className="text-red-600 font-semibold">{error}</p>;

@@ -5,7 +5,6 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // Start with loading true to prevent "flicker" of login screen
   const [loading, setLoading] = useState(true);
 
   const loadUser = useCallback(async () => {
@@ -13,13 +12,9 @@ export const AuthProvider = ({ children }) => {
       const response = await apiClient.get('/users/profile');
       setUser(response.data.data);
     } catch (error) {
-      // If it's a 401, it just means the user isn't logged in. 
-      // This is normal behavior, so we don't need to log it as an error.
       if (error.response && error.response.status === 401) {
-        setUser(null); 
-        // We do NOT console.error here
+        setUser(null);
       } else {
-        // Genuine errors (like 500 server error) should still be logged
         console.error("Profile check failed:", error);
         setUser(null);
       }
@@ -32,14 +27,18 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [loadUser]);
 
-  const login = async (email, password) => {
+  // UPDATED: Now accepts loginType (Role Hint)
+  const login = async (email, password, loginType = 'Hotel') => {
     try {
-      // Clean up legacy garbage BEFORE logging in
       localStorage.removeItem('authToken'); 
 
-      const response = await apiClient.post('/auth/login', { email, password });
+      // Send the hint to the backend to speed up the query
+      const response = await apiClient.post('/auth/login', { 
+        email, 
+        password,
+        loginType 
+      });
 
-      // Handle 200 OK
       if (response.status === 200 && response.data?.data) {
         const { _id, username, role } = response.data.data;
         const userData = { _id, username, role, needsPasswordReset: false };
@@ -47,7 +46,6 @@ export const AuthProvider = ({ children }) => {
         return userData;
       }
       
-      // Handle 202 Password Reset Required
       if (response.status === 202) {
          const userId = response.data?.data?.userId;
          if (userId) return { needsPasswordReset: true, _id: userId };
@@ -60,19 +58,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-const logout = useCallback(async () => {
+  const logout = useCallback(async () => {
     try {
         await apiClient.post('/auth/logout');
     } catch (error) {
         console.error("Logout server-side failed:", error);
     } finally {
-        // 1. Clear Your Auth
         localStorage.removeItem('authToken'); 
         localStorage.removeItem('token');
         localStorage.removeItem('user');
 
-        // 2. NEW: Force Clear Stripe Cookies
-        // This loops through all cookies and deletes any starting with '_stripe'
         document.cookie.split(";").forEach((c) => {
             if (c.trim().startsWith('_stripe')) {
                 document.cookie = c

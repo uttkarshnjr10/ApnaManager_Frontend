@@ -25,20 +25,23 @@ export const useGuestList = () => {
     fetchGuests();
   }, [fetchGuests]);
 
-  const handleCheckout = async (guestId) => {
-    if (!window.confirm("Are you sure you want to check out this guest?")) return;
-
-    const toastId = toast.loading('Checking out guest...');
+const handleCheckout = async (guestId) => {
+    if (!window.confirm("Checkout this guest?")) return;
+    const toastId = toast.loading('Checking out...');
+    
     try {
-      // Call the checkout endpoint
-      await apiClient.put(`/guests/${guestId}/checkout`);
-      toast.success('Guest checked out successfully!', { id: toastId });
-      // Refresh the guest list after a successful checkout
-      fetchGuests(); 
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Checkout failed.', { id: toastId });
+        await apiClient.put(`/guests/${guestId}/checkout`);
+        
+        // Optimistic Update: Mark as checked out in UI immediately
+        setGuests(prev => prev.map(g => 
+            g._id === guestId ? { ...g, status: 'Checked-Out' } : g
+        ));
+        
+        toast.success('Checkout successful', { id: toastId });
+    } catch (err) {
+        toast.error(err.response?.data?.message || 'Checkout failed', { id: toastId });
     }
-  };
+};
 
   const filteredGuests = useMemo(() => {
     return guests.filter(guest =>
