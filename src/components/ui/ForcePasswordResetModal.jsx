@@ -33,24 +33,60 @@ const ForcePasswordResetModal = ({ userId, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("[ForceReset] Submit triggered", { userId });
+
+    // Validation logs
     if (newPassword !== confirmPassword) {
+      console.error("[ForceReset] Password mismatch");
       toast.error("Passwords do not match.");
       return;
     }
+
     if (newPassword.length < 6) {
+      console.error("[ForceReset] Password too short", { length: newPassword.length });
       toast.error("Password must be at least 6 characters long.");
       return;
     }
 
     setIsLoading(true);
     const toastId = toast.loading('Updating password...');
+
     try {
-      await apiClient.post('/auth/change-password', { userId, newPassword });
+      console.log("[ForceReset] Sending request to /auth/change-password");
+
+      const res = await apiClient.post('/auth/change-password', {
+        userId,
+        newPassword,
+      });
+
+      console.log("[ForceReset] API Success Response:", res.data);
+
       toast.success("Password changed successfully! Please log in.", { id: toastId });
       onSuccess();
+
     } catch (err) {
+      console.error("❌ [ForceReset] Password change failed");
+
+      // Axios error debugging
+      if (err.response) {
+        console.error("[ForceReset] Server Response:", {
+          status: err.response.status,
+          data: err.response.data,
+          headers: err.response.headers,
+        });
+      } 
+      else if (err.request) {
+        console.error("[ForceReset] No response from server:", err.request);
+      } 
+      else {
+        console.error("[ForceReset] Request setup error:", err.message);
+      }
+
       toast.error(err.response?.data?.message || "Failed to change password.", { id: toastId });
+
     } finally {
+      console.log("[ForceReset] Request finished");
       setIsLoading(false);
     }
   };
@@ -72,39 +108,57 @@ const ForcePasswordResetModal = ({ userId, onSuccess }) => {
       >
         <div className="p-8 text-center">
           <h2 className="text-2xl font-bold text-gray-800">Create New Password</h2>
-          <p className="text-gray-600 mt-2">For security, you must create a new password before you can proceed.</p>
+          <p className="text-gray-600 mt-2">
+            For security, you must create a new password before you can proceed.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 px-8 pb-8 text-left">
-           <div className="relative">
-             <div className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400"><LockIcon /></div>
-             <input
-                type={showPassword ? "text" : "password"}
-                placeholder="New Password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full pl-12 pr-12 py-3 bg-gray-50 rounded-lg border-2 border-transparent focus:outline-none focus:border-blue-500 transition-colors"
-             />
-              <div className="absolute top-1/2 -translate-y-1/2 right-4 text-gray-500 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-              </div>
-           </div>
-           <div className="relative">
-              <div className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400"><LockIcon /></div>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm New Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="w-full pl-12 pr-12 py-3 bg-gray-50 rounded-lg border-2 border-transparent focus:outline-none focus:border-blue-500 transition-colors"
-              />
-           </div>
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading ? 'Saving...' : 'Set New Password'}
-          </Button>
+          <div className="relative">
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400">
+              <LockIcon />
+            </div>
+
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full pl-12 pr-12 py-3 bg-gray-50 rounded-lg border-2 border-transparent focus:outline-none focus:border-blue-500 transition-colors"
+            />
+
+            <div
+              className="absolute top-1/2 -translate-y-1/2 right-4 text-gray-500 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400">
+              <LockIcon />
+            </div>
+
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-full pl-12 pr-12 py-3 bg-gray-50 rounded-lg border-2 border-transparent focus:outline-none focus:border-blue-500 transition-colors"
+            />
+          </div>
+
+          <button 
+          type="submit" 
+          disabled={isLoading} 
+          className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+        >
+          {isLoading ? 'Saving...' : 'Set New Password'}
+        </button>
         </form>
       </motion.div>
     </motion.div>

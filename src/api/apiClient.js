@@ -24,7 +24,8 @@ apiClient.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequestUrl.includes('/auth/login') && // Don't redirect if login failed
       !originalRequestUrl.includes('/auth/logout') && // Don't redirect if logout failed
-      !originalRequestUrl.includes('/users/profile') // Don't redirect on initial load check
+      !originalRequestUrl.includes('/users/profile')&& // Don't redirect on initial load check
+      !originalRequestUrl.includes('/auth/change-password')
     ) {
       // Prevent multiple toasts if multiple requests fail at once
       if (!window.hasShownSessionToast) {

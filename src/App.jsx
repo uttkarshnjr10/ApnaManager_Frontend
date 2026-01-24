@@ -1,6 +1,7 @@
 // src/App.jsx
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { SocketProvider } from './context/SocketContext';
 
 // Public Pages
 import HomePage from './pages/public/HomePage';
@@ -46,6 +47,7 @@ import WatchlistPage from './pages/admin/WatchlistPage';
 function App() {
   return (
     <>
+    <SocketProvider>
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         {/* Public Routes */}
@@ -100,6 +102,7 @@ function App() {
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </SocketProvider>
     </>
   );
 }
