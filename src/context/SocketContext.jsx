@@ -29,11 +29,11 @@ export const SocketProvider = ({ children }) => {
       });
 
       newSocket.on('connect', () => {
-        console.log('🟢 Socket Connected:', newSocket.id);
+       // console.log('🟢 Socket Connected:', newSocket.id);
       });
 
       newSocket.on('connect_error', (err) => {
-        console.error('🔴 Socket Connection Error:', err.message);
+       // console.error('🔴 Socket Connection Error:', err.message);
       });
 
       setSocket(newSocket);
@@ -41,7 +41,7 @@ export const SocketProvider = ({ children }) => {
 
     // 3. Disconnect on Logout
     if (!user && socket) {
-      console.log('🔴 Disconnecting Socket...');
+    //  console.log('🔴 Disconnecting Socket...');
       socket.disconnect();
       setSocket(null);
     }
