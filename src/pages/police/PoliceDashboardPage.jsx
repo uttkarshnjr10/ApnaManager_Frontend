@@ -1,11 +1,12 @@
-// src/pages/police/PoliceDashboardPage.jsx
-import { useEffect } from 'react'; // ✅ ADDED
+import { useEffect } from 'react'; 
 import { Link } from 'react-router-dom';
 import { usePoliceDashboard } from '../../features/police/usePoliceDashboard';
-import { useSocket } from '../../context/SocketContext'; // ✅ ADDED
+import { useSocket } from '../../context/SocketContext'; 
 import StatCard from '../../components/ui/StatCard';
 import Button from '../../components/ui/Button';
 import { FaUsers, FaBuilding, FaExclamationTriangle, FaUser, FaRegClock } from 'react-icons/fa';
+// 1. Import Widget
+import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const RecentAlertsPanel = ({ alerts, loading }) => {
   if (loading) {
@@ -34,10 +35,9 @@ const RecentAlertsPanel = ({ alerts, loading }) => {
 };
 
 const PoliceDashboardPage = () => {
-  const { stats, loading, error, setStats } = usePoliceDashboard(); // ✅ MODIFIED
-  const socket = useSocket(); // ✅ ADDED
+  const { stats, loading, error, setStats } = usePoliceDashboard(); 
+  const socket = useSocket(); 
 
-  // ✅ REAL-TIME ALERT LISTENER
   useEffect(() => {
     if (!socket) return;
 
@@ -61,6 +61,10 @@ const PoliceDashboardPage = () => {
 
   return (
     <div className="space-y-8">
+      
+      {/* 2. Place Widget Here */}
+      <DashboardWidget />
+
       <h1 className="text-3xl font-bold text-gray-800">Police Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

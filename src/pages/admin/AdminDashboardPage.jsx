@@ -1,9 +1,10 @@
-// src/pages/admin/AdminDashboardPage.jsx
 import { useNavigate } from 'react-router-dom';
 import { useAdminDashboard } from '../../features/admin/useAdminDashboard';
 import MetricCard from '../../components/ui/MetricCard';
 import Button from '../../components/ui/Button';
 import { FaHotel, FaUserShield, FaUsers, FaSearch, FaHistory } from 'react-icons/fa';
+// 1. Import Widget
+import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const AdminDashboardPage = () => {
   const { data, loading, error } = useAdminDashboard();
@@ -17,6 +18,10 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="space-y-8">
+      
+      {/* 2. Place Widget Here */}
+      <DashboardWidget />
+
       <h1 className="text-3xl font-bold text-gray-800">Regional Admin Dashboard</h1>
 
       {/* Metrics Section */}
