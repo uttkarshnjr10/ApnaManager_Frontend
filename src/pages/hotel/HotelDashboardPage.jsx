@@ -1,4 +1,3 @@
-// src/pages/hotel/HotelDashboardPage.jsx
 import { Link } from 'react-router-dom';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -6,6 +5,8 @@ import StatCard from '../../components/ui/StatCard';
 import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
 import { FaUserPlus, FaCreditCard, FaBed, FaDoorOpen, FaDoorClosed } from 'react-icons/fa';
+// 1. Import the widget
+import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const HotelDashboardPage = () => {
   const { user, loading: authLoading } = useAuth();
@@ -15,7 +16,12 @@ const HotelDashboardPage = () => {
   const isLoading = authLoading || statsLoading;
 
   return (
+    // 2. Wrap content in a container with vertical spacing
     <div className="space-y-6">
+      
+      {/* 3. Add the Widget at the top */}
+      <DashboardWidget />
+
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Hotel Dashboard</h1>
         <Link to="/hotel/register-guest">

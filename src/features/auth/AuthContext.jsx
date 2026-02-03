@@ -5,18 +5,39 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  // 1. SMART INITIALIZATION (The Fix)
+  // Check LocalStorage immediately. 
+  // If no token exists, we are NOT loading. We are just a guest.
+  const [loading, setLoading] = useState(() => {
+    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
+    return !!token; // true if token exists, false if not
+  });
 
   const loadUser = useCallback(async () => {
+    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
+
+    // 2. IMMEDIATE EXIT
+    // If we don't have a token, don't wake up the backend.
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    // 3. VERIFY TOKEN (Only if it exists)
     try {
       const response = await apiClient.get('/users/profile');
       setUser(response.data.data);
     } catch (error) {
+      // If token is invalid (401), clear it
       if (error.response && error.response.status === 401) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
         setUser(null);
       } else {
         console.error("Profile check failed:", error);
-        setUser(null);
+        // We don't clear user on 500s, in case it's just a server blip
       }
     } finally {
       setLoading(false);
@@ -27,12 +48,10 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [loadUser]);
 
-  // UPDATED: Now accepts loginType (Role Hint)
   const login = async (email, password, loginType = 'Hotel') => {
     try {
       localStorage.removeItem('authToken'); 
 
-      // Send the hint to the backend to speed up the query
       const response = await apiClient.post('/auth/login', { 
         email, 
         password,
@@ -40,7 +59,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.status === 200 && response.data?.data) {
-        const { _id, username, role } = response.data.data;
+        const { _id, username, role, token } = response.data.data;
+        
+        // Save token immediately
+        if (token) {
+            localStorage.setItem('authToken', token);
+        }
+
         const userData = { _id, username, role, needsPasswordReset: false };
         setUser(userData);
         return userData;
@@ -67,7 +92,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authToken'); 
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-
+        
+        // Clear Stripe cookies
         document.cookie.split(";").forEach((c) => {
             if (c.trim().startsWith('_stripe')) {
                 document.cookie = c
@@ -82,9 +108,13 @@ export const AuthProvider = ({ children }) => {
 
   const value = { user, login, logout, loading };
 
+  // 4. REMOVE BLOCKER
+  // We render children immediately. 
+  // - Public pages will show instantly.
+  // - Protected pages will be caught by ProtectedRoute (which shows the spinner).
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
