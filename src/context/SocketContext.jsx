@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+// src/context/SocketContext.jsx
+import { createContext, useEffect, useState, useContext, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 
@@ -11,16 +12,14 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }) => {
   const { user } = useAuth();
   const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    // 1. Connect if user is logged in
-    if (user && !socket) {
+    // CONNECT: User logged in and no socket exists
+    if (user && !socketRef.current) {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5003/api';
       const socketUrl = apiUrl.replace('/api', '');
 
-      // 2. SIMPLIFIED CONNECTION
-      // We do NOT manually send the token. 
-      // 'withCredentials: true' will automatically send the HttpOnly cookie.
       const newSocket = io(socketUrl, {
         withCredentials: true, 
         transports: ['websocket'], 
@@ -29,29 +28,37 @@ export const SocketProvider = ({ children }) => {
       });
 
       newSocket.on('connect', () => {
-       // console.log('🟢 Socket Connected:', newSocket.id);
+        console.log('🟢 Socket Connected:', newSocket.id);
       });
 
       newSocket.on('connect_error', (err) => {
-       // console.error('🔴 Socket Connection Error:', err.message);
+        console.error('🔴 Socket Connection Error:', err.message);
       });
 
+      newSocket.on('disconnect', (reason) => {
+        console.log('🔴 Socket Disconnected:', reason);
+      });
+
+      socketRef.current = newSocket;
       setSocket(newSocket);
     }
 
-    // 3. Disconnect on Logout
-    if (!user && socket) {
-    //  console.log('🔴 Disconnecting Socket...');
-      socket.disconnect();
+    // DISCONNECT: User logged out
+    if (!user && socketRef.current) {
+      console.log('🔴 Disconnecting Socket (logout)...');
+      socketRef.current.disconnect();
+      socketRef.current = null;
       setSocket(null);
     }
 
+    // CLEANUP: Component unmount
     return () => {
-      if (!user && socket) {
-        socket.disconnect();
+      if (!user && socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
       }
     };
-  }, [user, socket]);
+  }, [user]); // FIXED: Only depend on 'user', not 'socket'
 
   return (
     <SocketContext.Provider value={socket}>

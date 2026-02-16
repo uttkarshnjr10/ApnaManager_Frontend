@@ -1,3 +1,4 @@
+// src/features/auth/AuthContext.jsx
 import { createContext, useState, useEffect, useCallback } from 'react';
 import apiClient from '../../api/apiClient';
 
@@ -5,39 +6,30 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
-  // 1. SMART INITIALIZATION (The Fix)
-  // Check LocalStorage immediately. 
-  // If no token exists, we are NOT loading. We are just a guest.
   const [loading, setLoading] = useState(() => {
     const token = localStorage.getItem('authToken') || localStorage.getItem('token');
-    return !!token; // true if token exists, false if not
+    return !!token;
   });
 
   const loadUser = useCallback(async () => {
     const token = localStorage.getItem('authToken') || localStorage.getItem('token');
 
-    // 2. IMMEDIATE EXIT
-    // If we don't have a token, don't wake up the backend.
     if (!token) {
       setUser(null);
       setLoading(false);
       return;
     }
 
-    // 3. VERIFY TOKEN (Only if it exists)
     try {
       const response = await apiClient.get('/users/profile');
       setUser(response.data.data);
     } catch (error) {
-      // If token is invalid (401), clear it
       if (error.response && error.response.status === 401) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('token');
         setUser(null);
       } else {
         console.error("Profile check failed:", error);
-        // We don't clear user on 500s, in case it's just a server blip
       }
     } finally {
       setLoading(false);
@@ -48,20 +40,26 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [loadUser]);
 
-  const login = async (email, password, loginType = 'Hotel') => {
+  /**
+   * Login function - loginType is now optional
+   * Backend can auto-detect user role from email
+   */
+  const login = async (email, password, loginType) => {
     try {
       localStorage.removeItem('authToken'); 
 
-      const response = await apiClient.post('/auth/login', { 
-        email, 
-        password,
-        loginType 
-      });
+      // Build payload - only include loginType if provided
+      const payload = { email, password };
+      if (loginType) {
+        payload.loginType = loginType;
+      }
 
+      const response = await apiClient.post('/auth/login', payload);
+
+      // Successful login (200)
       if (response.status === 200 && response.data?.data) {
         const { _id, username, role, token } = response.data.data;
         
-        // Save token immediately
         if (token) {
             localStorage.setItem('authToken', token);
         }
@@ -71,9 +69,17 @@ export const AuthProvider = ({ children }) => {
         return userData;
       }
       
+      // Password reset required (202)
       if (response.status === 202) {
          const userId = response.data?.data?.userId;
-         if (userId) return { needsPasswordReset: true, _id: userId };
+         const role = response.data?.data?.role;
+         if (userId) {
+           return { 
+             needsPasswordReset: true, 
+             _id: userId,
+             role 
+           };
+         }
       }
 
       throw new Error(response.data?.message || 'Login failed');
@@ -108,10 +114,6 @@ export const AuthProvider = ({ children }) => {
 
   const value = { user, login, logout, loading };
 
-  // 4. REMOVE BLOCKER
-  // We render children immediately. 
-  // - Public pages will show instantly.
-  // - Protected pages will be caught by ProtectedRoute (which shows the spinner).
   return (
     <AuthContext.Provider value={value}>
       {children}
