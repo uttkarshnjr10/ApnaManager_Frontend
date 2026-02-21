@@ -1,12 +1,25 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import StatCard from '../../components/ui/StatCard';
 import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
 import { FaUserPlus, FaCreditCard, FaBed, FaDoorOpen, FaDoorClosed } from 'react-icons/fa';
-// 1. Import the widget
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+};
 
 const HotelDashboardPage = () => {
   const { user, loading: authLoading } = useAuth();
@@ -16,11 +29,16 @@ const HotelDashboardPage = () => {
   const isLoading = authLoading || statsLoading;
 
   return (
-    // 2. Wrap content in a container with vertical spacing
     <div className="space-y-6">
-      
-      {/* 3. Add the Widget at the top */}
-      <DashboardWidget />
+
+      {/* Widget with fade-in */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <DashboardWidget />
+      </motion.div>
 
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Hotel Dashboard</h1>
@@ -33,34 +51,53 @@ const HotelDashboardPage = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Total Rooms"
-          value={stats.total}
-          icon={<FaBed size={24} />}
-          isLoading={isLoading}
-        />
-        <StatCard
-          title="Occupied Rooms"
-          value={stats.occupied}
-          icon={<FaDoorClosed size={24} />}
-          isLoading={isLoading}
-        />
-        <StatCard
-          title="Vacant Rooms"
-          value={stats.vacant}
-          icon={<FaDoorOpen size={24} />}
-          isLoading={isLoading}
-        />
-        <StatCard
-          title="Subscription"
-          value={isSubscribed ? 'Active' : 'Inactive'}
-          icon={<FaCreditCard size={24} />}
-          isLoading={isLoading}
-        />
-      </div>
+      {/* Stat Cards — Stagger animation */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Total Rooms"
+            value={stats.total}
+            icon={<FaBed size={24} />}
+            isLoading={isLoading}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Occupied Rooms"
+            value={stats.occupied}
+            icon={<FaDoorClosed size={24} />}
+            isLoading={isLoading}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Vacant Rooms"
+            value={stats.vacant}
+            icon={<FaDoorOpen size={24} />}
+            isLoading={isLoading}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Subscription"
+            value={isSubscribed ? 'Active' : 'Inactive'}
+            icon={<FaCreditCard size={24} />}
+            isLoading={isLoading}
+          />
+        </motion.div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
         <Card className="lg:col-span-2">
           {!isSubscribed ? (
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
@@ -107,7 +144,7 @@ const HotelDashboardPage = () => {
             </div>
           )}
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 };
