@@ -21,8 +21,8 @@ const AppLayout = () => {
   // 2. Check if user.role exists
   // 3. Check if navigationConfig has that role
   // 4. Fallback to [] (Empty Array) instead of undefined
-  const links = (user && user.role && navigationConfig[user.role]) 
-    ? navigationConfig[user.role] 
+  const links = (user && user.role && navigationConfig[user.role])
+    ? navigationConfig[user.role]
     : [];
 
   // Debugging: If links are empty, check the console
@@ -35,22 +35,21 @@ const AppLayout = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 font-poppins">
+    <div className="flex h-screen bg-[#f8f9fc] font-poppins">
       <Sidebar
         links={links}
         isCollapsed={isCollapsed}
         onToggle={() => setIsCollapsed(!isCollapsed)}
       />
-      
-      <div 
-        className="flex-1 flex flex-col overflow-hidden transition-all duration-300" 
+
+      <div
+        className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-out"
         style={{ marginLeft: isCollapsed ? '80px' : '256px' }}
       >
         <Navbar username={user.username} onLogout={handleLogout} />
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 relative">
-           {/* Added relative positioning for children */}
-          <div className="container mx-auto px-6 py-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#f8f9fc] relative scroll-smooth">
+          <div className="max-w-7xl mx-auto px-6 py-6">
             <Outlet />
           </div>
         </main>

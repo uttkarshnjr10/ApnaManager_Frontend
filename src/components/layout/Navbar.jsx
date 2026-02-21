@@ -1,34 +1,41 @@
 import { Link } from 'react-router-dom';
-import NotificationBell from '../ui/NotificationBell'; // Import
+import NotificationBell from '../ui/NotificationBell';
+import { FiLogOut } from 'react-icons/fi';
 
 const Navbar = ({ username, onLogout, isPublic = false }) => {
   return (
-    <header className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 text-gray-800 shadow-sm border-b border-gray-200 z-10 sticky top-0">
-      <div className="container mx-auto flex justify-between items-center p-4 h-16">
+    <header className="bg-white/80 backdrop-blur-xl text-gray-800 border-b border-gray-100/80 z-10 sticky top-0">
+      <div className="flex justify-between items-center px-6 h-14">
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2.5">
           <img
             src="/logo.png"
             alt="ApnaManager Logo"
-            className="h-9 w-auto max-h-full object-contain"
+            className="h-8 w-auto object-contain"
           />
         </div>
 
         {!isPublic && (
-          <div className="flex items-center space-x-4 sm:space-x-6">
-            
-            {/* NEW: Notification Bell */}
+          <div className="flex items-center gap-4">
             <NotificationBell />
 
-            <span className="font-medium text-gray-600 hidden sm:block">
-              Welcome, {username || 'Guest'}
-            </span>
+            <div className="hidden sm:flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold shadow-sm shadow-indigo-500/20">
+                {(username || 'G').charAt(0).toUpperCase()}
+              </div>
+              <span className="text-sm font-medium text-gray-700">
+                {username || 'Guest'}
+              </span>
+            </div>
+
+            <div className="h-5 w-px bg-gray-200 hidden sm:block"></div>
+
             <button
               onClick={onLogout}
-              className="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
+              className="flex items-center gap-2 text-gray-500 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
             >
-              {/* SVG Icon... */}
-              <span>Logout</span>
+              <FiLogOut size={15} />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         )}

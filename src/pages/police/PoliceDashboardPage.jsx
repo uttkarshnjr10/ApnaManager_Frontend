@@ -1,12 +1,25 @@
-import { useEffect } from 'react'; 
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { usePoliceDashboard } from '../../features/police/usePoliceDashboard';
-import { useSocket } from '../../context/SocketContext'; 
+import { useSocket } from '../../context/SocketContext';
 import StatCard from '../../components/ui/StatCard';
 import Button from '../../components/ui/Button';
 import { FaUsers, FaBuilding, FaExclamationTriangle, FaUser, FaRegClock } from 'react-icons/fa';
-// 1. Import Widget
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+};
 
 const RecentAlertsPanel = ({ alerts, loading }) => {
   if (loading) {
@@ -35,8 +48,8 @@ const RecentAlertsPanel = ({ alerts, loading }) => {
 };
 
 const PoliceDashboardPage = () => {
-  const { stats, loading, error, setStats } = usePoliceDashboard(); 
-  const socket = useSocket(); 
+  const { stats, loading, error, setStats } = usePoliceDashboard();
+  const socket = useSocket();
 
   useEffect(() => {
     if (!socket) return;
@@ -61,36 +74,59 @@ const PoliceDashboardPage = () => {
 
   return (
     <div className="space-y-8">
-      
-      {/* 2. Place Widget Here */}
-      <DashboardWidget />
+
+      {/* Widget with fade-in */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <DashboardWidget />
+      </motion.div>
 
       <h1 className="text-3xl font-bold text-gray-800">Police Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatCard
-          title="Guests Registered Today"
-          value={stats.guestsToday}
-          icon={<FaUsers size={24} />}
-          isLoading={loading}
-        />
-        <StatCard
-          title="Total Registered Hotels"
-          value={stats.totalHotels}
-          icon={<FaBuilding size={24} />}
-          isLoading={loading}
-        />
-        <StatCard
-          title="Active Alerts"
-          value={stats.alerts.length}
-          icon={<FaExclamationTriangle size={24} />}
-          isLoading={loading}
-        />
-      </div>
+      {/* Stat Cards — Stagger animation */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Guests Registered Today"
+            value={stats.guestsToday}
+            icon={<FaUsers size={24} />}
+            isLoading={loading}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Total Registered Hotels"
+            value={stats.totalHotels}
+            icon={<FaBuilding size={24} />}
+            isLoading={loading}
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <StatCard
+            title="Active Alerts"
+            value={stats.alerts.length}
+            icon={<FaExclamationTriangle size={24} />}
+            isLoading={loading}
+          />
+        </motion.div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <section className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Quick Actions</h2>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+      >
+        <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/police/search" className="w-full">
               <Button className="w-full">Search for a Guest</Button>
@@ -101,11 +137,11 @@ const PoliceDashboardPage = () => {
           </div>
         </section>
 
-        <section className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Recent Active Alerts</h2>
+        <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Recent Active Alerts</h2>
           <RecentAlertsPanel alerts={stats.alerts} loading={loading} />
         </section>
-      </div>
+      </motion.div>
     </div>
   );
 };
