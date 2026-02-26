@@ -12,7 +12,7 @@ export const useFlagsReports = () => {
     setLoading(true);
     try {
       const { data } = await apiClient.get('/police/alerts');
-      setAlerts(data.data || []);
+      setAlerts(data.data?.alerts || []);
     } catch (error) {
       toast.error('Failed to fetch alerts.');
     } finally {

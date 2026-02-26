@@ -132,12 +132,11 @@ export const useRegisterUser = () => {
       let response;
       
       if (userType === 'Hotel') {
-        // Check if we need multipart (files present) or JSON
-        const hasNewFiles = files.ownerSignature instanceof File || files.hotelStamp instanceof File;
-        const hasInquiryFiles = inquiryData && (inquiryData.ownerSignature || inquiryData.hotelStamp);
+        // Check if we need multipart (actual new File objects to upload) or JSON
+        const hasNewFiles = files.ownerSignature instanceof File || files.hotelStamp instanceof File || files.aadhaarCard instanceof File;
 
-        if (hasNewFiles || hasInquiryFiles) {
-          // Use FormData for file uploads
+        if (hasNewFiles) {
+          // Use FormData only when there are actual new File objects to upload
           const submissionData = new FormData();
           submissionData.append('role', userType);
           submissionData.append('username', formData.username);
@@ -158,23 +157,10 @@ export const useRegisterUser = () => {
             localThana: formData.localThana,
           };
 
-          // If files are from inquiry (already uploaded), include URLs
-          if (inquiryData) {
-            if (inquiryData.ownerSignature) {
-              detailsToSend.ownerSignature = inquiryData.ownerSignature;
-            }
-            if (inquiryData.hotelStamp) {
-              detailsToSend.hotelStamp = inquiryData.hotelStamp;
-            }
-            if (inquiryData.aadhaarCard) {
-              detailsToSend.aadhaarCard = inquiryData.aadhaarCard;
-            }
-          }
-
           // Append details as JSON string
           submissionData.append('details', JSON.stringify(detailsToSend));
 
-          // Append NEW file uploads (if any)
+          // Append NEW file uploads
           if (files.ownerSignature instanceof File) {
             submissionData.append('ownerSignature', files.ownerSignature);
           }
@@ -191,13 +177,22 @@ export const useRegisterUser = () => {
             },
           });
         } else {
-          // No files - use JSON payload
-          const { username, email, ...details } = formData;
+          // JSON payload — either no files or files are already-uploaded references from inquiry
+          const { username, email, ...hotelDetails } = formData;
+          const details = { ...hotelDetails };
+
+          // Include already-uploaded file references from inquiry
+          if (inquiryData) {
+            if (inquiryData.ownerSignature) details.ownerSignature = inquiryData.ownerSignature;
+            if (inquiryData.hotelStamp) details.hotelStamp = inquiryData.hotelStamp;
+            if (inquiryData.aadhaarCard) details.aadhaarCard = inquiryData.aadhaarCard;
+          }
+
           const payload = {
             role: userType,
             username,
             email, 
-            details: { ...details }
+            details,
           };
           response = await apiClient.post('/users/register', payload);
         }

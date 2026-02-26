@@ -40,7 +40,7 @@ export const useHotelInquiries = () => {
       const toastId = toast.loading('Rejecting inquiry...');
       try {
         // Call the endpoint to update the inquiry status
-        await apiClient.put(`/inquiries/${inquiryId}/status`, { status: 'Rejected' });
+        await apiClient.put(`/inquiries/${inquiryId}/status`, { status: 'rejected' });
         toast.success('Inquiry rejected.', { id: toastId });
         // Refresh the list to remove the rejected inquiry
         fetchInquiries();
