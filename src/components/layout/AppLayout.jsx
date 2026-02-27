@@ -46,7 +46,7 @@ const AppLayout = () => {
         className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-out"
         style={{ marginLeft: isCollapsed ? '80px' : '256px' }}
       >
-        <Navbar username={user.username} onLogout={handleLogout} />
+        <Navbar username={user.username} userRole={user.role} onLogout={handleLogout} />
 
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#f8f9fc] relative scroll-smooth">
           <div className="max-w-7xl mx-auto px-6 py-6">

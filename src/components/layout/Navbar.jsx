@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import NotificationBell from '../ui/NotificationBell';
 import { FiLogOut } from 'react-icons/fi';
 
-const Navbar = ({ username, onLogout, isPublic = false }) => {
+const Navbar = ({ username, onLogout, isPublic = false, userRole }) => {
+  const showNotifications = userRole && userRole !== 'Hotel';
+
   return (
     <header className="bg-white/80 backdrop-blur-xl text-gray-800 border-b border-gray-100/80 z-10 sticky top-0">
       <div className="flex justify-between items-center px-6 h-14">
@@ -17,7 +19,7 @@ const Navbar = ({ username, onLogout, isPublic = false }) => {
 
         {!isPublic && (
           <div className="flex items-center gap-4">
-            <NotificationBell />
+            {showNotifications && <NotificationBell />}
 
             <div className="hidden sm:flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold shadow-sm shadow-indigo-500/20">
