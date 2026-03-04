@@ -95,11 +95,12 @@ const LoginPage = () => {
       
       <div className="font-poppins min-h-screen w-screen flex relative overflow-hidden">
         {/* ── Left Panel: Brand / Illustration ── */}
-        <div className="hidden lg:flex lg:w-[45%] relative bg-[#0c111d] items-center justify-center p-12 overflow-hidden">
+        <div className="hidden lg:flex lg:w-[45%] relative bg-gradient-to-br from-[#1e1b4b] via-[#1e1b4b] to-[#312e81] items-center justify-center p-12 overflow-hidden">
           {/* Gradient orbs */}
-          <div className="absolute w-[500px] h-[500px] bg-indigo-600/20 rounded-full -top-32 -left-32 blur-3xl pointer-events-none"></div>
-          <div className="absolute w-[400px] h-[400px] bg-violet-600/15 rounded-full -bottom-20 -right-20 blur-3xl pointer-events-none"></div>
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #6366f1 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+          <div className="absolute w-[500px] h-[500px] bg-indigo-500/25 rounded-full -top-32 -left-32 blur-3xl pointer-events-none"></div>
+          <div className="absolute w-[400px] h-[400px] bg-violet-500/20 rounded-full -bottom-20 -right-20 blur-3xl pointer-events-none"></div>
+          <div className="absolute w-[300px] h-[300px] bg-indigo-400/10 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none"></div>
+          <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #818cf8 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
 
           <div className="relative z-10 max-w-md text-center">
             <motion.div

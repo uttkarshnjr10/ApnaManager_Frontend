@@ -12,7 +12,8 @@ export const useCaseReports = () => {
     setLoading(true);
     try {
       const { data } = await apiClient.get('/police/reports');
-      setReports(data.data || []);
+      const payload = data.data;
+      setReports(Array.isArray(payload) ? payload : payload?.reports || []);
     } catch (error) {
       toast.error('Failed to fetch case reports.');
     } finally {

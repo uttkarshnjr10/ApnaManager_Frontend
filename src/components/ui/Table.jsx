@@ -17,6 +17,8 @@ const TableSkeleton = ({ columns, rows = 5 }) => (
 );
 
 const Table = ({ columns, data, loading }) => {
+  const safeData = Array.isArray(data) ? data : [];
+
   return (
     <div className="bg-white shadow-md rounded-lg overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -35,9 +37,17 @@ const Table = ({ columns, data, loading }) => {
         </thead>
         {loading ? (
           <TableSkeleton columns={columns.length} />
+        ) : safeData.length === 0 ? (
+          <tbody>
+            <tr>
+              <td colSpan={columns.length} className="px-6 py-10 text-center text-sm text-gray-400">
+                No records found.
+              </td>
+            </tr>
+          </tbody>
         ) : (
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((row, rowIndex) => (
+            {safeData.map((row, rowIndex) => (
               <tr key={rowIndex} className="hover:bg-gray-50">
                 {columns.map((col) => (
                   <td key={col.accessor} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

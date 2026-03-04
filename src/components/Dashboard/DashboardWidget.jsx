@@ -94,38 +94,38 @@ const DashboardWidget = () => {
     const todayDate = format(new Date(), 'EEEE, MMMM d, yyyy');
 
     return (
-        <div className="w-full bg-gradient-to-r from-[#4f46e5] via-[#6366f1] to-[#3b82f6] rounded-2xl p-5 text-white shadow-lg shadow-indigo-500/15 relative overflow-hidden">
+        <div className="w-full bg-gradient-to-r from-[#4f46e5] via-[#6366f1] to-[#3b82f6] rounded-xl p-3.5 text-white shadow-md shadow-indigo-500/10 relative overflow-hidden">
 
             {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-[0.04] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-[0.03] rounded-full translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-[0.04] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-[0.03] rounded-full translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
 
             {/* TOP ROW: Greeting & Weather */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 relative z-10 gap-3">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2.5 relative z-10 gap-2">
                 {/* LEFT: Greeting */}
-                <div className="flex flex-col gap-1 min-w-0">
-                    <div className="flex items-center gap-2 text-blue-200/80 text-xs font-medium">
-                        <BsSun className="flex-shrink-0" />
+                <div className="flex flex-col gap-0.5 min-w-0">
+                    <div className="flex items-center gap-1.5 text-blue-200/80 text-[11px] font-medium">
+                        <BsSun className="flex-shrink-0 text-xs" />
                         <span className="truncate">{todayDate}</span>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold leading-tight">
+                    <h1 className="text-lg md:text-xl font-bold leading-tight">
                         {getGreeting()}, <span className="opacity-90">{user?.username || 'Guest'}</span>
                     </h1>
                 </div>
 
                 {/* RIGHT: Weather Data */}
-                <div className="flex items-center gap-2.5 bg-white/10 px-3.5 py-2 rounded-xl backdrop-blur-sm border border-white/10 flex-shrink-0">
+                <div className="flex items-center gap-2 bg-white/10 px-2.5 py-1.5 rounded-lg backdrop-blur-sm border border-white/10 flex-shrink-0">
                     {loading ? (
-                        <div className="animate-pulse flex items-center gap-2.5">
-                            <div className="h-7 w-7 bg-white/20 rounded-full"></div>
-                            <div className="h-5 w-12 bg-white/20 rounded"></div>
+                        <div className="animate-pulse flex items-center gap-2">
+                            <div className="h-5 w-5 bg-white/20 rounded-full"></div>
+                            <div className="h-4 w-10 bg-white/20 rounded"></div>
                         </div>
                     ) : (
                         <>
                             <div>{getWeatherIcon(weather?.iconCode)}</div>
                             <div className="flex flex-col text-right">
-                                <span className="text-xl font-bold leading-none">{weather?.temp}°C</span>
-                                <span className="text-[10px] text-blue-200 capitalize">{weather?.description}</span>
+                                <span className="text-base font-bold leading-none">{weather?.temp}°C</span>
+                                <span className="text-[9px] text-blue-200 capitalize">{weather?.description}</span>
                             </div>
                         </>
                     )}
@@ -133,31 +133,31 @@ const DashboardWidget = () => {
             </div>
 
             {/* BOTTOM ROW: AI Intelligence Briefing */}
-            <div className="relative z-10 border-t border-white/10 pt-3">
-                <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-blue-200/70 flex items-center gap-1.5">
-                        <BsStars className="text-yellow-300 text-xs" />
+            <div className="relative z-10 border-t border-white/10 pt-2">
+                <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-[9px] font-semibold uppercase tracking-wider text-blue-200/70 flex items-center gap-1">
+                        <BsStars className="text-yellow-300 text-[10px]" />
                         Daily Intelligence Briefing
                     </h3>
                     <button
                         onClick={getAIAnalysis}
-                        className={`hover:bg-white/10 p-1 rounded-full transition-colors ${aiLoading ? 'animate-spin' : ''}`}
+                        className={`hover:bg-white/10 p-0.5 rounded-full transition-colors ${aiLoading ? 'animate-spin' : ''}`}
                         title="Refresh Analysis"
                     >
-                        <FaSyncAlt size={10} />
+                        <FaSyncAlt size={9} />
                     </button>
                 </div>
 
-                <div className="bg-black/10 rounded-lg p-2.5 backdrop-blur-sm border border-white/5 min-h-[40px]">
+                <div className="bg-black/10 rounded-md p-2 backdrop-blur-sm border border-white/5 min-h-[32px]">
                     {aiLoading ? (
                         <div className="space-y-1 animate-pulse">
                             <div className="h-2 bg-white/20 rounded w-3/4"></div>
                             <div className="h-2 bg-white/20 rounded w-full"></div>
                         </div>
                     ) : aiError ? (
-                        <p className="text-xs text-red-200">Unable to generate report right now.</p>
+                        <p className="text-[11px] text-red-200">Unable to generate report right now.</p>
                     ) : (
-                        <p className="text-xs leading-relaxed text-blue-50">
+                        <p className="text-[11px] leading-relaxed text-blue-50">
                             {aiReport || "No significant activity recorded yet for today."}
                         </p>
                     )}
