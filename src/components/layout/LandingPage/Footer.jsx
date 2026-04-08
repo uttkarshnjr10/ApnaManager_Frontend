@@ -56,7 +56,7 @@ const Footer = () => {
                   <FaWhatsapp size={18} />
                 </a>
                 <a
-                  href="mailto:contact@apnamanager.com"
+                  href="mailto:apnamanager91@gmail.com"
                   className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-emerald-500 hover:to-teal-500 hover:text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/20 border border-white/5 hover:border-transparent"
                 >
                   <FaEnvelope size={16} />
@@ -66,7 +66,7 @@ const Footer = () => {
 
             {/* Platform Column */}
             <div>
-              <h4 className="text-sm font-semibold text-white mb-5 tracking-wide">Platform</h4>
+                  { text: 'Contact Us', to: 'mailto:apnamanager91@gmail.com' },
               <ul className="space-y-3">
                 {[
                   { icon: <FaHotel className="text-xs" />, text: 'Hotel Dashboard', to: '/login' },
