@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar, FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -46,6 +46,14 @@ const Footer = () => {
                   className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-blue-500 hover:to-blue-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/20 border border-white/5 hover:border-transparent"
                 >
                   <FaLinkedin size={18} />
+                </a>
+                <a
+                  href="https://whatsapp.com/channel/0029VbBdxL26LwHpSS1XdT3J"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-green-500 hover:to-emerald-500 hover:text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20 border border-white/5 hover:border-transparent"
+                >
+                  <FaWhatsapp size={18} />
                 </a>
                 <a
                   href="mailto:contact@apnamanager.com"
