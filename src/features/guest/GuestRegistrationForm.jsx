@@ -259,6 +259,21 @@ const GuestRegistrationForm = () => {
                  <FormField label={`Guest ${index + 1} Name *`} name="name" value={guest.name} onChange={(e) => handleGuestChange(index, 'name', e.target.value)} error={errors[`accompanying_${index}_name`]} />
                  <FormField label="Date of Birth *" name="dob" type="date" value={guest.dob} onChange={(e) => handleDobChange(e, index)} error={errors[`accompanying_${index}_dob`]} />
                  <FormField label="Age" name="age" type="number" value={guest.age} disabled className="bg-gray-100" />
+                 <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
+                   <select
+                     name="gender"
+                     value={guest.gender}
+                     onChange={(e) => handleGuestChange(index, 'gender', e.target.value)}
+                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                   >
+                     <option value="">Select Gender</option>
+                     <option value="Male">Male</option>
+                     <option value="Female">Female</option>
+                     <option value="Other">Other</option>
+                   </select>
+                   {errors[`accompanying_${index}_gender`] && <p className="text-red-500 text-sm mt-1">{errors[`accompanying_${index}_gender`]}</p>}
+                 </div>
                  <FormField label="ID Type" name="idType" value={guest.idType || ''} onChange={(e) => handleGuestChange(index, 'idType', e.target.value)} />
                  <FormField label="ID Number" name="idNumber" value={guest.idNumber || ''} onChange={(e) => handleGuestChange(index, 'idNumber', e.target.value)} />
               </div>

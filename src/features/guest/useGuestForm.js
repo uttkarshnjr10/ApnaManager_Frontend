@@ -160,6 +160,7 @@ export const useGuestForm = () => {
     formState.accompanyingGuests.forEach((guest, index) => {
       if (!guest.name.trim()) errs[`accompanying_${index}_name`] = `Guest ${index + 1} name is required`;
       if (!guest.dob) errs[`accompanying_${index}_dob`] = `Guest ${index + 1} DOB is required`;
+      if (!guest.gender) errs[`accompanying_${index}_gender`] = `Guest ${index + 1} gender is required`;
     });
 
     setErrors(errs);
