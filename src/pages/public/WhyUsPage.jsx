@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   FaShieldAlt, FaDigitalTachograph, FaUsers, 
   FaLock, FaBell, FaFileInvoice, 
-  FaInstagram, FaYoutube, FaLinkedin, FaArrowRight
+  FaInstagram, FaYoutube, FaLinkedin, FaArrowRight, FaWhatsapp
 } from 'react-icons/fa';
 import Navbar from '../../components/layout/Navbar'; 
 
@@ -61,6 +61,7 @@ const Footer = () => {
           {[
             { icon: <FaInstagram size={24} />, href: "https://www.instagram.com/apnamanager?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
             { icon: <FaYoutube size={24} />, href: "https://www.youtube.com/@apnamanager" },
+            { icon: <FaWhatsapp size={24} />, href: "https://whatsapp.com/channel/0029VbBdxL26LwHpSS1XdT3J" },
             { icon: <FaLinkedin size={24} />, href: "https://www.linkedin.com/company/apnamanager/" }
           ].map((social, idx) => (
             <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 hover:scale-110 transition-all duration-300">

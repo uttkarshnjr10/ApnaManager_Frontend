@@ -55,8 +55,11 @@ const Footer = () => {
                 >
                   <FaWhatsapp size={18} />
                 </a>
+                {/* FIXED: Changed from mailto: to explicit Gmail Compose URL */}
                 <a
-                  href="mailto:apnamanager91@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=apnamanager91@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-emerald-500 hover:to-teal-500 hover:text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/20 border border-white/5 hover:border-transparent"
                 >
                   <FaEnvelope size={16} />
@@ -66,7 +69,6 @@ const Footer = () => {
 
             {/* Platform Column */}
             <div>
-                  { text: 'Contact Us', to: 'mailto:apnamanager91@gmail.com' },
               <ul className="space-y-3">
                 {[
                   { icon: <FaHotel className="text-xs" />, text: 'Hotel Dashboard', to: '/login' },
@@ -85,16 +87,17 @@ const Footer = () => {
 
             {/* Company Column */}
             <div>
-              <h4 className="text-sm font-semibold text-white mb-5 tracking-wide">Company</h4>
               <ul className="space-y-3">
                 {[
                   { text: 'Why Us', to: '/why-us' },
                   { text: 'Register Hotel', to: '/hotel-registration' },
-                  { text: 'Contact Us', to: 'mailto:contact@apnamanager.com' },
+                  // FIXED: Updated Contact Us link to redirect to Gmail
+                  { text: 'Contact Us', to: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnamanager91@gmail.com' },
                 ].map((item, i) => (
                   <li key={i}>
-                    {item.to.startsWith('mailto') ? (
-                      <a href={item.to} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">
+                    {/* FIXED: Updated condition to ensure http links render as <a> tags so React Router doesn't break */}
+                    {item.to.startsWith('http') || item.to.startsWith('mailto') ? (
+                      <a href={item.to} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-white transition-colors duration-200">
                         {item.text}
                       </a>
                     ) : (
