@@ -76,16 +76,6 @@ const Sidebar = ({ links = [], isCollapsed, onToggle }) => {
         </ul>
       </nav>
 
-      {/* Footer */}
-      <div className="px-3 py-4 border-t border-white/[0.06]">
-        {!isCollapsed && (
-          <div className="px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-500/10 to-violet-500/5 border border-indigo-500/10">
-            <p className="text-[11px] text-gray-400">
-              <span className="text-indigo-400 font-medium">Pro Tip:</span> Use keyboard shortcuts for faster navigation
-            </p>
-          </div>
-        )}
-      </div>
     </aside>
   );
 };
