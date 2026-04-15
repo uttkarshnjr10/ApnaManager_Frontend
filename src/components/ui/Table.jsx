@@ -16,7 +16,7 @@ const TableSkeleton = ({ columns, rows = 5 }) => (
   </tbody>
 );
 
-const Table = ({ columns, data, loading }) => {
+const Table = ({ columns, data, loading, onRowClick }) => {
   const safeData = Array.isArray(data) ? data : [];
 
   return (
@@ -48,7 +48,11 @@ const Table = ({ columns, data, loading }) => {
         ) : (
           <tbody className="bg-white divide-y divide-gray-200">
             {safeData.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover:bg-gray-50">
+              <tr
+                key={rowIndex}
+                className={`hover:bg-gray-50 ${onRowClick ? 'cursor-pointer' : ''}`}
+                onClick={() => onRowClick?.(row)}
+              >
                 {columns.map((col) => (
                   <td key={col.accessor} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {col.Cell ? col.Cell(row) : row[col.accessor]}

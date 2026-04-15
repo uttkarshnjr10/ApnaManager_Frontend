@@ -1,5 +1,7 @@
 // src/pages/hotel/GuestListPage.jsx
+import { useState } from 'react';
 import { useGuestList } from '../../features/hotel/useGuestList';
+import GuestDetailModal from '../../features/hotel/GuestDetailModal';
 import Table from '../../components/ui/Table';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -15,6 +17,18 @@ const StatusPill = ({ status }) => {
 
 const GuestListPage = () => {
   const { filteredGuests, loading, searchTerm, setSearchTerm, handleCheckout } = useGuestList();
+  const [selectedGuestId, setSelectedGuestId] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openDetail = (guestId) => {
+    setSelectedGuestId(guestId);
+    setModalOpen(true);
+  };
+
+  const closeDetail = () => {
+    setModalOpen(false);
+    setSelectedGuestId(null);
+  };
 
   const columns = [
     { Header: 'Customer ID', accessor: 'customerId' },
@@ -27,11 +41,24 @@ const GuestListPage = () => {
       Header: 'Actions',
       accessor: 'actions',
       Cell: (row) => (
-        row.status === "Checked-In" && (
-          <Button onClick={() => handleCheckout(row._id)} variant="secondary" className="text-sm py-1 px-2">
-            Checkout
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={(e) => { e.stopPropagation(); openDetail(row._id); }}
+            variant="outline"
+            className="text-sm py-1 px-2"
+          >
+            View
           </Button>
-        )
+          {row.status === "Checked-In" && (
+            <Button
+              onClick={(e) => { e.stopPropagation(); handleCheckout(row._id); }}
+              variant="secondary"
+              className="text-sm py-1 px-2"
+            >
+              Checkout
+            </Button>
+          )}
+        </div>
       ),
     },
   ];
@@ -48,7 +75,18 @@ const GuestListPage = () => {
           className="w-full sm:w-72"
         />
       </div>
-      <Table columns={columns} data={filteredGuests} loading={loading} />
+      <Table
+        columns={columns}
+        data={filteredGuests}
+        loading={loading}
+        onRowClick={(row) => openDetail(row._id)}
+      />
+
+      <GuestDetailModal
+        guestId={selectedGuestId}
+        isOpen={modalOpen}
+        onClose={closeDetail}
+      />
     </div>
   );
 };
