@@ -1,5 +1,5 @@
 // src/features/guest/GuestRegistrationForm.jsx
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { FaChevronDown, FaPlus, FaTrash } from 'react-icons/fa';
 import { useGuestForm } from './useGuestForm';
 import { differenceInYears, parseISO, format } from 'date-fns';
 import Button from '../../components/ui/Button';
@@ -50,6 +50,9 @@ const GuestRegistrationForm = () => {
   };
 
   const minCheckInDate = format(new Date(), "yyyy-MM-dd'T'HH:mm");
+  const idTypeOptions = ['Aadhaar', 'Passport', 'Voter ID', 'Driving License'];
+  const idTypeSelectClasses =
+    'mt-1 block w-full appearance-none rounded-md border border-slate-300 bg-white px-3 py-2.5 pr-10 text-sm text-slate-800 shadow-sm transition-colors duration-150 hover:border-blue-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
 
   return (
     <>
@@ -218,21 +221,28 @@ const GuestRegistrationForm = () => {
           <legend className="text-lg font-semibold text-gray-800 px-2">ID & Photo Proof</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="idType" className="block text-sm font-medium text-gray-700 mb-1">
                 ID Proof Type *
               </label>
-              <select
-                name="idType"
-                value={formState.idType}
-                onChange={handleChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              >
-                <option value="">Select ID Type</option>
-                <option>Aadhaar</option>
-                <option>Passport</option>
-                <option>Voter ID</option>
-                <option>Driving License</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="idType"
+                  name="idType"
+                  value={formState.idType}
+                  onChange={handleChange}
+                  className={idTypeSelectClasses}
+                >
+                  <option value="">Select ID Type</option>
+                  {idTypeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
+                  <FaChevronDown className="text-xs" />
+                </span>
+              </div>
               {errors.idType && <p className="text-red-500 text-sm mt-1">{errors.idType}</p>}
             </div>
             <FormField
@@ -274,7 +284,28 @@ const GuestRegistrationForm = () => {
                    </select>
                    {errors[`accompanying_${index}_gender`] && <p className="text-red-500 text-sm mt-1">{errors[`accompanying_${index}_gender`]}</p>}
                  </div>
-                 <FormField label="ID Type" name="idType" value={guest.idType || ''} onChange={(e) => handleGuestChange(index, 'idType', e.target.value)} />
+                 <div>
+                   <label htmlFor={`accompanying-idType-${index}`} className="block text-sm font-medium text-gray-700 mb-1">ID Type</label>
+                   <div className="relative">
+                     <select
+                       id={`accompanying-idType-${index}`}
+                       name="idType"
+                       value={guest.idType || ''}
+                       onChange={(e) => handleGuestChange(index, 'idType', e.target.value)}
+                       className={idTypeSelectClasses}
+                     >
+                       <option value="">Select ID Type</option>
+                       {idTypeOptions.map((option) => (
+                         <option key={option} value={option}>
+                           {option}
+                         </option>
+                       ))}
+                     </select>
+                     <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
+                       <FaChevronDown className="text-xs" />
+                     </span>
+                   </div>
+                 </div>
                  <FormField label="ID Number" name="idNumber" value={guest.idNumber || ''} onChange={(e) => handleGuestChange(index, 'idNumber', e.target.value)} />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t">
