@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 import { FaBolt, FaLock, FaGlobe, FaMobileAlt, FaHotel, FaShieldAlt, FaCheckCircle } from 'react-icons/fa';
 
 const FeatureCard = ({ icon, title, description, colorClass, glowColor }) => (
-  <div className="group relative bg-white/70 backdrop-blur-sm p-7 rounded-2xl border border-gray-100/80 hover:border-gray-200/80 transition-all duration-500 hover:shadow-xl hover:-translate-y-1.5 overflow-hidden">
+  <div className="group relative bg-white p-7 rounded-2xl border border-gray-100/90 hover:border-gray-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden">
     {/* Subtle glow on hover */}
-    <div className={`absolute -top-20 -right-20 w-40 h-40 ${glowColor} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
+    <div className={`absolute -top-20 -right-20 w-36 h-36 ${glowColor} rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none`}></div>
     <div className="relative z-10">
       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg ${colorClass} group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}>
         {icon}
@@ -16,11 +16,11 @@ const FeatureCard = ({ icon, title, description, colorClass, glowColor }) => (
 );
 
 const PersonaCard = ({ icon, title, description, features, accentColor, accentBg }) => (
-  <div className="group relative bg-white/70 backdrop-blur-sm p-8 rounded-2xl border border-gray-100/80 hover:border-gray-200/80 transition-all duration-500 hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full overflow-hidden">
+  <div className="group relative bg-white p-8 rounded-2xl border border-gray-100/90 hover:border-gray-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden">
     {/* Accent top border */}
     <div className={`absolute top-0 left-0 right-0 h-1 ${accentBg} rounded-t-2xl`}></div>
     {/* Glow */}
-    <div className={`absolute -top-20 -left-20 w-40 h-40 ${accentColor}/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
+    <div className={`absolute -top-20 -left-20 w-36 h-36 ${accentColor}/10 rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none`}></div>
     <div className="relative z-10 flex flex-col h-full">
       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${accentBg}/10 ${accentColor}`}>
         {icon}
@@ -50,12 +50,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.45, ease: 'easeOut' },
   },
 };
 

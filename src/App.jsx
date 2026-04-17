@@ -48,7 +48,40 @@ function App() {
   return (
     <>
     <SocketProvider>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={10}
+        containerStyle={{ top: 18 }}
+        toastOptions={{
+          duration: 3800,
+          className: 'apna-toast',
+          style: {
+            maxWidth: '460px',
+          },
+          success: {
+            className: 'apna-toast apna-toast-success',
+            iconTheme: {
+              primary: '#22C55E',
+              secondary: '#F8FAFC',
+            },
+          },
+          error: {
+            className: 'apna-toast apna-toast-error',
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#F8FAFC',
+            },
+          },
+          loading: {
+            className: 'apna-toast apna-toast-loading',
+            iconTheme: {
+              primary: '#3B82F6',
+              secondary: '#F8FAFC',
+            },
+          },
+        }}
+      />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
