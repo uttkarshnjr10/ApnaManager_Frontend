@@ -7,6 +7,7 @@ export const useHotelDashboard = () => {
     total: 0,
     occupied: 0,
     vacant: 0,
+    occupiedRooms: [],
     vacantRooms: []
   });
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ export const useHotelDashboard = () => {
     try {
       const { data } = await apiClient.get('/rooms/dashboard');
       setStats(data.data);
-    } catch (error) {
+    } catch {
       toast.error('Could not fetch dashboard statistics.');
     } finally {
       setLoading(false);
