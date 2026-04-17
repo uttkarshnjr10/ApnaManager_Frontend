@@ -7,6 +7,8 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const GuestResultCard = ({ guest, onFlagClick }) => {
+  const isAccompanying = guest.matchRole === 'Accompanying Guest';
+
   return (
     <div className="bg-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row gap-4 border border-gray-100 hover:shadow-lg transition-shadow">
       {/* Guest Photo */}
@@ -24,7 +26,24 @@ const GuestResultCard = ({ guest, onFlagClick }) => {
 
       {/* Guest Details */}
       <div className="flex-1 text-center sm:text-left space-y-1">
-        <h3 className="text-xl font-bold text-gray-800">{guest.primaryGuest?.name || 'Unknown'}</h3>
+        <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+          <h3 className="text-xl font-bold text-gray-800">{guest.primaryGuest?.name || 'Unknown'}</h3>
+          {/* Match Role Badge */}
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+            isAccompanying
+              ? 'bg-orange-100 text-orange-800'
+              : 'bg-blue-100 text-blue-800'
+          }`}>
+            {isAccompanying ? '🟠 Accompanying' : '🔵 Primary'}
+          </span>
+        </div>
+
+        {/* Show matched accompanying person's name when applicable */}
+        {isAccompanying && guest.matchedPersonName && (
+          <p className="text-sm text-orange-700 font-medium">
+            ↳ Matched person: <span className="font-bold">{guest.matchedPersonName}</span>
+          </p>
+        )}
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600">
             <p>ID: <span className="font-medium text-gray-900">{guest.idNumber} ({guest.idType})</span></p>

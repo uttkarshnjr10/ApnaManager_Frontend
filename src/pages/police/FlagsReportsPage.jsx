@@ -59,6 +59,20 @@ const FlagsReportsPage = () => {
                     <div className="space-y-2 text-sm">
                         <p className="flex items-center gap-2 font-semibold text-gray-700"><FaUser /> {alert.guest?.primaryGuest?.name || 'N/A'}</p>
                         <p className="flex items-center gap-2 text-gray-600"><FaIdCard /> {alert.guest?.idNumber || 'N/A'}</p>
+                        {/* Show matched person context when available (new unified alerts) */}
+                        {alert.matchedPerson && (
+                          <div className={`flex items-center gap-2 px-2 py-1 rounded text-xs font-semibold ${
+                            alert.matchedPerson.role === 'Accompanying'
+                              ? 'bg-orange-50 text-orange-700 border border-orange-200'
+                              : 'bg-blue-50 text-blue-700 border border-blue-200'
+                          }`}>
+                            <span>{alert.matchedPerson.role === 'Accompanying' ? '🟠' : '🔵'}</span>
+                            <span>
+                              {alert.matchedPerson.role === 'Accompanying' ? 'Accompanying' : 'Primary'}:
+                              {' '}{alert.matchedPerson.name} ({alert.matchedPerson.identifier})
+                            </span>
+                          </div>
+                        )}
                         <p className="flex items-start gap-2 text-gray-600"><FaExclamationCircle className="mt-1 flex-shrink-0" /> {alert.reason}</p>
                     </div>
                 </div>
