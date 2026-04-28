@@ -18,6 +18,11 @@ export const useGuestHistory = () => {
       const { data } = await apiClient.get(`/police/guests/${guestId}/history`);
       setHistory(data.data);
     } catch (err) {
+      if (err.response?.status === 403 && err.response?.data?.message === 'VERIFICATION_REQUIRED') {
+        toast.error('Verification session expired. Please re-verify.');
+        window.location.reload();
+        return;
+      }
       setError(err.response?.data?.message || 'Failed to fetch guest history.');
     } finally {
       setLoading(false);

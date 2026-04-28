@@ -51,6 +51,11 @@ export const useAnalytics = () => {
         toast.success('No results found for this query.');
       }
     } catch (err) {
+      if (err.response?.status === 403 && err.response?.data?.message === 'VERIFICATION_REQUIRED') {
+        toast.error('Verification session expired. Please re-verify.');
+        window.location.reload();
+        return;
+      }
       toast.error(err.response?.data?.message || 'Search failed.');
     } finally {
       setLoading(false);

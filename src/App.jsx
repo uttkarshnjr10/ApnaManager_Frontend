@@ -33,6 +33,7 @@ import FlagsReportsPage from './pages/police/FlagsReportsPage';
 import CaseReportsPage from './pages/police/CaseReportsPage';
 import GuestHistoryPage from './pages/police/GuestHistoryPage';
 import AnalyticsPage from './pages/police/AnalyticsPage';
+import PoliceVerificationGate from './features/police/PoliceVerificationGate';
 
 // Admin Pages
 import ManageHotelsPage from './pages/admin/ManageHotelsPage';
@@ -108,13 +109,15 @@ function App() {
           {/* Police Routes */}
           <Route path="/police" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
+            {/* Ungated — operational pages */}
             <Route path="dashboard" element={<DashboardDispatcherPage />} />
-            <Route path="guest/:guestId" element={<GuestHistoryPage />} />
-            <Route path="search" element={<SearchGuestPage />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="flags" element={<FlagsReportsPage />} />
             <Route path="reports" element={<CaseReportsPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            {/* Gated — require live photo verification */}
+            <Route path="search" element={<PoliceVerificationGate><SearchGuestPage /></PoliceVerificationGate>} />
+            <Route path="guest/:guestId" element={<PoliceVerificationGate><GuestHistoryPage /></PoliceVerificationGate>} />
+            <Route path="analytics" element={<PoliceVerificationGate><AnalyticsPage /></PoliceVerificationGate>} />
           </Route>
 
           {/* Admin Routes */}

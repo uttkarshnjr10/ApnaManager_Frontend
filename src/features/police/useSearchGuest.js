@@ -60,6 +60,14 @@ export const useSearchGuest = () => {
 
     } catch (err) {
       if (err.name === 'CanceledError') return; // Ignore cancelled requests
+
+      // If session expired mid-use, trigger re-verification
+      if (err.response?.status === 403 && err.response?.data?.message === 'VERIFICATION_REQUIRED') {
+        toast.error('Verification session expired. Please re-verify.');
+        window.location.reload();
+        return;
+      }
+
       setError(err.response?.data?.message || 'Search failed.');
       if (!isLoadMore) setResults([]);
     } finally {
