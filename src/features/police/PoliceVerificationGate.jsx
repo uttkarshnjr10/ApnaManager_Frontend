@@ -20,6 +20,31 @@ const PoliceVerificationGate = ({ children }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [expiresAt, setExpiresAt] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(null);
+
+  // Real-time countdown timer enhancement
+  useEffect(() => {
+    if (!expiresAt) return;
+
+    const calculateTimeLeft = () => {
+      const diff = new Date(expiresAt).getTime() - new Date().getTime();
+      if (diff <= 0) {
+        setTimeLeft('00:00');
+        // Auto-refresh to trigger the gate again once expired
+        window.location.reload();
+        return;
+      }
+      
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      setTimeLeft(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+    };
+
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(interval);
+  }, [expiresAt]);
 
   // Check session status on mount
   const checkSession = useCallback(async () => {
@@ -74,7 +99,7 @@ const PoliceVerificationGate = ({ children }) => {
       const data = res.data.data;
       setVerified(true);
       setExpiresAt(data.expiresAt);
-      toast.success('Identity verified. Session active for 30 minutes.', { id: toastId });
+      toast.success('Identity verified. Session active for 10 minutes.', { id: toastId });
     } catch (err) {
       const msg = err.response?.data?.message || 'Verification failed. Please try again.';
       toast.error(msg, { id: toastId });
@@ -106,9 +131,11 @@ const PoliceVerificationGate = ({ children }) => {
             Session verified
           </span>
           {expiresAt && (
-            <span className="flex items-center gap-1 text-green-600">
+            <span className={`flex items-center gap-1 font-mono ${
+              timeLeft && timeLeft.startsWith('00:') ? 'text-red-600 animate-pulse font-bold' : 'text-green-600'
+            }`}>
               <FaClock />
-              Expires: {new Date(expiresAt).toLocaleTimeString()}
+              {timeLeft ? `Expires in ${timeLeft}` : `Expires: ${new Date(expiresAt).toLocaleTimeString()}`}
             </span>
           )}
         </div>
@@ -153,7 +180,7 @@ const PoliceVerificationGate = ({ children }) => {
           </div>
           <div className="flex items-start gap-3">
             <FaClock className="text-indigo-500 mt-0.5 flex-shrink-0" />
-            <p className="text-gray-600">Your session will remain active for <strong>30 minutes</strong> after verification.</p>
+            <p className="text-gray-600">Your session will remain active for <strong>10 minutes</strong> after verification.</p>
           </div>
           <div className="flex items-start gap-3">
             <FaShieldAlt className="text-indigo-500 mt-0.5 flex-shrink-0" />
