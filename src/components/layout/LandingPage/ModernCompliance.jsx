@@ -1,43 +1,44 @@
 import { motion } from 'framer-motion';
-import { FaBolt, FaLock, FaGlobe, FaMobileAlt, FaHotel, FaShieldAlt, FaCheckCircle } from 'react-icons/fa';
+import { FaArrowRight, FaBolt, FaLock, FaGlobe, FaMobileAlt, FaHotel, FaShieldAlt, FaCheckCircle } from 'react-icons/fa';
 
-const FeatureCard = ({ icon, title, description, colorClass, glowColor }) => (
-  <div className="group relative bg-white p-7 rounded-2xl border border-gray-100/90 hover:border-gray-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden">
-    {/* Subtle glow on hover */}
-    <div className={`absolute -top-20 -right-20 w-36 h-36 ${glowColor} rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none`}></div>
-    <div className="relative z-10">
-      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg ${colorClass} group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}>
-        {icon}
-      </div>
-      <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-      <p className="text-gray-500 leading-relaxed text-sm">{description}</p>
+const Motion = motion;
+
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="rounded-xl border border-l-4 border-slate-100 border-l-blue-600 bg-white p-5 shadow-sm md:p-6">
+    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+      {icon}
     </div>
+    <h3 className="mb-2 text-base font-semibold text-slate-800 md:text-lg">{title}</h3>
+    <p className="text-sm leading-relaxed text-slate-600">{description}</p>
   </div>
 );
 
-const PersonaCard = ({ icon, title, description, features, accentColor, accentBg }) => (
-  <div className="group relative bg-white p-8 rounded-2xl border border-gray-100/90 hover:border-gray-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full overflow-hidden">
-    {/* Accent top border */}
-    <div className={`absolute top-0 left-0 right-0 h-1 ${accentBg} rounded-t-2xl`}></div>
-    {/* Glow */}
-    <div className={`absolute -top-20 -left-20 w-36 h-36 ${accentColor}/10 rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none`}></div>
-    <div className="relative z-10 flex flex-col h-full">
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${accentBg}/10 ${accentColor}`}>
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-      <p className="text-gray-500 mb-6 text-sm leading-relaxed">{description}</p>
-      <ul className="space-y-3 mt-auto">
-        {features.map((feature, idx) => (
-          <li key={idx} className="flex items-center gap-3 text-sm font-medium text-gray-600">
-            <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-              <FaCheckCircle className="text-emerald-500 text-[10px]" />
-            </div>
-            {feature}
-          </li>
-        ))}
-      </ul>
+const PersonaCard = ({ icon, title, description, features }) => (
+  <div className="flex h-full flex-col rounded-xl border border-slate-100 bg-white p-5 shadow-sm md:p-6">
+    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+      {icon}
     </div>
+    <h3 className="mb-2 text-base font-semibold text-slate-800 md:text-lg">{title}</h3>
+    <p className="mb-5 text-sm leading-relaxed text-slate-600">{description}</p>
+    <ul className="mt-auto space-y-3">
+      {features.map((feature) => (
+        <li key={feature} className="flex items-center gap-3 text-sm font-medium text-slate-600">
+          <FaCheckCircle className="flex-shrink-0 text-emerald-500" />
+          {feature}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const StepCard = ({ number, title, description, showArrow }) => (
+  <div className="relative flex flex-col items-center text-center md:flex-1">
+    <div className="relative z-10 mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+      {number}
+    </div>
+    <h3 className="mb-2 text-base font-semibold text-slate-800">{title}</h3>
+    <p className="max-w-xs text-sm leading-relaxed text-slate-500">{description}</p>
+    {showArrow && <FaArrowRight className="absolute right-[-10px] top-3 hidden text-slate-300 md:block" />}
   </div>
 );
 
@@ -59,86 +60,92 @@ const itemVariants = {
 };
 
 const ModernCompliance = () => {
-  return (
-    <section className="py-28 font-poppins relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#fafbff] via-white to-[#f5f3ff] -z-10 pointer-events-none"></div>
-      <div className="absolute inset-0 opacity-[0.02] -z-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #6366f1 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+  const features = [
+    { icon: <FaBolt />, title: 'Instant Sync', description: 'Real-time data synchronization between hotels and police stations.' },
+    { icon: <FaLock />, title: 'Advanced Security', description: 'End-to-end encryption keeping guest data safe and private.' },
+    { icon: <FaGlobe />, title: 'Cloud Connected', description: 'Access your dashboard securely from anywhere, anytime.' },
+    { icon: <FaMobileAlt />, title: 'Mobile Ready', description: 'Fully responsive design works perfectly on any device.' },
+  ];
 
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Section Header */}
-        <motion.div
+  return (
+    <section className="bg-slate-50 py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="text-center mb-20 max-w-2xl mx-auto"
+          className="mx-auto mb-12 max-w-2xl text-center md:mb-16"
         >
-          <span className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-6 border border-indigo-100">
+          <span className="mb-5 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
             Platform Features
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
-            Built for{' '}
-            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              Modern Compliance
-            </span>
+          <h2 className="mb-4 text-xl font-semibold text-slate-800 md:text-2xl">
+            Built for Modern Compliance
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed">
-            A unified platform to manage guest records and maintain seamless communication with authorities — designed for speed, security, and scale.
+          <p className="text-sm leading-relaxed text-slate-600 md:text-base">
+            A unified platform to manage guest records and maintain seamless communication with authorities, designed for speed, security, and scale.
           </p>
-        </motion.div>
+        </Motion.div>
 
-        {/* Feature Cards Grid */}
-        <motion.div
+        <Motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16"
+          className="mb-16 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
         >
-          <motion.div variants={itemVariants}>
-            <FeatureCard icon={<FaBolt />} colorClass="bg-gradient-to-br from-amber-500 to-orange-500" glowColor="bg-orange-200" title="Instant Sync" description="Real-time data synchronization between hotels and police stations." />
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <FeatureCard icon={<FaLock />} colorClass="bg-gradient-to-br from-emerald-500 to-teal-500" glowColor="bg-emerald-200" title="Advanced Security" description="End-to-end encryption keeping guest data safe and private." />
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <FeatureCard icon={<FaGlobe />} colorClass="bg-gradient-to-br from-blue-500 to-indigo-500" glowColor="bg-blue-200" title="Cloud Connected" description="Access your dashboard securely from anywhere, anytime." />
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <FeatureCard icon={<FaMobileAlt />} colorClass="bg-gradient-to-br from-violet-500 to-purple-500" glowColor="bg-violet-200" title="Mobile Ready" description="Fully responsive design works perfectly on any device." />
-          </motion.div>
-        </motion.div>
+          {features.map((feature) => (
+            <Motion.div variants={itemVariants} key={feature.title}>
+              <FeatureCard {...feature} />
+            </Motion.div>
+          ))}
+        </Motion.div>
 
-        {/* Persona Cards */}
-        <motion.div
+        <Motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="mb-16 rounded-xl border border-slate-100 bg-white p-6 shadow-sm md:p-8"
+        >
+          <div className="mb-8 text-center">
+            <h2 className="text-xl font-semibold text-slate-800 md:text-2xl">How It Works</h2>
+            <p className="mt-2 text-sm text-slate-500 md:text-base">A clear registration flow from hotel entry to verified authority access.</p>
+          </div>
+          <div className="relative flex flex-col gap-8 md:flex-row md:gap-6">
+            <div className="absolute left-1/2 top-4 hidden h-px w-[66%] -translate-x-1/2 bg-slate-200 md:block" />
+            <div className="absolute bottom-8 left-4 top-4 w-px bg-slate-200 md:hidden" />
+            <StepCard number="1" title="Register Guest" description="Hotel staff enter guest details and capture required identity photos." showArrow />
+            <StepCard number="2" title="Verify Stay" description="Room and stay details are attached to the digital guest record." showArrow />
+            <StepCard number="3" title="Sync Securely" description="Authorized teams can access compliant records when needed." />
+          </div>
+        </Motion.div>
+
+        <Motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
-          className="grid md:grid-cols-2 gap-6"
+          className="grid gap-5 md:grid-cols-2"
         >
-          <motion.div variants={itemVariants}>
+          <Motion.div variants={itemVariants}>
             <PersonaCard
-              icon={<FaHotel size={24} />}
-              accentColor="text-indigo-600"
-              accentBg="bg-gradient-to-r from-indigo-500 to-blue-500"
+              icon={<FaHotel size={22} />}
               title="For Hotels"
               description="Streamline guest registration with instant ID verification and automatic police sync."
               features={['One-click check-in', 'Smart auto-fill forms', 'Real-time compliance tracking']}
             />
-          </motion.div>
-          <motion.div variants={itemVariants}>
+          </Motion.div>
+          <Motion.div variants={itemVariants}>
             <PersonaCard
-              icon={<FaShieldAlt size={24} />}
-              accentColor="text-violet-600"
-              accentBg="bg-gradient-to-r from-violet-500 to-purple-500"
+              icon={<FaShieldAlt size={22} />}
               title="For Police"
               description="Powerful search console with analytics and comprehensive guest tracking capabilities."
               features={['Advanced guest search', 'Instant alert system', 'Analytics dashboard']}
             />
-          </motion.div>
-        </motion.div>
+          </Motion.div>
+        </Motion.div>
       </div>
     </section>
   );

@@ -1,10 +1,10 @@
 // src/components/ui/Card.jsx
-const Card = ({ children, className = '' }) => {
+import clsx from 'clsx';
+
+const Card = ({ children, className = '', bodyClassName = '' }) => {
   return (
-    <div
-      className={`bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md ${className}`}
-    >
-      <div className="p-5">{children}</div>
+    <div className={clsx('apna-card overflow-hidden', className)}>
+      <div className={clsx('p-4 md:p-6', bodyClassName)}>{children}</div>
     </div>
   );
 };

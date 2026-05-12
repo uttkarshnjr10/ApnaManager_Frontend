@@ -8,35 +8,26 @@ const Button = ({
   variant = 'primary',
   disabled = false,
   className = '',
+  ...props
 }) => {
   const baseStyles =
-    'px-4 py-2 rounded-md font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+    'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50';
 
   const variantStyles = {
-    primary:
-      'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white',
-    secondary:
-      'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 text-white',
-    danger: 'bg-red-600 hover:bg-red-700 focus:ring-red-500 text-white',
-    outline:
-      'border border-blue-500 text-blue-600 bg-white hover:bg-blue-50 focus:ring-blue-500',
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    secondary: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    outline: 'border border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700',
+    ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900',
   };
-
-  const disabledStyles = 'opacity-50 cursor-not-allowed';
-
-  const buttonClasses = clsx(
-    baseStyles,
-    variantStyles[variant],
-    disabled && disabledStyles,
-    className
-  );
 
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={buttonClasses}
+      className={clsx(baseStyles, variantStyles[variant] || variantStyles.primary, className)}
+      {...props}
     >
       {children}
     </button>

@@ -1,81 +1,56 @@
 // src/components/layout/Sidebar.jsx
 import { NavLink } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
 
-const Sidebar = ({ links = [], isCollapsed, onToggle }) => {
+const Sidebar = ({ links = [], user, onLogout }) => {
   return (
-    <aside
-      className={`fixed top-0 left-0 h-screen bg-[#0c111d] text-white transition-all duration-300 ease-out z-50 ${
-        isCollapsed ? 'w-20' : 'w-64'
-      }`}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-white/[0.06]">
-        {!isCollapsed && (
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-indigo-500/20">
-              A
-            </div>
-            <span className="text-sm font-semibold text-white tracking-wide">ApnaManager</span>
-          </div>
-        )}
-        <button
-          onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-all duration-200"
-        >
-          {isCollapsed ? <FaChevronRight size={12} /> : <FaChevronLeft size={12} />}
-        </button>
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-slate-100 bg-white md:flex">
+      <div className="flex h-16 items-center gap-3 border-b border-slate-100 px-5">
+        <img src="/logo.png" alt="ApnaManager" className="h-8 w-auto object-contain" />
+        <span className="text-sm font-bold text-slate-900">ApnaManager</span>
       </div>
 
-      {/* Navigation Links */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
-        {!isCollapsed && (
-          <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest px-3 mb-3">
-            Navigation
-          </p>
-        )}
-        <ul className="space-y-0.5">
+      <nav className="flex-1 overflow-y-auto px-3 py-5">
+        <ul className="space-y-1">
           {(links || []).map((link) => (
             <li key={link.to}>
               <NavLink
                 to={link.to}
                 className={({ isActive }) =>
-                  `group relative flex items-center rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                  `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors duration-150 ${
                     isActive
-                      ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/10 text-white'
-                      : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+                      ? 'bg-blue-50 font-medium text-blue-700'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`
                 }
-                title={isCollapsed ? link.label : ''}
               >
-                {({ isActive }) => (
-                  <>
-                    {/* Active indicator bar */}
-                    {isActive && (
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-gradient-to-b from-indigo-400 to-violet-400 rounded-r-full"></div>
-                    )}
-                    <div
-                      className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? 'bg-gradient-to-br from-indigo-500 to-violet-500 text-white shadow-md shadow-indigo-500/25'
-                          : 'text-gray-500 group-hover:text-gray-300'
-                      } ${isCollapsed ? 'mx-auto' : ''}`}
-                    >
-                      <span className="text-[15px]">{link.icon}</span>
-                    </div>
-                    {!isCollapsed && (
-                      <span className={`ml-3 text-[13px] font-medium truncate ${isActive ? 'text-white' : ''}`}>
-                        {link.label}
-                      </span>
-                    )}
-                  </>
-                )}
+                <span className="flex h-4 w-4 flex-shrink-0 items-center justify-center text-base">{link.icon}</span>
+                <span className="truncate">{link.label}</span>
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
 
+      <div className="border-t border-slate-100 p-4">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
+          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+            {(user?.username || 'G').charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-slate-800">{user?.username || 'Guest'}</p>
+            <p className="truncate text-xs text-slate-400">{user?.role || 'User'}</p>
+          </div>
+          <button
+            type="button"
+            onClick={onLogout}
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+            aria-label="Logout"
+          >
+            <FiLogOut size={16} />
+          </button>
+        </div>
+      </div>
     </aside>
   );
 };

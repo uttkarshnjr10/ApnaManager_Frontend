@@ -3,6 +3,20 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      colors: {
+        apna: {
+          primary: '#2563EB',
+          primaryDark: '#1D4ED8',
+          surface: '#FFFFFF',
+          background: '#F8FAFC',
+          border: '#E2E8F0',
+          text: '#0F172A',
+          muted: '#94A3B8',
+          success: '#10B981',
+          warning: '#F59E0B',
+          danger: '#EF4444',
+        },
+      },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],

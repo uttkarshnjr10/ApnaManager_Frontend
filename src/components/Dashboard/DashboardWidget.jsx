@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useCallback, useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../features/auth/AuthContext';
 import apiClient from '../../api/apiClient';
 import { format } from 'date-fns';
@@ -8,22 +8,17 @@ import {
 import { BsSun, BsStars } from 'react-icons/bs';
 import { FaSyncAlt } from 'react-icons/fa';
 
-// Import the service we created
 import { fetchDailyAIReport } from '../../services/reportService';
 
 const DashboardWidget = () => {
     const { user } = useContext(AuthContext);
 
-    // Existing States
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // New AI Report States
     const [aiReport, setAiReport] = useState('');
     const [aiLoading, setAiLoading] = useState(true);
     const [aiError, setAiError] = useState(false);
 
-    // 1. Helper to get greeting
     const getGreeting = () => {
         const hour = new Date().getHours();
         if (hour < 12) return 'Good Morning';
@@ -31,22 +26,20 @@ const DashboardWidget = () => {
         return 'Good Evening';
     };
 
-    // 2. Helper for Weather Icons — REDUCED from text-5xl to text-3xl
     const getWeatherIcon = (code) => {
         switch (code) {
-            case '01d': return <WiDaySunny className="text-3xl text-yellow-300" />;
-            case '01n': return <WiDaySunny className="text-3xl text-gray-200" />;
-            case '02d': case '02n': return <WiDayCloudy className="text-3xl text-gray-100" />;
-            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-3xl text-gray-200" />;
-            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-3xl text-blue-200" />;
-            case '11d': case '11n': return <WiThunderstorm className="text-3xl text-yellow-200" />;
+            case '01d': return <WiDaySunny className="text-3xl text-amber-200" />;
+            case '01n': return <WiDaySunny className="text-3xl text-blue-100" />;
+            case '02d': case '02n': return <WiDayCloudy className="text-3xl text-blue-100" />;
+            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-3xl text-blue-100" />;
+            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-3xl text-blue-100" />;
+            case '11d': case '11n': return <WiThunderstorm className="text-3xl text-amber-100" />;
             case '13d': case '13n': return <WiSnow className="text-3xl text-white" />;
-            case '50d': case '50n': return <WiFog className="text-3xl text-gray-300" />;
-            default: return <WiDaySunny className="text-3xl text-yellow-300" />;
+            case '50d': case '50n': return <WiFog className="text-3xl text-blue-100" />;
+            default: return <WiDaySunny className="text-3xl text-amber-200" />;
         }
     };
 
-    // Fetch Weather (Existing)
     useEffect(() => {
         const fetchWeather = async () => {
             try {
@@ -61,11 +54,9 @@ const DashboardWidget = () => {
         fetchWeather();
     }, []);
 
-    // Fetch AI Report (New)
-    const getAIAnalysis = async () => {
-        // If user is Police, don't even try (Optimization)
+    const getAIAnalysis = useCallback(async () => {
         if (user?.role === 'Police') {
-            setAiReport("Daily intelligence summaries are currently optimized for Admin & Hotel use only.");
+            setAiReport('Daily intelligence summaries are currently optimized for Admin & Hotel use only.');
             setAiLoading(false);
             return;
         }
@@ -76,92 +67,81 @@ const DashboardWidget = () => {
             const data = await fetchDailyAIReport();
             setAiReport(data.summary);
         } catch (err) {
-            // If API returns 403 (Forbidden/Disabled), show a gentle message
             if (err.response && err.response.status === 403) {
-                setAiReport("AI Insights are not enabled for this account type.");
+                setAiReport('AI Insights are not enabled for this account type.');
             } else {
                 setAiError(true);
             }
         } finally {
             setAiLoading(false);
         }
-    };
+    }, [user?.role]);
 
     useEffect(() => {
         getAIAnalysis();
-    }, []);
+    }, [getAIAnalysis]);
 
     const todayDate = format(new Date(), 'EEEE, MMMM d, yyyy');
 
     return (
-        <div className="w-full bg-gradient-to-r from-[#4f46e5] via-[#6366f1] to-[#3b82f6] rounded-xl p-3.5 text-white shadow-md shadow-indigo-500/10 relative overflow-hidden">
-
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-[0.04] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-[0.03] rounded-full translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
-
-            {/* TOP ROW: Greeting & Weather */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2.5 relative z-10 gap-2">
-                {/* LEFT: Greeting */}
-                <div className="flex flex-col gap-0.5 min-w-0">
-                    <div className="flex items-center gap-1.5 text-blue-200/80 text-[11px] font-medium">
-                        <BsSun className="flex-shrink-0 text-xs" />
+        <div className="w-full rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 p-5 text-white shadow-sm">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                    <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-blue-100">
+                        <BsSun className="flex-shrink-0" />
                         <span className="truncate">{todayDate}</span>
                     </div>
-                    <h1 className="text-lg md:text-xl font-bold leading-tight">
-                        {getGreeting()}, <span className="opacity-90">{user?.username || 'Guest'}</span>
-                    </h1>
+                    <h2 className="text-lg font-semibold leading-tight md:text-xl">
+                        {getGreeting()}, <span>{user?.username || 'Guest'}</span>
+                    </h2>
                 </div>
 
-                {/* RIGHT: Weather Data */}
-                <div className="flex items-center gap-2 bg-white/10 px-2.5 py-1.5 rounded-lg backdrop-blur-sm border border-white/10 flex-shrink-0">
+                <div className="flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2">
                     {loading ? (
-                        <div className="animate-pulse flex items-center gap-2">
-                            <div className="h-5 w-5 bg-white/20 rounded-full"></div>
-                            <div className="h-4 w-10 bg-white/20 rounded"></div>
+                        <div className="flex items-center gap-2 animate-pulse">
+                            <div className="h-6 w-6 rounded-full bg-white/20" />
+                            <div className="h-4 w-12 rounded bg-white/20" />
                         </div>
                     ) : (
                         <>
                             <div>{getWeatherIcon(weather?.iconCode)}</div>
-                            <div className="flex flex-col text-right">
-                                <span className="text-base font-bold leading-none">{weather?.temp}°C</span>
-                                <span className="text-[9px] text-blue-200 capitalize">{weather?.description}</span>
+                            <div className="text-right">
+                                <span className="block text-base font-bold leading-none">{weather?.temp}°C</span>
+                                <span className="text-xs capitalize text-blue-100">{weather?.description}</span>
                             </div>
                         </>
                     )}
                 </div>
             </div>
 
-            {/* BOTTOM ROW: AI Intelligence Briefing */}
-            <div className="relative z-10 border-t border-white/10 pt-2">
-                <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-[9px] font-semibold uppercase tracking-wider text-blue-200/70 flex items-center gap-1">
-                        <BsStars className="text-yellow-300 text-[10px]" />
+            <div className="rounded-xl border border-white/15 bg-white/10 p-4">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                    <h3 className="flex items-center gap-2 text-sm font-semibold text-white">
+                        <BsStars className="text-amber-200" />
                         Daily Intelligence Briefing
                     </h3>
                     <button
                         onClick={getAIAnalysis}
-                        className={`hover:bg-white/10 p-0.5 rounded-full transition-colors ${aiLoading ? 'animate-spin' : ''}`}
-                        title="Refresh Analysis"
+                        className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-white/15 px-3 text-xs font-medium text-white transition-colors hover:bg-white/25 ${aiLoading ? 'cursor-wait' : ''}`}
+                        type="button"
                     >
-                        <FaSyncAlt size={9} />
+                        <FaSyncAlt className={aiLoading ? 'animate-spin' : ''} size={12} />
+                        Generate Report
                     </button>
                 </div>
 
-                <div className="bg-black/10 rounded-md p-2 backdrop-blur-sm border border-white/5 min-h-[32px]">
-                    {aiLoading ? (
-                        <div className="space-y-1 animate-pulse">
-                            <div className="h-2 bg-white/20 rounded w-3/4"></div>
-                            <div className="h-2 bg-white/20 rounded w-full"></div>
-                        </div>
-                    ) : aiError ? (
-                        <p className="text-[11px] text-red-200">Unable to generate report right now.</p>
-                    ) : (
-                        <p className="text-[11px] leading-relaxed text-blue-50">
-                            {aiReport || "No significant activity recorded yet for today."}
-                        </p>
-                    )}
-                </div>
+                {aiLoading ? (
+                    <div className="space-y-2 animate-pulse">
+                        <div className="h-3 w-3/4 rounded bg-white/20" />
+                        <div className="h-3 w-full rounded bg-white/20" />
+                    </div>
+                ) : aiError ? (
+                    <p className="text-sm text-red-100">Unable to generate report right now.</p>
+                ) : (
+                    <p className="text-sm leading-relaxed text-blue-50">
+                        {aiReport || 'No significant activity recorded yet for today.'}
+                    </p>
+                )}
             </div>
         </div>
     );

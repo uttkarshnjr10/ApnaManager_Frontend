@@ -1,90 +1,147 @@
+import { useState } from 'react';
 import { useManageRooms } from '../../features/hotel/useManageRooms';
 import FormField from '../../components/ui/FormField';
 import Button from '../../components/ui/Button';
-import { FaTrash, FaBed } from 'react-icons/fa';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Badge from '../../components/ui/Badge';
+import PageHeader from '../../components/ui/PageHeader';
+import { FaBed, FaInbox, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 
-// We can reuse the StatusPill from GuestListPage
 const StatusPill = ({ status }) => {
-  const baseClasses = 'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full';
-  const statusClasses = {
-    'Vacant': 'bg-green-100 text-green-800',
-    'Occupied': 'bg-yellow-100 text-yellow-800',
-    'Maintenance': 'bg-gray-100 text-gray-800',
+  const statusMap = {
+    Vacant: 'active',
+    Occupied: 'neutral',
+    Maintenance: 'pending',
   };
-  return <span className={`${baseClasses} ${statusClasses[status]}`}>{status}</span>;
+  return <Badge status={statusMap[status] || 'neutral'}>{status || 'Unknown'}</Badge>;
+};
+
+const AddRoomForm = ({ roomNumber, handleInputChange, handleAddRoom }) => (
+  <form onSubmit={handleAddRoom} className="space-y-4">
+    <FormField
+      label="Room Name / Number *"
+      name="roomNumber"
+      value={roomNumber}
+      onChange={handleInputChange}
+      placeholder="e.g., 101, 205-B, King Suite"
+      required
+    />
+    <Button type="submit" className="w-full">
+      <FaPlus /> Add Room
+    </Button>
+  </form>
+);
+
+const RoomCard = ({ room, handleDeleteRoom }) => {
+  const isOccupied = room.status === 'Occupied';
+
+  return (
+    <div
+      className={`group relative flex aspect-square flex-col items-center justify-center rounded-xl border p-4 text-center transition-colors ${
+        isOccupied
+          ? 'border-slate-200 bg-slate-100 opacity-70'
+          : 'border-emerald-100 bg-emerald-50'
+      }`}
+    >
+      <FaBed className={`mb-3 text-xl ${isOccupied ? 'text-slate-400' : 'text-emerald-600'}`} />
+      <p className="break-all text-2xl font-bold text-slate-900">{room.roomNumber}</p>
+      <div className="mt-3">
+        <StatusPill status={room.status} />
+      </div>
+      <button
+        type="button"
+        onClick={() => handleDeleteRoom(room._id, room.roomNumber)}
+        disabled={isOccupied}
+        title={isOccupied ? 'Cannot delete an occupied room' : 'Delete room'}
+        className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-400 opacity-100 shadow-sm transition-all hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 md:opacity-0 md:group-hover:opacity-100"
+      >
+        <FaTrash size={13} />
+      </button>
+    </div>
+  );
 };
 
 const ManageRoomsPage = () => {
   const { rooms, loading, roomNumber, handleInputChange, handleAddRoom, handleDeleteRoom } = useManageRooms();
+  const [showAddForm, setShowAddForm] = useState(false);
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-gray-800">Manage Hotel Rooms</h1>
+    <div className="space-y-6">
+      <PageHeader
+        title="Manage Rooms"
+        description="Keep room inventory clear, scannable, and ready for guest allocation."
+        action={
+          <Button onClick={() => setShowAddForm((open) => !open)} className="hidden md:inline-flex">
+            {showAddForm ? <FaTimes /> : <FaPlus />}
+            {showAddForm ? 'Close' : 'Add Room'}
+          </Button>
+        }
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Form Section */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Add New Room</h2>
-          <form onSubmit={handleAddRoom} className="space-y-4">
-            <FormField
-              label="Room Name / Number *"
-              name="roomNumber"
-              value={roomNumber}
-              onChange={handleInputChange}
-              placeholder="e.g., 101, 205-B, King Suite"
-              required
-            />
-            <Button type="submit" className="w-full">
-              Add Room
-            </Button>
-          </form>
-          <p className="text-xs text-gray-500 mt-3">
-            Add all your rooms one by one. You can name them "101" or "The Royal Suite".
-          </p>
+      {showAddForm && (
+        <div className="hidden rounded-xl border border-slate-100 bg-white p-5 shadow-sm md:block md:max-w-md">
+          <h2 className="mb-4 text-base font-semibold text-slate-800 md:text-lg">Add New Room</h2>
+          <AddRoomForm roomNumber={roomNumber} handleInputChange={handleInputChange} handleAddRoom={handleAddRoom} />
         </div>
+      )}
 
-        {/* Table Section */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Rooms ({rooms.length})</h2>
-          <div className="space-y-3 max-h-96 overflow-y-auto">
-            {loading ? (
-              // Skeleton Loader
-              Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg animate-pulse">
-                  <div className="h-5 w-1/3 bg-gray-200 rounded"></div>
-                  <div className="h-5 w-1/4 bg-gray-200 rounded"></div>
-                </div>
-              ))
-            ) : rooms.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">You haven't added any rooms yet. Use the form to get started.</p>
-            ) : (
-              // Actual Room List
-              rooms.map(room => (
-                <div key={room._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <FaBed className="text-blue-500" />
-                    <span className="font-semibold text-gray-800">{room.roomNumber}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <StatusPill status={room.status} />
-                    <Button 
-                      onClick={() => handleDeleteRoom(room._id, room.roomNumber)} 
-                      variant="danger" 
-                      className="text-xs !p-2"
-                      disabled={room.status === 'Occupied'}
-                      title={room.status === 'Occupied' ? 'Cannot delete an occupied room' : 'Delete room'}
-                    >
-                      <FaTrash />
-                    </Button>
-                  </div>
-                </div>
-              ))
-            )}
+      <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm md:p-6">
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-semibold text-slate-800 md:text-2xl">Rooms</h2>
+            <p className="mt-1 text-sm text-slate-500">{rooms.length} rooms in your inventory</p>
           </div>
         </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <div key={index} className="aspect-square rounded-xl bg-slate-100 animate-pulse" />
+            ))}
+          </div>
+        ) : rooms.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-5 py-12 text-center">
+            <FaInbox className="mx-auto mb-3 text-3xl text-slate-300" />
+            <p className="text-sm font-semibold text-slate-700">No rooms added yet</p>
+            <p className="mt-1 text-sm text-slate-500">Use Add Room to create your first room.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5">
+            {rooms.map((room) => (
+              <RoomCard key={room._id} room={room} handleDeleteRoom={handleDeleteRoom} />
+            ))}
+          </div>
+        )}
       </div>
+
+      <button
+        type="button"
+        onClick={() => setShowAddForm(true)}
+        className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg md:hidden"
+        aria-label="Add room"
+      >
+        <FaPlus />
+      </button>
+
+      {showAddForm && (
+        <div className="fixed inset-0 z-50 bg-slate-900/30 md:hidden" onClick={() => setShowAddForm(false)}>
+          <div
+            className="absolute bottom-0 left-0 right-0 rounded-t-3xl bg-white p-5 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-base font-semibold text-slate-900">Add New Room</h2>
+              <button
+                type="button"
+                onClick={() => setShowAddForm(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-50"
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <AddRoomForm roomNumber={roomNumber} handleInputChange={handleInputChange} handleAddRoom={handleAddRoom} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

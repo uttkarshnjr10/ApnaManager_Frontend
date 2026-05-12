@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { FaArrowRight, FaUserPlus, FaShieldAlt, FaBolt, FaChartLine } from 'react-icons/fa';
+import { FiMenu, FiX } from 'react-icons/fi';
 import signupAnimation from '../Signup Flow.json';
 
 import ModernCompliance from '../../components/layout/LandingPage/ModernCompliance';
@@ -11,6 +12,7 @@ import Footer from '../../components/layout/LandingPage/Footer';
 const Motion = motion;
 
 const HomePage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const lottieRef = useRef(null);
   const heroVisualRef = useRef(null);
   const isHeroVisualInView = useInView(heroVisualRef, {
@@ -32,7 +34,7 @@ const HomePage = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' } },
   };
 
-  const titleText = "Welcome to a Centralized Data Management System";
+  const titleText = 'Welcome to a Centralized Data Management System';
 
   const trustBadges = [
     { icon: <FaShieldAlt />, label: 'Bank-Grade Security' },
@@ -55,175 +57,202 @@ const HomePage = () => {
     }
   }, [isHeroVisualInView, shouldReduceMotion]);
 
-  return (
-    <div className="font-poppins bg-[#fafbff] text-gray-800 min-h-screen w-full flex flex-col relative overflow-x-hidden scroll-smooth">
+  const closeMenu = () => setMobileMenuOpen(false);
 
-      {/* ── Sticky Top Nav Bar ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-10 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between bg-white/80 backdrop-blur-md rounded-2xl px-6 py-3 shadow-lg shadow-gray-200/50 border border-white/80">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto" />
+  return (
+    <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 font-poppins text-slate-900">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
+            <img src="/logo.png" alt="ApnaManager Logo" className="h-8 w-auto" />
+            <span className="text-sm font-bold text-slate-900 sm:text-base">ApnaManager</span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link
-              to="/why-us"
-              className="text-gray-600 hover:text-indigo-600 px-4 py-2 text-sm font-medium transition-colors duration-200"
-            >
+
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link to="/why-us" className="text-sm font-medium text-slate-600 transition-colors duration-150 hover:text-slate-900">
               Why Us
             </Link>
+            <Link to="/hotel-registration" className="text-sm font-medium text-slate-600 transition-colors duration-150 hover:text-slate-900">
+              Register Hotel
+            </Link>
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
             <Link
               to="/login"
-              className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all duration-300"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-700"
             >
               Sign In
             </Link>
           </div>
+
+          <button
+            type="button"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-700 transition-colors duration-150 hover:bg-slate-100 md:hidden"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-label="Open navigation menu"
+          >
+            {mobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
         </div>
-      </nav>
+      </header>
 
-      {/* ══════════════════ HERO SECTION ══════════════════ */}
-      <section className="relative min-h-screen flex flex-col justify-center pt-24">
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <Motion.button
+              type="button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-slate-900/35 md:hidden"
+              aria-label="Close navigation"
+              onClick={closeMenu}
+            />
+            <Motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+              className="fixed left-0 right-0 top-16 z-50 border-b border-slate-100 bg-white px-4 py-4 shadow-lg md:hidden"
+            >
+              <div className="mx-auto flex max-w-7xl flex-col gap-2">
+                <Link to="/why-us" onClick={closeMenu} className="rounded-xl px-3 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                  Why Us
+                </Link>
+                <Link to="/hotel-registration" onClick={closeMenu} className="rounded-xl px-3 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                  Register Hotel
+                </Link>
+                <Link to="/login" onClick={closeMenu} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white">
+                  Sign In
+                </Link>
+              </div>
+            </Motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-        {/* Mesh Gradient Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#f8f9ff] via-[#eef1ff] to-[#f0e6ff]"></div>
-          {/* Animated gradient orbs */}
-          <div className="absolute left-[-8%] top-[-12%] h-[520px] w-[520px] rounded-full bg-indigo-400/14 blur-[110px] motion-safe:animate-float motion-reduce:animate-none transform-gpu will-change-transform"></div>
-          <div className="absolute bottom-[8%] right-[-6%] h-[420px] w-[420px] rounded-full bg-violet-400/12 blur-[100px] motion-safe:animate-float-slow motion-reduce:animate-none transform-gpu will-change-transform [animation-delay:-7s]"></div>
-          <div className="absolute left-[52%] top-[42%] hidden h-[320px] w-[320px] rounded-full bg-blue-300/10 blur-[90px] lg:block motion-safe:animate-float motion-reduce:animate-none transform-gpu will-change-transform [animation-delay:-3s]"></div>
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #6366f1 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10">
+      <section className="relative min-h-[92vh] overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-24">
+        <div className="mx-auto grid min-h-[calc(92vh-6rem)] max-w-7xl items-center gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
           <Motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="grid lg:grid-cols-2 items-center gap-12 lg:gap-16"
+            className="flex flex-col items-center text-center lg:items-start lg:text-left"
           >
-            {/* Text Content */}
-            <div className="flex flex-col text-center lg:text-left items-center lg:items-start py-8 lg:py-0">
-              {/* Badge */}
-              <Motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="mb-6"
-              >
-                <span className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-xs font-semibold tracking-wide border border-indigo-100">
-                  <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
-                  Trusted by 500+ Hotels & Agencies
-                </span>
-              </Motion.div>
-
-              <Motion.h1
-                variants={titleContainerVariants}
-                initial="hidden"
-                animate="visible"
-                className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.12] tracking-tight text-gray-900 mb-6"
-              >
-                {titleText.split(' ').map((word, index) => (
-                  <Motion.span variants={wordVariants} key={index} className="inline-block mr-2.5">
-                    {word === 'Centralized' || word === 'Data' || word === 'Management' ? (
-                      <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-blue-600 bg-clip-text text-transparent">{word}</span>
-                    ) : word}
-                  </Motion.span>
-                ))}
-              </Motion.h1>
-
-              <Motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 1.2 }}
-                className="text-lg leading-relaxed text-gray-500 mb-8 max-w-lg"
-              >
-                A unified platform for hotels and law enforcement to ensure guest safety through seamless digital verification and real-time data sharing.
-              </Motion.p>
-
-              {/* CTA Buttons */}
-              <Motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 1.5 }}
-                className="flex flex-col sm:flex-row gap-4 items-center mb-10"
-              >
-                <Link
-                  to="/login"
-                  className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-blue-600 text-white px-8 py-4 rounded-2xl font-semibold text-base transition-all duration-300 ease-out shadow-xl shadow-indigo-500/25 hover:shadow-2xl hover:shadow-indigo-500/35 hover:-translate-y-1 active:scale-[0.98]"
-                >
-                  Get Started
-                  <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  to="/hotel-registration"
-                  className="group inline-flex items-center justify-center gap-3 bg-white/90 text-gray-700 px-8 py-4 rounded-2xl font-semibold text-base border border-gray-200 transition-all duration-300 ease-out hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50/50 hover:-translate-y-1 hover:shadow-lg active:scale-[0.98]"
-                >
-                  Join Us
-                  <FaUserPlus className="transition-transform duration-300 group-hover:scale-110" />
-                </Link>
-              </Motion.div>
-
-              {/* Trust Badges */}
-              <Motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1.8 }}
-                className="flex flex-wrap justify-center lg:justify-start gap-4"
-              >
-                {trustBadges.map((badge, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-gray-500 bg-white/80 px-3 py-2 rounded-xl border border-gray-100 shadow-sm shadow-gray-100/70">
-                    <span className="text-indigo-500">{badge.icon}</span>
-                    {badge.label}
-                  </div>
-                ))}
-              </Motion.div>
-            </div>
-
-            {/* Lottie Animation in glass frame */}
             <Motion.div
-              ref={heroVisualRef}
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
-              className="hidden lg:flex items-center justify-center transform-gpu"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-6"
             >
-              <div className="relative">
-                {/* Glow behind the card */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-indigo-400/20 via-violet-400/20 to-blue-400/20 rounded-3xl blur-xl pointer-events-none"></div>
-                <div className="relative bg-white/75 rounded-3xl p-6 border border-white/60 shadow-2xl shadow-indigo-500/10">
-                  <Lottie
-                    lottieRef={lottieRef}
-                    animationData={signupAnimation}
-                    autoplay={!shouldReduceMotion}
-                    loop={!shouldReduceMotion}
-                    className="max-w-md w-full"
-                  />
-                </div>
-              </div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-xs font-semibold tracking-wide text-blue-700">
+                <span className="h-2 w-2 rounded-full bg-blue-600" />
+                Trusted by 500+ Hotels & Agencies
+              </span>
             </Motion.div>
+
+            <Motion.h1
+              variants={titleContainerVariants}
+              initial="hidden"
+              animate="visible"
+              className="mb-5 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-slate-900 md:text-5xl"
+            >
+              {titleText.split(' ').map((word, index) => (
+                <Motion.span variants={wordVariants} key={index} className="mr-2 inline-block">
+                  {word}
+                </Motion.span>
+              ))}
+            </Motion.h1>
+
+            <Motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 1.2 }}
+              className="mb-8 max-w-xl text-base leading-relaxed text-slate-500 md:text-lg"
+            >
+              A unified platform for hotels and law enforcement to ensure guest safety through seamless digital verification and real-time data sharing.
+            </Motion.p>
+
+            <Motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 1.5 }}
+              className="mb-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+            >
+              <Link
+                to="/login"
+                className="inline-flex min-h-11 items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-700"
+              >
+                Get Started
+                <FaArrowRight />
+              </Link>
+              <Link
+                to="/hotel-registration"
+                className="inline-flex min-h-11 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-slate-700 transition-colors duration-150 hover:bg-slate-50"
+              >
+                Join Us
+                <FaUserPlus />
+              </Link>
+            </Motion.div>
+
+            <Motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.8 }}
+              className="flex flex-wrap justify-center gap-3 lg:justify-start"
+            >
+              {trustBadges.map((badge) => (
+                <div key={badge.label} className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-2 text-xs font-medium text-slate-500 shadow-sm">
+                  <span className="text-blue-600">{badge.icon}</span>
+                  {badge.label}
+                </div>
+              ))}
+            </Motion.div>
+          </Motion.div>
+
+          <Motion.div
+            ref={heroVisualRef}
+            initial={{ opacity: 0, scale: 0.96, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+            className="hidden items-center justify-center lg:flex"
+          >
+            <div className="relative w-full max-w-lg rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+              <div className="mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                <span className="ml-auto text-xs font-medium text-slate-400">Live verification flow</span>
+              </div>
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={signupAnimation}
+                autoplay={!shouldReduceMotion}
+                loop={!shouldReduceMotion}
+                className="w-full"
+              />
+            </div>
           </Motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <Motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+          className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-slate-400 md:flex"
         >
-          <span className="text-xs font-medium text-gray-400 tracking-wider uppercase">Scroll to explore</span>
-          <div className="w-6 h-10 rounded-full border-2 border-gray-300 flex items-start justify-center p-1.5">
+          <span className="text-xs font-medium uppercase tracking-wide">Scroll to explore</span>
+          <div className="flex h-9 w-5 items-start justify-center rounded-full border border-slate-300 p-1.5">
             <Motion.div
-              animate={{ y: [0, 12, 0] }}
+              animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-1.5 h-1.5 bg-indigo-500 rounded-full"
+              className="h-1.5 w-1.5 rounded-full bg-blue-600"
             />
           </div>
         </Motion.div>
       </section>
 
-      {/* ══════════════════ FEATURES & FOOTER ══════════════════ */}
       <ModernCompliance />
       <Footer />
     </div>

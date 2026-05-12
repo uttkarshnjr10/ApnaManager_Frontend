@@ -1,11 +1,12 @@
 // src/components/ui/FormSection.jsx
+
 const FormSection = ({ title, children }) => {
   return (
-    <fieldset className="border border-gray-300 p-6 rounded-lg">
-      <legend className="text-lg font-semibold text-gray-800 px-2">
+    <fieldset className="rounded-xl border border-slate-100 bg-white p-4 md:p-6">
+      <legend className="px-2 text-base font-semibold text-slate-800 md:text-lg">
         {title}
       </legend>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {children}
       </div>
     </fieldset>

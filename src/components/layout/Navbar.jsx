@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+// src/components/layout/Navbar.jsx
 import NotificationBell from '../ui/NotificationBell';
 import { FiLogOut } from 'react-icons/fi';
 
@@ -6,37 +6,36 @@ const Navbar = ({ username, onLogout, isPublic = false, userRole }) => {
   const showNotifications = userRole && userRole !== 'Hotel';
 
   return (
-    <header className="bg-white/80 backdrop-blur-xl text-gray-800 border-b border-gray-100/80 z-10 sticky top-0">
-      <div className="flex justify-between items-center px-6 h-14">
-        
-        <div className="flex items-center gap-2.5">
-          <img
-            src="/logo.png"
-            alt="ApnaManager Logo"
-            className="h-8 w-auto object-contain"
-          />
+    <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/80 backdrop-blur-md">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 md:px-8">
+        <div className="flex items-center gap-3 md:hidden">
+          <img src="/logo.png" alt="ApnaManager Logo" className="h-8 w-auto object-contain" />
+          <span className="text-sm font-bold text-slate-900">ApnaManager</span>
+        </div>
+
+        <div className="hidden md:block">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{userRole || 'Workspace'}</p>
+          <p className="text-sm font-semibold text-slate-700">Operations Console</p>
         </div>
 
         {!isPublic && (
-          <div className="flex items-center gap-4">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
             {showNotifications && <NotificationBell />}
 
-            <div className="hidden sm:flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold shadow-sm shadow-indigo-500/20">
+            <div className="hidden items-center gap-2 rounded-full border border-slate-100 bg-white px-2.5 py-1.5 sm:flex">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
                 {(username || 'G').charAt(0).toUpperCase()}
               </div>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="max-w-32 truncate text-sm font-medium text-slate-700">
                 {username || 'Guest'}
               </span>
             </div>
 
-            <div className="h-5 w-px bg-gray-200 hidden sm:block"></div>
-
             <button
               onClick={onLogout}
-              className="flex items-center gap-2 text-gray-500 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 text-sm font-medium text-slate-500 transition-colors duration-150 hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
             >
-              <FiLogOut size={15} />
+              <FiLogOut size={16} />
               <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
