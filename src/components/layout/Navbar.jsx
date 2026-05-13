@@ -8,9 +8,8 @@ const Navbar = ({ username, onLogout, isPublic = false, userRole }) => {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/80 backdrop-blur-md">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 md:px-8">
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center md:hidden">
           <img src="/logo.png" alt="ApnaManager Logo" className="h-8 w-auto object-contain" />
-          <span className="text-sm font-bold text-slate-900">ApnaManager</span>
         </div>
 
         <div className="hidden md:block">

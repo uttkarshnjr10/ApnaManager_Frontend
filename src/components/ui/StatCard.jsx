@@ -20,9 +20,9 @@ const StatCard = ({ title, value, icon, isLoading }) => {
       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
         {icon}
       </div>
-      <div className="min-w-0">
-        <p className="text-2xl font-bold text-slate-900 md:text-3xl">{value}</p>
-        <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-2xl font-bold text-slate-900 md:text-3xl" title={value}>{value}</p>
+        <p className="mt-0.5 truncate text-xs font-medium uppercase tracking-wide text-slate-500" title={title}>{title}</p>
       </div>
     </div>
   );

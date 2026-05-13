@@ -134,6 +134,14 @@ const HotelDashboardPage = () => {
       />
 
       <Motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+      >
+        <DashboardWidget />
+      </Motion.div>
+
+      <Motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -232,14 +240,6 @@ const HotelDashboardPage = () => {
           </div>
         </Card>
       </div>
-
-      <Motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: 'easeOut' }}
-      >
-        <DashboardWidget />
-      </Motion.div>
     </div>
   );
 };
