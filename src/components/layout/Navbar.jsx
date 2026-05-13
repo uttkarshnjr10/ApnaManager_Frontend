@@ -12,10 +12,10 @@ const Navbar = ({ username, onLogout, isPublic = false, userRole }) => {
           <img src="/logo.png" alt="ApnaManager Logo" className="h-8 w-auto object-contain" />
         </div>
 
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{userRole || 'Workspace'}</p>
           <p className="text-sm font-semibold text-slate-700">Operations Console</p>
-        </div>
+        </div> */}
 
         {!isPublic && (
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
