@@ -1,8 +1,7 @@
 // src/components/layout/Sidebar.jsx
 import { NavLink } from 'react-router-dom';
-import { FiLogOut } from 'react-icons/fi';
 
-const Sidebar = ({ links = [], user, onLogout }) => {
+const Sidebar = ({ links = [], user }) => {
   return (
     <aside className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-slate-100 bg-white md:flex">
       <div className="flex h-16 items-center gap-3 border-b border-slate-100 px-5">
@@ -32,6 +31,7 @@ const Sidebar = ({ links = [], user, onLogout }) => {
         </ul>
       </nav>
 
+      {/* User info footer — logout is handled exclusively by the Navbar */}
       <div className="border-t border-slate-100 p-4">
         <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
           <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
@@ -41,14 +41,6 @@ const Sidebar = ({ links = [], user, onLogout }) => {
             <p className="truncate text-sm font-semibold text-slate-800">{user?.username || 'Guest'}</p>
             <p className="truncate text-xs text-slate-400">{user?.role || 'User'}</p>
           </div>
-          <button
-            type="button"
-            onClick={onLogout}
-            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
-            aria-label="Logout"
-          >
-            <FiLogOut size={16} />
-          </button>
         </div>
       </div>
     </aside>

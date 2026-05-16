@@ -27,7 +27,7 @@ const AppLayout = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-poppins text-slate-900">
-      <Sidebar links={links} user={user} onLogout={handleLogout} />
+      <Sidebar links={links} user={user} />
 
       <div className="min-h-screen md:pl-60">
         <Navbar username={user.username} userRole={user.role} onLogout={handleLogout} />

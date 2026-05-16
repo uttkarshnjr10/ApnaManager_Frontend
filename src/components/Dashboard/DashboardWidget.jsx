@@ -6,15 +6,74 @@ import {
     WiDaySunny, WiCloud, WiRain, WiSnow, WiThunderstorm, WiFog, WiDayCloudy
 } from 'react-icons/wi';
 import { BsSun, BsStars } from 'react-icons/bs';
-import { FaSyncAlt } from 'react-icons/fa';
+import { FaSyncAlt, FaMapMarkerAlt } from 'react-icons/fa';
 
 import { fetchDailyAIReport } from '../../services/reportService';
+
+// ── Geolocation helpers ──────────────────────────────────────
+const GEO_STORAGE_KEY = 'apna_user_location';
+
+/**
+ * Retrieves saved location from localStorage.
+ * @returns {{ lat: number, lon: number } | null}
+ */
+const getSavedLocation = () => {
+    try {
+        const raw = localStorage.getItem(GEO_STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.lat === 'number' && typeof parsed.lon === 'number') {
+            return parsed;
+        }
+        return null;
+    } catch {
+        return null;
+    }
+};
+
+/**
+ * Saves location to localStorage for future sessions.
+ * @param {number} lat
+ * @param {number} lon
+ */
+const saveLocation = (lat, lon) => {
+    try {
+        localStorage.setItem(GEO_STORAGE_KEY, JSON.stringify({ lat, lon }));
+    } catch {
+        // localStorage full or blocked — silently ignore
+    }
+};
+
+/**
+ * Requests device geolocation via the browser API.
+ * Returns a promise that resolves to { lat, lon } or rejects on denial/timeout.
+ */
+const requestGeolocation = () => {
+    return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            return reject(new Error('Geolocation not supported'));
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                resolve({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude,
+                });
+            },
+            (error) => reject(error),
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+        );
+    });
+};
+
+// ── Component ────────────────────────────────────────────────
 
 const DashboardWidget = () => {
     const { user } = useContext(AuthContext);
 
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [locationStatus, setLocationStatus] = useState('idle'); // 'idle' | 'requesting' | 'granted' | 'denied'
     const [aiReport, setAiReport] = useState('');
     const [aiLoading, setAiLoading] = useState(true);
     const [aiError, setAiError] = useState(false);
@@ -40,19 +99,57 @@ const DashboardWidget = () => {
         }
     };
 
+    /**
+     * Fetches weather from the API.
+     * Accepts optional coords — if not provided, the backend falls back to hotel state / default city.
+     */
+    const fetchWeather = useCallback(async (coords) => {
+        try {
+            const params = {};
+            if (coords) {
+                params.lat = coords.lat;
+                params.lon = coords.lon;
+            }
+            const { data } = await apiClient.get('/weather/current', { params });
+            setWeather(data);
+        } catch (error) {
+            console.error("Failed to load weather widget", error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
-        const fetchWeather = async () => {
+        let cancelled = false;
+
+        const initWeather = async () => {
+            // 1. Check for a previously saved location
+            const saved = getSavedLocation();
+            if (saved) {
+                setLocationStatus('granted');
+                fetchWeather(saved);
+                return;
+            }
+
+            // 2. Request geolocation from the browser
+            setLocationStatus('requesting');
             try {
-                const { data } = await apiClient.get('/weather/current');
-                setWeather(data);
-            } catch (error) {
-                console.error("Failed to load weather widget", error);
-            } finally {
-                setLoading(false);
+                const coords = await requestGeolocation();
+                if (cancelled) return;
+                saveLocation(coords.lat, coords.lon);
+                setLocationStatus('granted');
+                fetchWeather(coords);
+            } catch {
+                if (cancelled) return;
+                // Permission denied or timeout — fall back to server-side default
+                setLocationStatus('denied');
+                fetchWeather(null);
             }
         };
-        fetchWeather();
-    }, []);
+
+        initWeather();
+        return () => { cancelled = true; };
+    }, [fetchWeather]);
 
     const getAIAnalysis = useCallback(async () => {
         if (user?.role === 'Police') {
@@ -81,6 +178,23 @@ const DashboardWidget = () => {
         getAIAnalysis();
     }, [getAIAnalysis]);
 
+    /**
+     * Allows the user to manually re-request location if they initially denied it.
+     */
+    const handleRetryLocation = async () => {
+        setLocationStatus('requesting');
+        setLoading(true);
+        try {
+            const coords = await requestGeolocation();
+            saveLocation(coords.lat, coords.lon);
+            setLocationStatus('granted');
+            fetchWeather(coords);
+        } catch {
+            setLocationStatus('denied');
+            setLoading(false);
+        }
+    };
+
     const todayDate = format(new Date(), 'EEEE, MMMM d, yyyy');
 
     return (
@@ -96,20 +210,35 @@ const DashboardWidget = () => {
                     </h2>
                 </div>
 
-                <div className="flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2">
-                    {loading ? (
-                        <div className="flex items-center gap-2 animate-pulse">
-                            <div className="h-6 w-6 rounded-full bg-white/20" />
-                            <div className="h-4 w-12 rounded bg-white/20" />
-                        </div>
-                    ) : (
-                        <>
-                            <div>{getWeatherIcon(weather?.iconCode)}</div>
-                            <div className="text-right">
-                                <span className="block text-base font-bold leading-none">{weather?.temp}°C</span>
-                                <span className="text-xs capitalize text-blue-100">{weather?.description}</span>
+                <div className="flex items-center gap-2">
+                    <div className="flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2">
+                        {loading ? (
+                            <div className="flex items-center gap-2 animate-pulse">
+                                <div className="h-6 w-6 rounded-full bg-white/20" />
+                                <div className="h-4 w-12 rounded bg-white/20" />
                             </div>
-                        </>
+                        ) : (
+                            <>
+                                <div>{getWeatherIcon(weather?.iconCode)}</div>
+                                <div className="text-right">
+                                    <span className="block text-base font-bold leading-none">{weather?.temp}°C</span>
+                                    <span className="text-xs capitalize text-blue-100">{weather?.location}</span>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Retry location button — only visible when location was denied */}
+                    {locationStatus === 'denied' && (
+                        <button
+                            type="button"
+                            onClick={handleRetryLocation}
+                            className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/10 px-2.5 py-2 text-xs font-medium text-blue-100 transition-colors hover:bg-white/20"
+                            title="Enable location for accurate weather"
+                        >
+                            <FaMapMarkerAlt size={12} />
+                            <span className="hidden sm:inline">Enable Location</span>
+                        </button>
                     )}
                 </div>
             </div>

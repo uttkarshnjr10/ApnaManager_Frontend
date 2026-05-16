@@ -6,27 +6,16 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(() => {
-    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
-    return !!token;
-  });
+  // Always start loading — the profile API call (backed by httpOnly cookie) is the single source of truth
+  const [loading, setLoading] = useState(true);
 
   const loadUser = useCallback(async () => {
-    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
-
-    if (!token) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await apiClient.get('/users/profile');
       setUser(response.data.data);
     } catch (error) {
+      // 401 means no valid session — user is simply not logged in
       if (error.response && error.response.status === 401) {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('token');
         setUser(null);
       } else {
         console.error("Profile check failed:", error);
@@ -46,8 +35,6 @@ export const AuthProvider = ({ children }) => {
    */
   const login = async (email, password, loginType) => {
     try {
-      localStorage.removeItem('authToken'); 
-
       // Build payload - only include loginType if provided
       const payload = { email, password };
       if (loginType) {
@@ -58,11 +45,7 @@ export const AuthProvider = ({ children }) => {
 
       // Successful login (200)
       if (response.status === 200 && response.data?.data) {
-        const { _id, username, role, token } = response.data.data;
-        
-        if (token) {
-            localStorage.setItem('authToken', token);
-        }
+        const { _id, username, role } = response.data.data;
 
         const userData = { _id, username, role, needsPasswordReset: false };
         setUser(userData);
@@ -95,10 +78,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
         console.error("Logout server-side failed:", error);
     } finally {
-        localStorage.removeItem('authToken'); 
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        
         // Clear Stripe cookies
         document.cookie.split(";").forEach((c) => {
             if (c.trim().startsWith('_stripe')) {

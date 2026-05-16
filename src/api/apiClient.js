@@ -35,9 +35,6 @@ apiClient.interceptors.response.use(
         // Brief timeout to reset the toast flag
         setTimeout(() => { window.hasShownSessionToast = false; }, 3000);
         
-        // Optional: clear local storage here too as a failsafe
-        localStorage.removeItem('authToken');
-        
         // Redirect
         window.location.href = '/login';
       }

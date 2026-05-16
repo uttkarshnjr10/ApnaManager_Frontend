@@ -65,7 +65,6 @@ const HomePage = () => {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
             <img src="/logo.png" alt="ApnaManager Logo" className="h-8 w-auto" />
-            <span className="text-sm font-bold text-slate-900 sm:text-base">ApnaManager</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

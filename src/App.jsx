@@ -90,10 +90,9 @@ function App() {
         <Route path="/why-us" element={<WhyUsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/hotel-registration" element={<HotelRegistrationPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
         {/* Protected Routes Wrapper */}
-        <Route element={<ProtectedRoute />}>
-          {/* Hotel Routes */}
+        {/* Hotel Routes — only Hotel role */}
+        <Route element={<ProtectedRoute allowedRoles={['Hotel']} />}>
           <Route path="/hotel" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardDispatcherPage />} />
@@ -105,8 +104,10 @@ function App() {
             <Route path="subscription-success" element={<SubscriptionSuccessPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
+        </Route>
 
-          {/* Police Routes */}
+        {/* Police Routes — only Police role */}
+        <Route element={<ProtectedRoute allowedRoles={['Police']} />}>
           <Route path="/police" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             {/* Ungated — operational pages */}
@@ -119,8 +120,10 @@ function App() {
             <Route path="guest/:guestId" element={<PoliceVerificationGate><GuestHistoryPage /></PoliceVerificationGate>} />
             <Route path="analytics" element={<PoliceVerificationGate><AnalyticsPage /></PoliceVerificationGate>} />
           </Route>
+        </Route>
 
-          {/* Admin Routes */}
+        {/* Admin Routes — only Regional Admin role */}
+        <Route element={<ProtectedRoute allowedRoles={['Regional Admin']} />}>
           <Route path="/regional-admin" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardDispatcherPage />} />
