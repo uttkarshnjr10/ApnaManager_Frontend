@@ -33,29 +33,46 @@ const AddRoomForm = ({ roomNumber, handleInputChange, handleAddRoom }) => (
 
 const RoomCard = ({ room, handleDeleteRoom }) => {
   const isOccupied = room.status === 'Occupied';
+  const isMaintenance = room.status === 'Maintenance';
+
+  let cardStyle = 'border-emerald-100 bg-emerald-50/40';
+  let iconStyle = 'bg-emerald-100 text-emerald-700';
+
+  if (isOccupied) {
+    cardStyle = 'border-amber-100 bg-amber-50/30';
+    iconStyle = 'bg-amber-100 text-amber-700';
+  } else if (isMaintenance) {
+    cardStyle = 'border-rose-100 bg-rose-50/30';
+    iconStyle = 'bg-rose-100 text-rose-700';
+  }
 
   return (
     <div
-      className={`group relative flex aspect-square flex-col items-center justify-center rounded-xl border p-4 text-center transition-colors ${
-        isOccupied
-          ? 'border-slate-200 bg-slate-100 opacity-70'
-          : 'border-emerald-100 bg-emerald-50'
-      }`}
+      className={`group relative flex flex-col justify-between rounded-2xl border p-4 transition-all duration-200 shadow-sm hover:shadow-md ${cardStyle}`}
     >
-      <FaBed className={`mb-3 text-xl ${isOccupied ? 'text-slate-400' : 'text-emerald-600'}`} />
-      <p className="break-all text-2xl font-bold text-slate-900">{room.roomNumber}</p>
-      <div className="mt-3">
-        <StatusPill status={room.status} />
+      <div className="flex items-center justify-between gap-2">
+        <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${iconStyle}`}>
+          <FaBed className="text-lg" />
+        </div>
+        
+        <button
+          type="button"
+          onClick={() => handleDeleteRoom(room._id, room.roomNumber)}
+          disabled={isOccupied}
+          title={isOccupied ? 'Cannot delete an occupied room' : 'Delete room'}
+          className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-slate-400 shadow-sm transition-all hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <FaTrash size={12} />
+        </button>
       </div>
-      <button
-        type="button"
-        onClick={() => handleDeleteRoom(room._id, room.roomNumber)}
-        disabled={isOccupied}
-        title={isOccupied ? 'Cannot delete an occupied room' : 'Delete room'}
-        className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-400 opacity-100 shadow-sm transition-all hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 md:opacity-0 md:group-hover:opacity-100"
-      >
-        <FaTrash size={13} />
-      </button>
+
+      <div className="mt-4 text-left">
+        <p className="break-all text-xl font-bold tracking-tight text-slate-900">{room.roomNumber}</p>
+        <div className="mt-2 flex items-center justify-between">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Status</span>
+          <StatusPill status={room.status} />
+        </div>
+      </div>
     </div>
   );
 };

@@ -117,15 +117,15 @@ const DashboardWidget = () => {
 
     const getWeatherIcon = (code) => {
         switch (code) {
-            case '01d': return <WiDaySunny className="text-3xl text-amber-300" />;
-            case '01n': return <WiDaySunny className="text-3xl text-blue-200" />;
-            case '02d': case '02n': return <WiDayCloudy className="text-3xl text-blue-200" />;
-            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-3xl text-blue-200" />;
-            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-3xl text-blue-200" />;
-            case '11d': case '11n': return <WiThunderstorm className="text-3xl text-amber-200" />;
-            case '13d': case '13n': return <WiSnow className="text-3xl text-white" />;
-            case '50d': case '50n': return <WiFog className="text-3xl text-blue-200" />;
-            default: return <WiDaySunny className="text-3xl text-amber-300" />;
+            case '01d': return <WiDaySunny className="text-2xl sm:text-3xl text-amber-300" />;
+            case '01n': return <WiDaySunny className="text-2xl sm:text-3xl text-blue-200" />;
+            case '02d': case '02n': return <WiDayCloudy className="text-2xl sm:text-3xl text-blue-200" />;
+            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-2xl sm:text-3xl text-blue-200" />;
+            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-2xl sm:text-3xl text-blue-200" />;
+            case '11d': case '11n': return <WiThunderstorm className="text-2xl sm:text-3xl text-amber-200" />;
+            case '13d': case '13n': return <WiSnow className="text-2xl sm:text-3xl text-white" />;
+            case '50d': case '50n': return <WiFog className="text-2xl sm:text-3xl text-blue-200" />;
+            default: return <WiDaySunny className="text-2xl sm:text-3xl text-amber-300" />;
         }
     };
 
@@ -203,44 +203,44 @@ const DashboardWidget = () => {
     const theme = getTimeTheme(currentHour);
 
     return (
-        <div className={`w-full rounded-2xl bg-gradient-to-br ${theme.gradient} p-6 text-white shadow-md border border-white/10 transition-all duration-500`}>
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className={`w-full rounded-2xl bg-gradient-to-br ${theme.gradient} p-4 sm:p-6 text-white shadow-md border border-white/10 transition-all duration-500`}>
+            <div className="flex flex-col gap-3.5 md:flex-row md:items-center md:justify-between">
                 {/* Left side: Date, Time-appropriate greeting, Username, and custom time message */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-semibold backdrop-blur-sm ${theme.badgeBg}`}>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold backdrop-blur-sm ${theme.badgeBg}`}>
                             <BsSun className="flex-shrink-0 animate-[spin_8s_linear_infinite]" />
                             <span>{todayDate}</span>
                         </span>
-                        <span className="text-lg">{theme.icon}</span>
+                        <span className="text-sm sm:text-lg">{theme.icon}</span>
                     </div>
 
-                    <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+                    <h2 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl leading-tight">
                         {theme.greeting}, <span className="text-white/95">{user?.username || 'Guest'}</span>
                     </h2>
 
-                    <p className="text-sm font-medium text-white/80 md:text-base max-w-xl">
+                    <p className="text-xs font-medium text-white/80 sm:text-sm md:text-base max-w-xl">
                         {theme.message}
                     </p>
                 </div>
 
                 {/* Right side: Weather display */}
-                <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/15 p-3.5 backdrop-blur-md shadow-inner transition-all hover:bg-white/25">
+                <div className="flex flex-wrap items-center gap-2.5">
+                    <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 backdrop-blur-md shadow-inner transition-all hover:bg-white/20">
                         {loading ? (
-                            <div className="flex items-center gap-3 animate-pulse">
-                                <div className="h-8 w-8 rounded-full bg-white/25" />
+                            <div className="flex items-center gap-2 animate-pulse">
+                                <div className="h-6 w-6 rounded-full bg-white/20" />
                                 <div className="space-y-1">
-                                    <div className="h-4 w-12 rounded bg-white/25" />
-                                    <div className="h-3 w-16 rounded bg-white/25" />
+                                    <div className="h-3.5 w-10 rounded bg-white/20" />
+                                    <div className="h-2.5 w-12 rounded bg-white/20" />
                                 </div>
                             </div>
                         ) : (
                             <>
                                 <div className="drop-shadow-md">{getWeatherIcon(weather?.iconCode)}</div>
                                 <div className="flex flex-col">
-                                    <span className="text-lg font-bold leading-none">{weather?.temp ?? '--'}°C</span>
-                                    <span className="mt-1 text-xs font-medium capitalize text-white/85">{weather?.location || 'Unknown'}</span>
+                                    <span className="text-sm sm:text-base md:text-lg font-bold leading-none">{weather?.temp ?? '--'}°C</span>
+                                    <span className="mt-0.5 text-[10px] sm:text-xs font-medium capitalize text-white/80 leading-none">{weather?.location || 'Unknown'}</span>
                                 </div>
                             </>
                         )}
@@ -250,10 +250,10 @@ const DashboardWidget = () => {
                         <button
                             type="button"
                             onClick={handleRetryLocation}
-                            className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/15 px-4 py-3.5 text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95"
+                            className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/15 px-3 py-2 text-[10px] sm:text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95"
                             title="Enable location for accurate weather"
                         >
-                            <FaMapMarkerAlt size={12} className="animate-bounce" />
+                            <FaMapMarkerAlt size={11} className="animate-bounce" />
                             <span>Enable Location</span>
                         </button>
                     )}

@@ -8,7 +8,7 @@ import Badge from '../../components/ui/Badge';
 import PageHeader from '../../components/ui/PageHeader';
 import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
-import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers } from 'react-icons/fa';
+import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const Motion = motion;
@@ -177,27 +177,46 @@ const HotelDashboardPage = () => {
         </Motion.div>
       </Motion.div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2 md:hidden scrollbar-hide">
-        <Link to="/hotel/register-guest" className="flex-shrink-0 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white">
-          Register Guest
+      {/* Mobile-optimized action grid */}
+      <div className="grid grid-cols-3 gap-2.5 md:hidden">
+        <Link to="/hotel/register-guest" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-1.5">
+            <FaUserPlus className="h-4 w-4" />
+          </div>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">Register</span>
         </Link>
-        <Link to="/hotel/guests" className="flex-shrink-0 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white">
-          View Guests
+        <Link to="/hotel/guests" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-1.5">
+            <FaUsers className="h-4 w-4" />
+          </div>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">View Guests</span>
         </Link>
-        <Link to="/hotel/manage-rooms" className="flex-shrink-0 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white">
-          Manage Rooms
+        <Link to="/hotel/manage-rooms" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600 mb-1.5">
+            <FaBed className="h-4 w-4" />
+          </div>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">Rooms</span>
         </Link>
       </div>
 
       {!isSubscribed && (
-        <Card className="border-amber-100 bg-amber-50">
+        <Card className="border border-amber-200 bg-amber-50/40 backdrop-blur-sm shadow-sm rounded-2xl p-4 md:p-5">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h3 className="text-base font-semibold text-amber-800">Subscription Required</h3>
-              <p className="mt-1 text-sm text-amber-700">Activate your subscription to register guests and access hotel operations.</p>
+            <div className="flex items-start gap-3 text-left">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
+                <FaCreditCard className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-amber-900 leading-tight">Subscription Required</h3>
+                <p className="mt-1 text-xs sm:text-sm leading-relaxed text-amber-800">
+                  Activate your subscription to register guests and unlock all hotel management capabilities.
+                </p>
+              </div>
             </div>
-            <Link to="/hotel/subscription">
-              <Button className="w-full md:w-auto">Upgrade Now</Button>
+            <Link to="/hotel/subscription" className="w-full md:w-auto shrink-0">
+              <Button className="w-full md:w-auto bg-amber-600 hover:bg-amber-700 border-none text-white font-semibold py-2.5 px-4 shadow-sm shadow-amber-600/20">
+                Upgrade Now
+              </Button>
             </Link>
           </div>
         </Card>
@@ -228,14 +247,32 @@ const HotelDashboardPage = () => {
         <Card>
           <h2 className="mb-4 text-xl font-semibold text-slate-800 md:text-2xl">Quick Actions</h2>
           <div className="grid gap-3">
-            <Link to="/hotel/register-guest" className="flex min-h-12 items-center gap-3 rounded-xl border border-slate-100 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
-              <FaUserPlus className="text-blue-600" /> Register New Guest
+            <Link to="/hotel/register-guest" className="flex min-h-12 items-center justify-between rounded-xl border border-slate-100 px-4 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:translate-x-0.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                  <FaUserPlus className="h-4 w-4" />
+                </div>
+                <span>Register New Guest</span>
+              </div>
+              <FaChevronRight className="text-xs text-slate-400" />
             </Link>
-            <Link to="/hotel/manage-rooms" className="flex min-h-12 items-center gap-3 rounded-xl border border-slate-100 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
-              <FaClipboardList className="text-blue-600" /> Manage Your Rooms
+            <Link to="/hotel/manage-rooms" className="flex min-h-12 items-center justify-between rounded-xl border border-slate-100 px-4 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:translate-x-0.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                  <FaClipboardList className="h-4 w-4" />
+                </div>
+                <span>Manage Your Rooms</span>
+              </div>
+              <FaChevronRight className="text-xs text-slate-400" />
             </Link>
-            <Link to="/hotel/reports" className="flex min-h-12 items-center gap-3 rounded-xl border border-slate-100 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
-              <FaFileAlt className="text-blue-600" /> Download Reports
+            <Link to="/hotel/reports" className="flex min-h-12 items-center justify-between rounded-xl border border-slate-100 px-4 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:translate-x-0.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+                  <FaFileAlt className="h-4 w-4" />
+                </div>
+                <span>Download Reports</span>
+              </div>
+              <FaChevronRight className="text-xs text-slate-400" />
             </Link>
           </div>
         </Card>
