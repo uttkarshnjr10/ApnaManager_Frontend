@@ -8,7 +8,7 @@ import Badge from '../../components/ui/Badge';
 import PageHeader from '../../components/ui/PageHeader';
 import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
-import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight } from 'react-icons/fa';
+import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight, FaUserShield } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const Motion = motion;
@@ -177,25 +177,25 @@ const HotelDashboardPage = () => {
         </Motion.div>
       </Motion.div>
 
-      {/* Mobile-optimized action grid */}
+      {/* Mobile-optimized action grid (providing quick links to overflow pages to avoid duplicates with bottom bar) */}
       <div className="grid grid-cols-3 gap-2.5 md:hidden">
-        <Link to="/hotel/register-guest" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-1.5">
-            <FaUserPlus className="h-4 w-4" />
-          </div>
-          <span className="text-[10px] font-bold text-slate-700 leading-tight">Register</span>
-        </Link>
-        <Link to="/hotel/guests" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-1.5">
-            <FaUsers className="h-4 w-4" />
-          </div>
-          <span className="text-[10px] font-bold text-slate-700 leading-tight">View Guests</span>
-        </Link>
-        <Link to="/hotel/manage-rooms" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+        <Link to="/hotel/reports" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600 mb-1.5">
-            <FaBed className="h-4 w-4" />
+            <FaFileAlt className="h-4 w-4" />
           </div>
-          <span className="text-[10px] font-bold text-slate-700 leading-tight">Rooms</span>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">Reports</span>
+        </Link>
+        <Link to="/hotel/subscription" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-1.5">
+            <FaCreditCard className="h-4 w-4" />
+          </div>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">Billing</span>
+        </Link>
+        <Link to="/hotel/profile" className="flex flex-col items-center justify-center rounded-2xl border border-slate-100/70 bg-white p-3 text-center transition-all hover:bg-slate-50 active:scale-95 shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-1.5">
+            <FaUserShield className="h-4 w-4" />
+          </div>
+          <span className="text-[10px] font-bold text-slate-700 leading-tight">Profile</span>
         </Link>
       </div>
 
