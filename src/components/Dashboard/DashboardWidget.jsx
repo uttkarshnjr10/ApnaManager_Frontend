@@ -5,10 +5,8 @@ import { format } from 'date-fns';
 import {
     WiDaySunny, WiCloud, WiRain, WiSnow, WiThunderstorm, WiFog, WiDayCloudy
 } from 'react-icons/wi';
-import { BsSun, BsStars } from 'react-icons/bs';
-import { FaSyncAlt, FaMapMarkerAlt } from 'react-icons/fa';
-
-import { fetchDailyAIReport } from '../../services/reportService';
+import { BsSun } from 'react-icons/bs';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 // ── Geolocation helpers ──────────────────────────────────────
 const GEO_STORAGE_KEY = 'apna_user_location';
@@ -66,6 +64,48 @@ const requestGeolocation = () => {
     });
 };
 
+// Helper for time-based content and aesthetics
+const getTimeTheme = (hour) => {
+    // Morning: 5 AM - 11:59 AM
+    if (hour >= 5 && hour < 12) {
+        return {
+            gradient: 'from-amber-400 via-orange-500 to-sky-600',
+            greeting: 'Good Morning',
+            message: 'Have a wonderful and productive day!',
+            icon: '☀️',
+            badgeBg: 'bg-amber-500/20 text-amber-100 border-amber-500/30'
+        };
+    }
+    // Afternoon: 12 PM - 4:59 PM
+    if (hour >= 12 && hour < 17) {
+        return {
+            gradient: 'from-sky-400 via-blue-500 to-indigo-600',
+            greeting: 'Good Afternoon',
+            message: 'Hope you are having a productive afternoon!',
+            icon: '🌤️',
+            badgeBg: 'bg-sky-500/20 text-sky-100 border-sky-500/30'
+        };
+    }
+    // Evening: 5 PM - 9:59 PM
+    if (hour >= 17 && hour < 22) {
+        return {
+            gradient: 'from-indigo-600 via-purple-600 to-pink-700',
+            greeting: 'Good Evening',
+            message: 'Time to wind down. Have a relaxing evening!',
+            icon: '🌙',
+            badgeBg: 'bg-purple-500/20 text-purple-100 border-purple-500/30'
+        };
+    }
+    // Night: 10 PM - 4:59 AM
+    return {
+        gradient: 'from-slate-900 via-slate-800 to-indigo-950',
+        greeting: 'Good Night',
+        message: 'Rest well and recharge for tomorrow.',
+        icon: '🌌',
+        badgeBg: 'bg-indigo-500/20 text-indigo-100 border-indigo-500/30'
+    };
+};
+
 // ── Component ────────────────────────────────────────────────
 
 const DashboardWidget = () => {
@@ -74,28 +114,18 @@ const DashboardWidget = () => {
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
     const [locationStatus, setLocationStatus] = useState('idle'); // 'idle' | 'requesting' | 'granted' | 'denied'
-    const [aiReport, setAiReport] = useState('');
-    const [aiLoading, setAiLoading] = useState(true);
-    const [aiError, setAiError] = useState(false);
-
-    const getGreeting = () => {
-        const hour = new Date().getHours();
-        if (hour < 12) return 'Good Morning';
-        if (hour < 17) return 'Good Afternoon';
-        return 'Good Evening';
-    };
 
     const getWeatherIcon = (code) => {
         switch (code) {
-            case '01d': return <WiDaySunny className="text-3xl text-amber-200" />;
-            case '01n': return <WiDaySunny className="text-3xl text-blue-100" />;
-            case '02d': case '02n': return <WiDayCloudy className="text-3xl text-blue-100" />;
-            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-3xl text-blue-100" />;
-            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-3xl text-blue-100" />;
-            case '11d': case '11n': return <WiThunderstorm className="text-3xl text-amber-100" />;
+            case '01d': return <WiDaySunny className="text-3xl text-amber-300" />;
+            case '01n': return <WiDaySunny className="text-3xl text-blue-200" />;
+            case '02d': case '02n': return <WiDayCloudy className="text-3xl text-blue-200" />;
+            case '03d': case '03n': case '04d': case '04n': return <WiCloud className="text-3xl text-blue-200" />;
+            case '09d': case '09n': case '10d': case '10n': return <WiRain className="text-3xl text-blue-200" />;
+            case '11d': case '11n': return <WiThunderstorm className="text-3xl text-amber-200" />;
             case '13d': case '13n': return <WiSnow className="text-3xl text-white" />;
-            case '50d': case '50n': return <WiFog className="text-3xl text-blue-100" />;
-            default: return <WiDaySunny className="text-3xl text-amber-200" />;
+            case '50d': case '50n': return <WiFog className="text-3xl text-blue-200" />;
+            default: return <WiDaySunny className="text-3xl text-amber-300" />;
         }
     };
 
@@ -151,33 +181,6 @@ const DashboardWidget = () => {
         return () => { cancelled = true; };
     }, [fetchWeather]);
 
-    const getAIAnalysis = useCallback(async () => {
-        if (user?.role === 'Police') {
-            setAiReport('Daily intelligence summaries are currently optimized for Admin & Hotel use only.');
-            setAiLoading(false);
-            return;
-        }
-
-        setAiLoading(true);
-        setAiError(false);
-        try {
-            const data = await fetchDailyAIReport();
-            setAiReport(data.summary);
-        } catch (err) {
-            if (err.response && err.response.status === 403) {
-                setAiReport('AI Insights are not enabled for this account type.');
-            } else {
-                setAiError(true);
-            }
-        } finally {
-            setAiLoading(false);
-        }
-    }, [user?.role]);
-
-    useEffect(() => {
-        getAIAnalysis();
-    }, [getAIAnalysis]);
-
     /**
      * Allows the user to manually re-request location if they initially denied it.
      */
@@ -196,81 +199,65 @@ const DashboardWidget = () => {
     };
 
     const todayDate = format(new Date(), 'EEEE, MMMM d, yyyy');
+    const currentHour = new Date().getHours();
+    const theme = getTimeTheme(currentHour);
 
     return (
-        <div className="w-full rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 p-5 text-white shadow-sm">
-            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                    <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-blue-100">
-                        <BsSun className="flex-shrink-0" />
-                        <span className="truncate">{todayDate}</span>
+        <div className={`w-full rounded-2xl bg-gradient-to-br ${theme.gradient} p-6 text-white shadow-md border border-white/10 transition-all duration-500`}>
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                {/* Left side: Date, Time-appropriate greeting, Username, and custom time message */}
+                <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-semibold backdrop-blur-sm ${theme.badgeBg}`}>
+                            <BsSun className="flex-shrink-0 animate-[spin_8s_linear_infinite]" />
+                            <span>{todayDate}</span>
+                        </span>
+                        <span className="text-lg">{theme.icon}</span>
                     </div>
-                    <h2 className="text-lg font-semibold leading-tight md:text-xl">
-                        {getGreeting()}, <span>{user?.username || 'Guest'}</span>
+
+                    <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+                        {theme.greeting}, <span className="text-white/95">{user?.username || 'Guest'}</span>
                     </h2>
+
+                    <p className="text-sm font-medium text-white/80 md:text-base max-w-xl">
+                        {theme.message}
+                    </p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    <div className="flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2">
+                {/* Right side: Weather display */}
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/15 p-3.5 backdrop-blur-md shadow-inner transition-all hover:bg-white/25">
                         {loading ? (
-                            <div className="flex items-center gap-2 animate-pulse">
-                                <div className="h-6 w-6 rounded-full bg-white/20" />
-                                <div className="h-4 w-12 rounded bg-white/20" />
+                            <div className="flex items-center gap-3 animate-pulse">
+                                <div className="h-8 w-8 rounded-full bg-white/25" />
+                                <div className="space-y-1">
+                                    <div className="h-4 w-12 rounded bg-white/25" />
+                                    <div className="h-3 w-16 rounded bg-white/25" />
+                                </div>
                             </div>
                         ) : (
                             <>
-                                <div>{getWeatherIcon(weather?.iconCode)}</div>
-                                <div className="text-right">
-                                    <span className="block text-base font-bold leading-none">{weather?.temp}°C</span>
-                                    <span className="text-xs capitalize text-blue-100">{weather?.location}</span>
+                                <div className="drop-shadow-md">{getWeatherIcon(weather?.iconCode)}</div>
+                                <div className="flex flex-col">
+                                    <span className="text-lg font-bold leading-none">{weather?.temp ?? '--'}°C</span>
+                                    <span className="mt-1 text-xs font-medium capitalize text-white/85">{weather?.location || 'Unknown'}</span>
                                 </div>
                             </>
                         )}
                     </div>
 
-                    {/* Retry location button — only visible when location was denied */}
                     {locationStatus === 'denied' && (
                         <button
                             type="button"
                             onClick={handleRetryLocation}
-                            className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/10 px-2.5 py-2 text-xs font-medium text-blue-100 transition-colors hover:bg-white/20"
+                            className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/15 px-4 py-3.5 text-xs font-semibold text-white transition-all hover:bg-white/25 active:scale-95"
                             title="Enable location for accurate weather"
                         >
-                            <FaMapMarkerAlt size={12} />
-                            <span className="hidden sm:inline">Enable Location</span>
+                            <FaMapMarkerAlt size={12} className="animate-bounce" />
+                            <span>Enable Location</span>
                         </button>
                     )}
                 </div>
-            </div>
-
-            <div className="rounded-xl border border-white/15 bg-white/10 p-4">
-                <div className="mb-2 flex items-center justify-between gap-3">
-                    <h3 className="flex items-center gap-2 text-sm font-semibold text-white">
-                        <BsStars className="text-amber-200" />
-                        Daily Intelligence Briefing
-                    </h3>
-                    <button
-                        onClick={getAIAnalysis}
-                        className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-white/15 px-3 text-xs font-medium text-white transition-colors hover:bg-white/25 ${aiLoading ? 'cursor-wait' : ''}`}
-                        type="button"
-                    >
-                        <FaSyncAlt className={aiLoading ? 'animate-spin' : ''} size={12} />
-                        Generate Report
-                    </button>
-                </div>
-
-                {aiLoading ? (
-                    <div className="space-y-2 animate-pulse">
-                        <div className="h-3 w-3/4 rounded bg-white/20" />
-                        <div className="h-3 w-full rounded bg-white/20" />
-                    </div>
-                ) : aiError ? (
-                    <p className="text-sm text-red-100">Unable to generate report right now.</p>
-                ) : (
-                    <p className="text-sm leading-relaxed text-blue-50">
-                        {aiReport || 'No significant activity recorded yet for today.'}
-                    </p>
-                )}
             </div>
         </div>
     );
