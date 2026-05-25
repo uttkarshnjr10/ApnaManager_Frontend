@@ -32,16 +32,15 @@ const Footer = () => {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="border-t border-slate-100 bg-white text-sm text-slate-500"
+      className="border-t border-[#EBE6DD]/60 bg-[#FAF8F5] text-sm text-[#7C756B]"
     >
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-md">
-            <div className="mb-3 flex items-center gap-3">
-              <img src="/logo.png" alt="ApnaManager" className="h-8 w-auto" />
-              <span className="font-bold text-slate-900">ApnaManager</span>
+          <div className="max-w-md text-left">
+            <div className="mb-3 flex items-center justify-start">
+              <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto object-contain" />
             </div>
-            <p className="leading-relaxed">
+            <p className="leading-relaxed text-[#7C756B]">
               The bridge between Hospitality and Security. A robust platform for modern guest management, digital verification, and real-time data sharing.
             </p>
             <div className="mt-5 flex gap-2">
@@ -52,7 +51,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-100 text-slate-400 transition-colors duration-150 hover:border-blue-100 hover:bg-blue-50 hover:text-blue-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EBE6DD] text-slate-400 transition-all duration-150 hover:border-blue-200 hover:bg-[#F2EDE4]/50 hover:text-blue-600"
                 >
                   {social.icon}
                 </a>
@@ -60,13 +59,13 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 md:min-w-80">
+          <div className="grid gap-8 sm:grid-cols-2 md:min-w-80 text-left">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Platform</p>
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-[#9E9587]">Platform</p>
               <ul className="space-y-2">
                 {platformLinks.map((item) => (
                   <li key={item.text}>
-                    <Link to={item.to} className="flex min-h-8 items-center gap-2.5 text-slate-500 transition-colors duration-150 hover:text-blue-600">
+                    <Link to={item.to} className="flex min-h-8 items-center gap-2.5 text-[#5C5346] font-medium transition-colors duration-150 hover:text-blue-600">
                       {item.icon}
                       {item.text}
                     </Link>
@@ -76,16 +75,16 @@ const Footer = () => {
             </div>
 
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Company</p>
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-[#9E9587]">Company</p>
               <ul className="space-y-2">
                 {companyLinks.map((item) => (
                   <li key={item.text}>
                     {item.to.startsWith('http') ? (
-                      <a href={item.to} target="_blank" rel="noopener noreferrer" className="flex min-h-8 items-center text-slate-500 transition-colors duration-150 hover:text-blue-600">
+                      <a href={item.to} target="_blank" rel="noopener noreferrer" className="flex min-h-8 items-center text-[#5C5346] font-medium transition-colors duration-150 hover:text-blue-600">
                         {item.text}
                       </a>
                     ) : (
-                      <Link to={item.to} className="flex min-h-8 items-center text-slate-500 transition-colors duration-150 hover:text-blue-600">
+                      <Link to={item.to} className="flex min-h-8 items-center text-[#5C5346] font-medium transition-colors duration-150 hover:text-blue-600">
                         {item.text}
                       </Link>
                     )}
@@ -96,11 +95,11 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-5 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-[#EBE6DD]/60 pt-5 text-xs text-[#9E9587] font-medium md:flex-row md:items-center md:justify-between">
           <p>© {currentYear} ApnaManager. All rights reserved.</p>
           <div className="flex gap-5">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="hover:text-blue-600 cursor-pointer transition-colors">Terms of Service</span>
           </div>
         </div>
       </div>

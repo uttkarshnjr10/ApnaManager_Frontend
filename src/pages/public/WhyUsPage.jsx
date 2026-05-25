@@ -1,210 +1,214 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaShieldAlt, FaDigitalTachograph, FaUsers, 
-  FaLock, FaBell, FaFileInvoice, 
-  FaInstagram, FaYoutube, FaLinkedin, FaArrowRight, FaWhatsapp
+  FaShieldAlt, FaUsers, FaLock, FaBell, FaFileInvoice, 
+  FaArrowRight, FaClock 
 } from 'react-icons/fa';
-import Navbar from '../../components/layout/Navbar'; 
+import { FiMenu, FiX } from 'react-icons/fi';
+import Footer from '../../components/layout/LandingPage/Footer';
 
-// --- Animation Variants ---
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 } 
-  }
-};
+const Motion = motion;
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 50, damping: 20 } 
-  }
-};
-
-const FeatureCard = ({ icon, title, description }) => {
+const FeatureCard = ({ icon, title, description, badgeBg, iconColor }) => {
   return (
-    <motion.div 
-      variants={cardVariants}
-      className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 relative overflow-hidden group"
-    >
-      {/* Subtle hover gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
-      <div className="relative z-10">
-        <div className="w-16 h-16 bg-blue-100/50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-700 transition-colors">
-          {title}
-        </h3>
-        <p className="text-gray-500 leading-relaxed font-medium">
-          {description}
-        </p>
+    <div className="flex flex-col rounded-3xl border border-[#EBE6DD] bg-white p-6 sm:p-8 transition-all duration-300 hover:shadow-md hover:border-blue-200">
+      <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl ${badgeBg} ${iconColor}`}>
+        {icon}
       </div>
-    </motion.div>
-  );
-};
-
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
-  return (
-    <footer className="bg-white border-t border-gray-100 py-12 mt-auto">
-      <div className="container mx-auto px-6 flex flex-col items-center">
-        <div className="mb-6 opacity-80 hover:opacity-100 transition-opacity">
-           <img src="/logo.png" alt="ApnaManager" className="h-10 w-auto" />
-        </div>
-        <div className="flex space-x-8 mb-8">
-          {[
-            { icon: <FaInstagram size={24} />, href: "https://www.instagram.com/apnamanager?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-            { icon: <FaYoutube size={24} />, href: "https://www.youtube.com/@apnamanager" },
-            { icon: <FaWhatsapp size={24} />, href: "https://whatsapp.com/channel/0029VbBdxL26LwHpSS1XdT3J" },
-            { icon: <FaLinkedin size={24} />, href: "https://www.linkedin.com/company/apnamanager/" }
-          ].map((social, idx) => (
-            <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-600 hover:scale-110 transition-all duration-300">
-              {social.icon}
-            </a>
-          ))}
-        </div>
-        <p className="text-sm text-gray-400 font-medium">
-          &copy; {currentYear} ApnaManager. Built for Safety.
-        </p>
-      </div>
-    </footer>
+      <h3 className="mb-3 text-lg font-extrabold text-[#1F1C18] sm:text-xl">{title}</h3>
+      <p className="text-sm leading-relaxed text-[#7C756B]">{description}</p>
+    </div>
   );
 };
 
 const WhyUsPage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const closeMenu = () => setMobileMenuOpen(false);
+
   const features = [
     {
-      icon: <FaShieldAlt size={32} />,
+      icon: <FaShieldAlt size={22} />,
       title: "Enhanced Security",
-      description: "Stop unauthorized stays instantly. We verify guests against a central database in real-time."
+      description: "Stop unauthorized stays instantly. We verify guests against a central database in real-time.",
+      badgeBg: "bg-blue-50",
+      iconColor: "text-blue-600"
     },
     {
-      icon: <FaDigitalTachograph size={32} />,
-      title: "100% Digital",
-      description: "No more messy paper ledgers. Search, track, and manage guest records from any device, anywhere."
+      icon: <FaClock size={22} />,
+      title: "100% Digital Logs",
+      description: "No more messy paper ledgers. Search, track, and manage guest records from any device, anywhere.",
+      badgeBg: "bg-amber-50",
+      iconColor: "text-amber-600"
     },
     {
-      icon: <FaUsers size={32} />,
+      icon: <FaUsers size={22} />,
       title: "Direct Police Link",
-      description: "A secure, discreet channel to share critical info with law enforcement instantly."
+      description: "A secure, discreet channel to share compliance details and critical info with law enforcement instantly.",
+      badgeBg: "bg-emerald-50",
+      iconColor: "text-emerald-600"
     },
     {
-      icon: <FaLock size={32} />,
-      title: "Data Privacy",
-      description: "Your data belongs to you. We use bank-grade encryption to keep guest info confidential."
+      icon: <FaLock size={22} />,
+      title: "Resilient Data Privacy",
+      description: "Your data belongs to you. We use modern, compliant encryption to keep guest info confidential.",
+      badgeBg: "bg-indigo-50",
+      iconColor: "text-indigo-600"
     },
     {
-      icon: <FaBell size={32} />,
-      title: "Instant Alerts",
-      description: "Get notified immediately about flagged individuals or suspicious activity in your area."
+      icon: <FaBell size={22} />,
+      title: "Instant Jurisdiction Alerts",
+      description: "Get notified immediately about flagged individuals or suspicious safety concerns in your area.",
+      badgeBg: "bg-red-50",
+      iconColor: "text-red-600"
     },
     {
-      icon: <FaFileInvoice size={32} />,
-      title: "Auto-Compliance",
-      description: "Stay legal effortlessly. We automate the record-keeping required by local regulations."
+      icon: <FaFileInvoice size={20} />,
+      title: "Auto-Compliance (Form C)",
+      description: "Stay legal effortlessly. We automate and prepare regulatory documentation required by local departments.",
+      badgeBg: "bg-violet-50",
+      iconColor: "text-violet-600"
     }
   ];
 
   return (
-    <div className="font-poppins bg-slate-50 min-h-screen flex flex-col">
-      <Navbar isPublic={true} />
+    <div className="font-poppins bg-[#FAF8F5] min-h-screen flex flex-col text-[#2C2925] selection:bg-blue-600/10 scroll-smooth">
+      {/* Top Header */}
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#EBE6DD]/60 bg-[#FAF8F5]/85 backdrop-blur-md transition-all duration-300">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex items-center" onClick={closeMenu}>
+            <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto object-contain" />
+          </Link>
+
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link to="/" className="text-sm font-bold text-[#5C5346] hover:text-blue-600 transition-colors duration-150">
+              Home
+            </Link>
+            <Link to="/why-us" className="text-sm font-bold text-blue-600 transition-colors duration-150">
+              Why Us
+            </Link>
+            <Link to="/hotel-registration" className="text-sm font-bold text-[#5C5346] hover:text-blue-600 transition-colors duration-150">
+              Register Hotel
+            </Link>
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <Link
+              to="/login"
+              className="inline-flex min-h-10 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-sm shadow-blue-600/15 hover:bg-blue-700 transition-all hover:scale-[1.02] active:scale-95"
+            >
+              Sign In
+            </Link>
+          </div>
+
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EBE6DD] bg-white text-[#2C2925] hover:bg-[#F2EDE4] transition-colors md:hidden"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-label="Open navigation menu"
+          >
+            {mobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <Motion.button
+              type="button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-[#1F1C18]/30 backdrop-blur-sm md:hidden"
+              aria-label="Close navigation"
+              onClick={closeMenu}
+            />
+            <Motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="fixed left-0 right-0 top-16 z-50 border-b border-[#EBE6DD] bg-[#FAF8F5] p-5 shadow-xl rounded-b-3xl md:hidden"
+            >
+              <div className="mx-auto flex flex-col gap-3">
+                <Link to="/" onClick={closeMenu} className="flex items-center rounded-2xl px-4 py-3 text-sm font-bold text-[#2C2925] hover:bg-[#F2EDE4] transition-all">
+                  Home
+                </Link>
+                <Link to="/why-us" onClick={closeMenu} className="flex items-center rounded-2xl px-4 py-3 text-sm font-bold text-blue-600 bg-[#F2EDE4]/50 transition-all">
+                  Why Us
+                </Link>
+                <Link to="/hotel-registration" onClick={closeMenu} className="flex items-center rounded-2xl px-4 py-3 text-sm font-bold text-[#2C2925] hover:bg-[#F2EDE4] transition-all">
+                  Register Hotel
+                </Link>
+                <Link to="/login" onClick={closeMenu} className="mt-2 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 text-sm font-bold text-white shadow-md shadow-blue-600/15">
+                  Sign In
+                </Link>
+              </div>
+            </Motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <main className="flex-grow">
         
-        {/* === HERO SECTION WITH DARK GRADIENT === */}
-        <section className="relative bg-[#1e293b] text-white pt-24 pb-48 md:pb-64 overflow-hidden">
-            
-            {/* Background Gradient Mesh */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-[#1e293b] to-blue-900 opacity-90 z-0"></div>
-            
-            {/* Animated Floating Blobs */}
-            <motion.div 
-              animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-20 right-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-screen filter blur-[80px] opacity-30 z-0"
-            ></motion.div>
-            <motion.div 
-              animate={{ y: [0, 30, 0], opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-10 left-10 w-96 h-96 bg-indigo-500 rounded-full mix-blend-screen filter blur-[100px] opacity-30 z-0"
-            ></motion.div>
-
-            {/* Content */}
-            <div className="container mx-auto px-6 relative z-10 text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+        {/* === HERO SECTION === */}
+        <section className="relative pt-32 pb-20 text-center overflow-hidden bg-gradient-to-b from-[#FAF8F5] via-[#FAF8F5] to-[#F5F2EB]">
+            <div className="container mx-auto px-4 relative z-10 text-center">
+                <Motion.div
+                  initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.6 }}
                   className="max-w-4xl mx-auto"
                 >
-                    {/* <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/30 text-blue-300 font-medium text-sm tracking-wide">
-                        Trusted by 500+ Hotels in Bihar
-                    </div> */}
-                    
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-                        Why <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">ApnaManager</span> is <br className="hidden md:block" />
+                    <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6 text-[#1F1C18]">
+                        Why <img src="/logo.png" alt="ApnaManager Logo" className="inline-block h-9 md:h-14 lg:h-16 w-auto object-contain mx-2 align-middle" /> is <br className="hidden md:block" />
                         the Right Choice
                     </h1>
                     
-                    <p className="text-lg md:text-xl text-blue-100/80 max-w-2xl mx-auto leading-relaxed mb-8">
+                    <p className="text-base md:text-lg text-[#7C756B] max-w-2xl mx-auto leading-relaxed mb-8">
                         We bridge the gap between modern hospitality and rigorous security. 
                         Run a safer, smarter, and fully compliant hotel operation.
                     </p>
 
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                       <Link to="/hotel-registration">
-                        <button className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-blue-900/50 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
-                           Get Started Now <FaArrowRight size={14} />
+                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3.5 rounded-xl font-bold shadow-md shadow-blue-600/15 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                           Get Started Now <FaArrowRight size={13} />
                         </button>
                       </Link>
                     </div>
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
 
-        {/* === OVERLAPPING CARDS SECTION === */}
-        <section className="px-6 pb-20">
-            {/* -mt-32 pulls this section UP into the dark hero.
-                relative z-20 ensures it sits ON TOP of the hero background.
-            */}
-            <div className="container mx-auto -mt-32 md:-mt-48 relative z-20">
-                <motion.div 
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                >
+        {/* === CARDS SECTION === */}
+        <section className="px-4 pb-20 bg-white py-16 border-t border-[#EBE6DD]/40">
+            <div className="container mx-auto max-w-7xl">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature, index) => (
                         <FeatureCard key={index} {...feature} />
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
 
         {/* === BOTTOM CTA === */}
-        <section className="py-24 px-6 bg-white">
+        <section className="py-20 px-4 bg-[#FAF8F5] border-t border-[#EBE6DD]/40">
             <div className="container mx-auto max-w-5xl">
-                <div className="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-[2.5rem] p-10 md:p-16 text-center text-white shadow-2xl relative overflow-hidden">
-                    
-                    {/* Abstract Shapes */}
+                <div className="bg-gradient-to-br from-[#1F1C18] to-[#2C2925] rounded-[2rem] p-10 md:p-16 text-center text-white shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full translate-y-1/2 -translate-x-1/4 blur-3xl"></div>
 
                     <div className="relative z-10">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to upgrade your security?</h2>
-                        <p className="text-blue-100 mb-8 max-w-xl mx-auto text-lg">
+                        <h2 className="text-3xl md:text-5xl font-black mb-6">Ready to upgrade your security?</h2>
+                        <p className="text-[#9E9587] mb-8 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
                             Join the network of forward-thinking hotels. Registration takes less than 5 minutes and is completely free.
                         </p>
                         <Link
                             to="/hotel-registration"
-                            className="inline-block bg-white text-slate-900 px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:bg-blue-50 hover:scale-105 transition-all duration-300"
+                            className="inline-block bg-white text-slate-900 px-10 py-4 rounded-xl font-bold text-base shadow-lg hover:bg-slate-50 transition-all hover:scale-[1.02] active:scale-95"
                         >
                             Register Your Hotel
                         </Link>
