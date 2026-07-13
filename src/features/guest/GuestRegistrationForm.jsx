@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaCheck, FaChevronDown, FaChevronLeft, FaChevronRight, FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useGuestForm } from './useGuestForm';
+import ConsentModal from './ConsentModal';
 import { differenceInYears, parseISO, format } from 'date-fns';
 import Button from '../../components/ui/Button';
 import FormField from '../../components/ui/FormField';
@@ -226,6 +227,9 @@ const GuestRegistrationForm = () => {
     removeGuest,
     vacantRooms,
     isRoomsLoading,
+    // DPDP Consent
+    isConsentGiven,
+    grantConsent,
   } = useGuestForm();
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -443,6 +447,11 @@ const GuestRegistrationForm = () => {
 
   return (
     <>
+      {/* DPDP Consent Gate */}
+      {!isConsentGiven && (
+        <ConsentModal onConsent={grantConsent} />
+      )}
+
       {isWebcamOpen && (
         <WebcamModal onCapture={handleCapture} onCancel={closeWebcam} />
       )}

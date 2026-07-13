@@ -50,6 +50,20 @@ export const useGuestForm = () => {
   const [isRoomsLoading, setIsRoomsLoading] = useState(true);
   const navigate = useNavigate();
 
+  // ── DPDP Consent State ──────────────────────────────────────────
+  const [isConsentGiven, setIsConsentGiven] = useState(false);
+  const [consentRecord, setConsentRecord] = useState(null);
+
+  const grantConsent = (record) => {
+    setConsentRecord(record);
+    setIsConsentGiven(true);
+  };
+
+  const resetConsent = () => {
+    setConsentRecord(null);
+    setIsConsentGiven(false);
+  };
+
   useEffect(() => {
     const fetchVacantRooms = async () => {
       setIsRoomsLoading(true);
@@ -170,6 +184,7 @@ export const useGuestForm = () => {
   const resetForm = () => {
     setFormState(getInitialFormState());
     setErrors({});
+    resetConsent();
   };
 
   // NEW: Compression helper
@@ -190,6 +205,10 @@ export const useGuestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isConsentGiven || !consentRecord) {
+      toast.error('Guest consent is required before registration.');
+      return;
+    }
     if (!validate()) {
       toast.error('Please fill all required fields correctly.');
       return;
@@ -257,6 +276,9 @@ export const useGuestForm = () => {
       }));
       formData.append('accompanyingGuests', JSON.stringify(guestsForJson));
 
+      // ── Append DPDP consent record ──────────────────────────────
+      formData.append('consentRecord', JSON.stringify(consentRecord));
+
       const response = await apiClient.post('/guests/register', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -287,5 +309,9 @@ export const useGuestForm = () => {
     isSubmitting,
     vacantRooms,
     isRoomsLoading,
+    // ── DPDP Consent ──
+    isConsentGiven,
+    consentRecord,
+    grantConsent,
   };
 };
