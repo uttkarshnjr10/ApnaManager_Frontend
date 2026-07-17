@@ -54,6 +54,14 @@ export const AuthProvider = ({ children }) => {
       
       // Password reset required (202)
       if (response.status === 202) {
+         const requiresTOTP = response.data?.data?.requiresTOTP;
+         if (requiresTOTP) {
+           return {
+             requiresTOTP: true,
+             preAuthToken: response.data.data.preAuthToken
+           };
+         }
+
          const userId = response.data?.data?.userId;
          const role = response.data?.data?.role;
          if (userId) {
@@ -68,6 +76,22 @@ export const AuthProvider = ({ children }) => {
       throw new Error(response.data?.message || 'Login failed');
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Login failed.';
+      throw new Error(msg);
+    }
+  };
+
+  const completeTOTPLogin = async (preAuthToken, code) => {
+    try {
+      const response = await apiClient.post('/auth/admin/totp/login', { preAuthToken, code });
+      if (response.status === 200 && response.data?.data) {
+        const { _id, username, role } = response.data.data;
+        const userData = { _id, username, role, needsPasswordReset: false };
+        setUser(userData);
+        return userData;
+      }
+      throw new Error(response.data?.message || 'Verification failed');
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Verification failed.';
       throw new Error(msg);
     }
   };
@@ -91,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const value = { user, login, logout, loading };
+  const value = { user, login, logout, loading, completeTOTPLogin };
 
   return (
     <AuthContext.Provider value={value}>

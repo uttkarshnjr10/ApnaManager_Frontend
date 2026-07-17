@@ -15,9 +15,12 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [resetInfo, setResetInfo] = useState({ show: false, userId: null });
   const [showForgotModal, setShowForgotModal] = useState(false);
+  const [totpStep, setTotpStep] = useState(false);
+  const [preAuthToken, setPreAuthToken] = useState(null);
+  const [totpCode, setTotpCode] = useState('');
   
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login, completeTOTPLogin } = useAuth(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +32,12 @@ const LoginPage = () => {
 
       if (loginResult && loginResult.needsPasswordReset === true) {
         setResetInfo({ show: true, userId: loginResult._id });
+        setIsLoading(false);
+        return;
+      }
+      if (loginResult && loginResult.requiresTOTP === true) {
+        setTotpStep(true);
+        setPreAuthToken(loginResult.preAuthToken);
         setIsLoading(false);
         return;
       }
@@ -61,6 +70,21 @@ const LoginPage = () => {
     setResetInfo({ show: false, userId: null });
     toast.success("Password updated! Please log in with your new password.");
     navigate('/login');
+  }; 
+
+  const handleTOTPSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const loginResult = await completeTOTPLogin(preAuthToken, totpCode);
+      if (loginResult && loginResult.role) {
+         toast.success(`Welcome, ${loginResult.username}!`);
+         navigate('/regional-admin/dashboard');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Verification failed. Please check the code.');
+      setIsLoading(false);
+    }
   }; 
 
   const containerVariants = { 
@@ -160,10 +184,49 @@ const LoginPage = () => {
             </motion.div>
 
             <motion.div variants={itemVariants} className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Welcome back</h1>
-              <p className="text-gray-500 text-sm">Sign in to your dashboard to continue</p>
+              <h1 className="text-2xl font-bold text-gray-900 mb-1.5">{totpStep ? 'Enter Authenticator Code' : 'Welcome back'}</h1>
+              <p className="text-gray-500 text-sm">{totpStep ? 'Open your authenticator app and enter the 6-digit code' : 'Sign in to your dashboard to continue'}</p>
             </motion.div>
 
+            {totpStep ? (
+              <form onSubmit={handleTOTPSubmit} className="space-y-5">
+                <motion.div variants={itemVariants}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    6-Digit Code
+                  </label>
+                  <div className="relative">
+                    <FiLock className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400" size={17} />
+                    <input 
+                      type="text" 
+                      placeholder="123456"
+                      value={totpCode} 
+                      onChange={(e) => setTotpCode(e.target.value)} 
+                      required 
+                      className="w-full pl-11 pr-4 py-3 bg-white rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition-all duration-200 placeholder:text-gray-400" 
+                    />
+                  </div>
+                </motion.div>
+
+                <motion.button 
+                  variants={itemVariants}
+                  type="submit" 
+                  disabled={isLoading}
+                  className={`w-full relative overflow-hidden group bg-gray-900 text-white font-semibold py-3 px-4 rounded-xl shadow-[0_4px_14px_0_rgba(17,24,39,0.2)] hover:shadow-[0_6px_20px_rgba(17,24,39,0.25)] hover:bg-gray-800 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed`}
+                >
+                  <span className={`flex items-center justify-center gap-2 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    Verify
+                  </span>
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                </motion.button>
+                <div className="text-center mt-4">
+                  <button type="button" onClick={() => { setTotpStep(false); setPreAuthToken(null); }} className="text-indigo-600 text-sm hover:underline font-medium">Back to login</button>
+                </div>
+              </form>
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <motion.div variants={itemVariants}>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -236,6 +299,7 @@ const LoginPage = () => {
                 )}
               </motion.button>
             </form>
+            )}
             
             <motion.p variants={itemVariants} className="text-center text-xs text-gray-400 mt-6">
               Your account type will be automatically detected

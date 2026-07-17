@@ -10,6 +10,7 @@ import apiClient from '../../api/apiClient';
 import toast from 'react-hot-toast';        
 import { FaBuilding, FaLock, FaShieldAlt, FaUserTie } from 'react-icons/fa';
 import HotelBadgeSection from '../../components/hotel/HotelBadgeSection';
+import TotpSetupModal from '../../components/ui/TotpSetupModal';
 
 const ROLE_META = {
   Hotel: { icon: <FaBuilding />, tone: 'bg-blue-50 text-blue-700 border-blue-200' },
@@ -188,6 +189,7 @@ const ProfilePage = () => {
     handleCancel,
   } = useUserProfile();
   const [showModal, setShowModal] = useState(false);
+  const [showTotpModal, setShowTotpModal] = useState(false);
 
   const handleEmailChange = (e) => {
     updateEmail(e.target.value);
@@ -337,8 +339,38 @@ const ProfilePage = () => {
           {profile?.role === 'Hotel' && (
             <HotelBadgeSection />
           )}
+
+          {profile?.role === 'Regional Admin' && (
+            <Card title="Two-Factor Authentication (2FA)">
+              <div className="flex flex-col items-start gap-4">
+                <p className="text-sm text-gray-600">
+                  Secure your admin account with an authenticator app (like Google Authenticator or Authy).
+                </p>
+                {/* Note: In a complete implementation we might want an API to check if it's already enabled, but for now we assume we show setup */}
+                <div className="flex items-center gap-3">
+                  <FaShieldAlt className="text-indigo-600 text-xl" />
+                  <span className="text-sm font-medium text-gray-800">
+                    2FA Status: <span className="text-amber-600 font-bold">Recommended</span>
+                  </span>
+                </div>
+                <Button onClick={() => setShowTotpModal(true)}>
+                  Set Up Two-Factor Authentication
+                </Button>
+              </div>
+            </Card>
+          )}
         </div>
       </div>
+      
+      {showTotpModal && (
+        <TotpSetupModal 
+          onClose={() => setShowTotpModal(false)}
+          onSuccess={() => {
+            setShowTotpModal(false);
+            window.location.reload(); // Reload to refresh profile status if needed
+          }}
+        />
+      )}
     </>
   );
 };
