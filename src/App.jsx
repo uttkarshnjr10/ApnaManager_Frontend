@@ -35,6 +35,7 @@ import RegisterUserPage from './pages/admin/RegisterUserPage';
 import AccessLogsPage from './pages/admin/AccessLogsPage';
 import ManageRoomsPage from './pages/hotel/ManageRoomsPage';
 import WatchlistPage from './pages/admin/WatchlistPage';
+import ComplianceReportsPage from './pages/admin/ComplianceReportsPage';
 
 function App() {
   return (
@@ -109,6 +110,7 @@ function App() {
             <Route path="access-logs" element={<AccessLogsPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="watchlist" element={<WatchlistPage />} />
+            <Route path="compliance" element={<ComplianceReportsPage />} />
           </Route>
         </Route>
 

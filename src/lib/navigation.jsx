@@ -2,7 +2,7 @@
 import {
   FaTachometerAlt, FaUsers, FaFileAlt, FaUserShield,
   FaBuilding, FaUserPlus, FaHistory, FaEnvelopeOpenText,
-  FaCreditCard,FaDoorOpen,FaEye, FaChartBar
+  FaCreditCard,FaDoorOpen,FaEye, FaChartBar, FaFileContract
 } from 'react-icons/fa';
 
 export const navigationConfig = {
@@ -22,6 +22,7 @@ export const navigationConfig = {
     { to: '/regional-admin/hotels', label: 'Manage Hotels', icon: <FaBuilding /> },
     { to: '/regional-admin/inquiries', label: 'Hotel Inquiries', icon: <FaEnvelopeOpenText /> },
     { to: '/regional-admin/watchlist', label: 'Watchlist Config', icon: <FaEye /> },
+    { to: '/regional-admin/compliance', label: 'Compliance Reports', icon: <FaFileContract /> },
     { to: '/regional-admin/register', label: 'Register User', icon: <FaUserPlus /> },
     { to: '/regional-admin/access-logs', label: 'Access Logs', icon: <FaHistory /> },
     { to: '/regional-admin/profile', label: 'My Profile', icon: <FaUserShield /> },
