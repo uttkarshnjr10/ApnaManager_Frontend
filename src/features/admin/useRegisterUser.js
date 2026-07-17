@@ -20,14 +20,6 @@ const initialHotelState = {
   localThana: '',
 };
 
-const initialPoliceState = { 
-  username: '', 
-  station: '', 
-  jurisdiction: '', 
-  city: '', 
-  email: '', 
-  policeStation: '' 
-};
 
 export const useRegisterUser = () => {
   const location = useLocation();
@@ -35,7 +27,6 @@ export const useRegisterUser = () => {
 
   const [userType, setUserType] = useState('Hotel');
   const [formData, setFormData] = useState(initialHotelState);
-  const [policeStations, setPoliceStations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [successData, setSuccessData] = useState(null);
   
@@ -78,22 +69,6 @@ export const useRegisterUser = () => {
     }
   }, [inquiryData]);
 
-  // Fetch police stations
-  useEffect(() => {
-    const fetchPoliceStations = async () => {
-      try {
-        const { data } = await apiClient.get('/stations');
-        const formattedStations = data.data.map(station => ({
-          value: station._id, 
-          label: station.name,
-        }));
-        setPoliceStations(formattedStations);
-      } catch (error) {
-        toast.error('Could not fetch police stations.');
-      }
-    };
-    fetchPoliceStations();
-  }, []);
 
   const handleTypeChange = (newUserType) => {
     if (inquiryData) {
@@ -101,7 +76,7 @@ export const useRegisterUser = () => {
       return;
     }
     setUserType(newUserType);
-    setFormData(newUserType === 'Hotel' ? initialHotelState : initialPoliceState);
+    setFormData(initialHotelState);
     setFiles({ ownerSignature: null, hotelStamp: null, aadhaarCard: null });
     setSuccessData(null);
   };
@@ -119,9 +94,6 @@ export const useRegisterUser = () => {
     }
   };
 
-  const handleSelectChange = (selectedOption) => {
-    setFormData(prev => ({...prev, policeStation: selectedOption.value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -196,19 +168,14 @@ export const useRegisterUser = () => {
           };
           response = await apiClient.post('/users/register', payload);
         }
-      } else { 
-        // Police user - always JSON
-        const { username, email, policeStation, station, jurisdiction, city } = formData;
+      } else {
+        // Regional Admin - always JSON
+        const { username, email } = formData;
         const payload = {
-          role: userType,
+          role: 'Regional Admin',
           username,
           email,
-          policeStation, 
-          details: {
-            station,
-            jurisdiction,
-            city, 
-          }
+          details: {},
         };
         response = await apiClient.post('/users/register', payload);
       }
@@ -224,7 +191,7 @@ export const useRegisterUser = () => {
 
   const resetForm = () => {
     setSuccessData(null);
-    setFormData(userType === 'Hotel' ? initialHotelState : initialPoliceState);
+    setFormData(initialHotelState);
     setFiles({ ownerSignature: null, hotelStamp: null, aadhaarCard: null });
   };
 
@@ -232,14 +199,12 @@ export const useRegisterUser = () => {
     userType, 
     formData, 
     files, 
-    policeStations, 
     loading, 
     successData, 
     inquiryData, 
     handleTypeChange, 
     handleChange, 
     handleFileChange, 
-    handleSelectChange, 
     handleSubmit, 
     resetForm 
   };

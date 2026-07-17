@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useAdminDashboard } from '../../features/admin/useAdminDashboard';
 import MetricCard from '../../components/ui/MetricCard';
 import Button from '../../components/ui/Button';
-import { FaHotel, FaUserShield, FaUsers, FaSearch, FaHistory } from 'react-icons/fa';
+import { FaHotel, FaUsers, FaHistory, FaEye } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 
 const containerVariants = {
@@ -47,7 +47,7 @@ const AdminDashboardPage = () => {
       </motion.section>
 
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Regional Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Platform Admin Dashboard</h1>
       </div>
 
       {/* Metrics Grid — Stagger animation */}
@@ -55,7 +55,7 @@ const AdminDashboardPage = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
       >
         <motion.div variants={itemVariants}>
           <MetricCard
@@ -67,25 +67,9 @@ const AdminDashboardPage = () => {
         </motion.div>
         <motion.div variants={itemVariants}>
           <MetricCard
-            label="Police Users"
-            value={metrics.police || 0}
-            icon={<FaUserShield size={32} />}
-            isLoading={loading}
-          />
-        </motion.div>
-        <motion.div variants={itemVariants}>
-          <MetricCard
             label="Guests Registered Today"
             value={metrics.guestsToday || 0}
             icon={<FaUsers size={32} />}
-            isLoading={loading}
-          />
-        </motion.div>
-        <motion.div variants={itemVariants}>
-          <MetricCard
-            label="Police Searches Today"
-            value={metrics.searchesToday || 0}
-            icon={<FaSearch size={32} />}
             isLoading={loading}
           />
         </motion.div>
@@ -108,7 +92,7 @@ const AdminDashboardPage = () => {
             </Button>
           </div>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Manage your users and system settings from one place. Use the sidebar to navigate to specific management pages for Hotels, Police Stations, or Reports.
+            Manage your users and system settings from one place. Use the sidebar to navigate to Hotel Management, Watchlist, or Reports.
           </p>
         </section>
 

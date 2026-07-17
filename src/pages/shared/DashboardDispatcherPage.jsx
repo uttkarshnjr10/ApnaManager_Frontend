@@ -1,7 +1,6 @@
 // src/pages/shared/DashboardDispatcherPage.jsx
 import { useAuth } from '../../hooks/useAuth';
 import HotelDashboardPage from '../hotel/HotelDashboardPage';
-import PoliceDashboardPage from '../police/PoliceDashboardPage';
 import AdminDashboardPage from '../admin/AdminDashboardPage';
 
 const DashboardDispatcherPage = () => {
@@ -14,8 +13,6 @@ const DashboardDispatcherPage = () => {
   switch (user.role) {
     case 'Hotel':
       return <HotelDashboardPage />;
-    case 'Police':
-      return <PoliceDashboardPage />;
     case 'Regional Admin':
       return <AdminDashboardPage />;
     default:

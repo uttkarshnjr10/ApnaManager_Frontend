@@ -40,9 +40,6 @@ const LoginPage = () => {
            case 'Hotel':
              navigate('/hotel/dashboard');
              break;
-           case 'Police':
-             navigate('/police/dashboard');
-             break;
            case 'Regional Admin':
              navigate('/regional-admin/dashboard');
              break;

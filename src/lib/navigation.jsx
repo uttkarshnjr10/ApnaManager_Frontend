@@ -1,8 +1,8 @@
 // src/lib/navigation.js
 import {
-  FaTachometerAlt, FaUsers, FaFileAlt, FaUserShield, FaSearch,
-  FaFlag, FaBriefcase, FaBuilding, FaUserPlus, FaHistory, FaEnvelopeOpenText,
-  FaUniversity,FaCreditCard,FaDoorOpen,FaEye,FaChartBar,
+  FaTachometerAlt, FaUsers, FaFileAlt, FaUserShield,
+  FaBuilding, FaUserPlus, FaHistory, FaEnvelopeOpenText,
+  FaCreditCard,FaDoorOpen,FaEye,
 } from 'react-icons/fa';
 
 export const navigationConfig = {
@@ -15,21 +15,11 @@ export const navigationConfig = {
     { to: '/hotel/subscription', label: 'Subscription', icon: <FaCreditCard /> },
     { to: '/hotel/profile', label: 'My Profile', icon: <FaUserShield /> },
   ],
-  Police: [
-    { to: '/police/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
-    { to: '/police/search', label: 'Search Guest', icon: <FaSearch /> },
-    { to: '/police/flags', label: 'Flags & Reports', icon: <FaFlag /> },
-    { to: '/police/analytics', label: 'Guest Analytics', icon: <FaChartBar /> },
-    { to: '/police/reports', label: 'Case Reports', icon: <FaBriefcase /> },
-    { to: '/police/profile', label: 'My Profile', icon: <FaUserShield /> },
-  ],
   'Regional Admin': [
     { to: '/regional-admin/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/regional-admin/hotels', label: 'Manage Hotels', icon: <FaBuilding /> },
     { to: '/regional-admin/inquiries', label: 'Hotel Inquiries', icon: <FaEnvelopeOpenText /> },
-    { to: '/regional-admin/police', label: 'Manage Police', icon: <FaUserShield /> },
     { to: '/regional-admin/watchlist', label: 'Watchlist', icon: <FaEye /> },
-    { to: '/regional-admin/manage-stations', label: 'Manage Stations', icon: <FaUniversity /> },
     { to: '/regional-admin/register', label: 'Register User', icon: <FaUserPlus /> },
     { to: '/regional-admin/access-logs', label: 'Access Logs', icon: <FaHistory /> },
     { to: '/regional-admin/profile', label: 'My Profile', icon: <FaUserShield /> },

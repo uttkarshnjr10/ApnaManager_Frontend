@@ -27,19 +27,9 @@ import ReportsPage from './pages/hotel/ReportsPage';
 import SubscriptionPage from './pages/hotel/SubscriptionPage';
 import SubscriptionSuccessPage from './pages/hotel/SubscriptionSuccessPage';
 
-// Police Pages
-import SearchGuestPage from './pages/police/SearchGuestPage';
-import FlagsReportsPage from './pages/police/FlagsReportsPage';
-import CaseReportsPage from './pages/police/CaseReportsPage';
-import GuestHistoryPage from './pages/police/GuestHistoryPage';
-import AnalyticsPage from './pages/police/AnalyticsPage';
-import PoliceVerificationGate from './features/police/PoliceVerificationGate';
-
 // Admin Pages
 import ManageHotelsPage from './pages/admin/ManageHotelsPage';
 import HotelInquiriesPage from './pages/admin/HotelInquiriesPage';
-import ManagePolicePage from './pages/admin/ManagePolicePage';
-import ManageStationsPage from './pages/admin/ManageStationsPage';
 import RegisterUserPage from './pages/admin/RegisterUserPage';
 import AccessLogsPage from './pages/admin/AccessLogsPage';
 import ManageRoomsPage from './pages/hotel/ManageRoomsPage';
@@ -106,22 +96,6 @@ function App() {
           </Route>
         </Route>
 
-        {/* Police Routes — only Police role */}
-        <Route element={<ProtectedRoute allowedRoles={['Police']} />}>
-          <Route path="/police" element={<AppLayout />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            {/* Ungated — operational pages */}
-            <Route path="dashboard" element={<DashboardDispatcherPage />} />
-            <Route path="flags" element={<FlagsReportsPage />} />
-            <Route path="reports" element={<CaseReportsPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            {/* Gated — require live photo verification */}
-            <Route path="search" element={<PoliceVerificationGate><SearchGuestPage /></PoliceVerificationGate>} />
-            <Route path="guest/:guestId" element={<PoliceVerificationGate><GuestHistoryPage /></PoliceVerificationGate>} />
-            <Route path="analytics" element={<PoliceVerificationGate><AnalyticsPage /></PoliceVerificationGate>} />
-          </Route>
-        </Route>
-
         {/* Admin Routes — only Regional Admin role */}
         <Route element={<ProtectedRoute allowedRoles={['Regional Admin']} />}>
           <Route path="/regional-admin" element={<AppLayout />}>
@@ -129,8 +103,6 @@ function App() {
             <Route path="dashboard" element={<DashboardDispatcherPage />} />
             <Route path="hotels" element={<ManageHotelsPage />} />
             <Route path="inquiries" element={<HotelInquiriesPage />} />
-            <Route path="police" element={<ManagePolicePage />} />
-            <Route path="manage-stations" element={<ManageStationsPage />} />
             <Route path="register" element={<RegisterUserPage />} />
             <Route path="access-logs" element={<AccessLogsPage />} />
             <Route path="profile" element={<ProfilePage />} />

@@ -1,5 +1,4 @@
 // src/pages/admin/RegisterUserPage.jsx
-import Select from 'react-select';
 import { useRegisterUser } from '../../features/admin/useRegisterUser';
 import FormField from '../../components/ui/FormField';
 import Button from '../../components/ui/Button';
@@ -103,14 +102,12 @@ const RegisterUserPage = () => {
     userType, 
     formData, 
     files, 
-    policeStations, 
     loading, 
     successData, 
     inquiryData, 
     handleTypeChange, 
     handleChange, 
     handleFileChange, 
-    handleSelectChange, 
     handleSubmit, 
     resetForm 
   } = useRegisterUser();
@@ -124,7 +121,7 @@ const RegisterUserPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Register New User</h1>
-      <p className="text-gray-600 mb-6">Create credentials for hotel staff or police officers</p>
+      <p className="text-gray-600 mb-6">Create credentials for hotel staff or platform admins</p>
       
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
         {/* User Type Switcher */}
@@ -141,15 +138,15 @@ const RegisterUserPage = () => {
             Hotel
           </button>
           <button
-            onClick={() => handleTypeChange('Police')}
+            onClick={() => handleTypeChange('Regional Admin')}
             disabled={isFromInquiry}
             className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-              userType === 'Police' 
+              userType === 'Regional Admin' 
                 ? 'bg-blue-600 text-white shadow-md' 
                 : 'text-gray-600 hover:text-gray-800'
             } ${isFromInquiry ? 'cursor-not-allowed opacity-60' : ''}`}
           >
-            Police
+            Platform Admin
           </button>
         </div>
 
@@ -183,7 +180,7 @@ const RegisterUserPage = () => {
             />
           </div>
 
-          {userType === 'Hotel' ? (
+          {userType === 'Hotel' && (
             <>
               {/* Hotel Basic Info */}
               <fieldset className="border border-gray-200 rounded-lg p-6 space-y-6">
@@ -330,53 +327,6 @@ const RegisterUserPage = () => {
                 />
               </fieldset>
             </>
-          ) : (
-            /* Police Fields */
-            <fieldset className="border border-gray-200 rounded-lg p-6 space-y-6">
-              <legend className="text-lg font-semibold text-gray-800 px-2">Police Officer Details</legend>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField 
-                  label="Station Name" 
-                  name="station" 
-                  value={formData.station} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="e.g., Central Police Station"
-                />
-                <FormField 
-                  label="Jurisdiction" 
-                  name="jurisdiction" 
-                  value={formData.jurisdiction} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="e.g., Zone 1"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Assign to Police Station <span className="text-red-500">*</span>
-                </label>
-                <Select 
-                  options={policeStations} 
-                  onChange={handleSelectChange} 
-                  placeholder="Search and select a station..." 
-                  required 
-                  className="react-select-container"
-                  classNamePrefix="react-select"
-                />
-              </div>
-              
-              <FormField 
-                label="City" 
-                name="city" 
-                value={formData.city} 
-                onChange={handleChange} 
-                required 
-                placeholder="e.g., Mumbai"
-              />
-            </fieldset>
           )}
 
           {/* Submit Button */}
