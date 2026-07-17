@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import apiClient from '../../api/apiClient'; 
 import toast from 'react-hot-toast';        
 import { FaBuilding, FaLock, FaShieldAlt, FaUserTie } from 'react-icons/fa';
+import HotelBadgeSection from '../../components/hotel/HotelBadgeSection';
 
 const ROLE_META = {
   Hotel: { icon: <FaBuilding />, tone: 'bg-blue-50 text-blue-700 border-blue-200' },
@@ -332,6 +333,10 @@ const ProfilePage = () => {
               )}
             </div>
           </Card>
+          
+          {profile?.role === 'Hotel' && (
+            <HotelBadgeSection />
+          )}
         </div>
       </div>
     </>

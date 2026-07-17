@@ -7,6 +7,7 @@ import { SocketProvider } from './context/SocketContext';
 import HomePage from './pages/public/HomePage';
 import ResetPasswordPage from './pages/public/ResetPasswordPage';
 import GuestDataPortal from './pages/public/GuestDataPortal';
+import VerifyHotelPage from './pages/public/VerifyHotelPage';
 import LoginPage from './pages/public/LoginPage';
 import WhyUsPage from './pages/public/WhyUsPage';
 import HotelRegistrationPage from './pages/public/HotelRegistrationPage';
@@ -79,6 +80,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/my-data" element={<GuestDataPortal />} />
+        <Route path="/verify/:code" element={<VerifyHotelPage />} />
         <Route path="/why-us" element={<WhyUsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/hotel-registration" element={<HotelRegistrationPage />} />
