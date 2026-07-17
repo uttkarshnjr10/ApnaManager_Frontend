@@ -6,11 +6,10 @@ import { SocketProvider } from './context/SocketContext';
 // Public Pages
 import HomePage from './pages/public/HomePage';
 import ResetPasswordPage from './pages/public/ResetPasswordPage';
+import GuestDataPortal from './pages/public/GuestDataPortal';
 import LoginPage from './pages/public/LoginPage';
 import WhyUsPage from './pages/public/WhyUsPage';
 import HotelRegistrationPage from './pages/public/HotelRegistrationPage';
-
-
 
 // Layouts & Protected Routes
 import AppLayout from './components/layout/AppLayout';
@@ -79,6 +78,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/my-data" element={<GuestDataPortal />} />
         <Route path="/why-us" element={<WhyUsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/hotel-registration" element={<HotelRegistrationPage />} />
