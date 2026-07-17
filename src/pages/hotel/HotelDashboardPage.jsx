@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
 import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight, FaUserShield } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
+import CFormWidget from '../../components/hotel/CFormWidget';
 
 const Motion = motion;
 
@@ -175,6 +176,11 @@ const HotelDashboardPage = () => {
         <Motion.div variants={itemVariants}>
           <StatCard title="Subscription" value={isSubscribed ? 'Active' : 'Inactive'} icon={<FaCreditCard className="h-5 w-5" />} isLoading={isLoading} />
         </Motion.div>
+      </Motion.div>
+
+      {/* C-Form Compliance Widget */}
+      <Motion.div variants={itemVariants}>
+        <CFormWidget />
       </Motion.div>
 
       {/* Mobile-optimized action grid (providing quick links to overflow pages to avoid duplicates with bottom bar) */}
