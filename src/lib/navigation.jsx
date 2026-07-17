@@ -17,9 +17,10 @@ export const navigationConfig = {
   ],
   'Regional Admin': [
     { to: '/regional-admin/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/regional-admin/dashboard#watchlist-alerts', label: 'Watchlist Alerts', icon: <FaEye />, hasBadge: true },
     { to: '/regional-admin/hotels', label: 'Manage Hotels', icon: <FaBuilding /> },
     { to: '/regional-admin/inquiries', label: 'Hotel Inquiries', icon: <FaEnvelopeOpenText /> },
-    { to: '/regional-admin/watchlist', label: 'Watchlist', icon: <FaEye /> },
+    { to: '/regional-admin/watchlist', label: 'Watchlist Config', icon: <FaEye /> },
     { to: '/regional-admin/register', label: 'Register User', icon: <FaUserPlus /> },
     { to: '/regional-admin/access-logs', label: 'Access Logs', icon: <FaHistory /> },
     { to: '/regional-admin/profile', label: 'My Profile', icon: <FaUserShield /> },

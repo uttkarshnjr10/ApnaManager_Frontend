@@ -129,6 +129,41 @@ export const useNotifications = () => {
     setUnreadCount(prev => prev + 1);
   }, []);
 
+  /**
+   * Handle incoming socket watchlist match
+   */
+  const handleWatchlistMatch = useCallback((data) => {
+    toast((t) => (
+      <div className="flex items-start gap-3">
+        <span className="text-2xl">🚨</span>
+        <div>
+          <p className="font-bold text-gray-900">Watchlist match detected!</p>
+          <p className="text-sm text-gray-600">Guest in Room {data.roomNumber} at {data.hotelName} matched watchlist.</p>
+        </div>
+      </div>
+    ), { 
+        duration: 7000, 
+        position: 'top-right',
+        style: {
+          border: '1px solid #EF4444',
+          padding: '16px',
+          color: '#7F1D1D',
+          backgroundColor: '#FEF2F2',
+        },
+    });
+
+    // Update state with new notification
+    const newNotification = {
+      _id: `temp_${Date.now()}`,
+      message: `Guest in Room ${data.roomNumber} at ${data.hotelName} matched watchlist`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    setNotifications(prev => [newNotification, ...prev]);
+    setUnreadCount(prev => prev + 1);
+  }, []);
+
   // Initial fetch on mount
   useEffect(() => {
     fetchNotifications();
@@ -143,12 +178,14 @@ export const useNotifications = () => {
     if (!socket) return;
 
     socket.on('NEW_ALERT', handleNewAlert);
+    socket.on('WATCHLIST_MATCH', handleWatchlistMatch);
 
     // Cleanup listener on unmount or socket change
     return () => {
       socket.off('NEW_ALERT', handleNewAlert);
+      socket.off('WATCHLIST_MATCH', handleWatchlistMatch);
     };
-  }, [socket, handleNewAlert]);
+  }, [socket, handleNewAlert, handleWatchlistMatch]);
 
   return {
     notifications,

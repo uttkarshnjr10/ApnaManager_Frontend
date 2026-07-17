@@ -5,6 +5,7 @@ import MetricCard from '../../components/ui/MetricCard';
 import Button from '../../components/ui/Button';
 import { FaHotel, FaUsers, FaHistory, FaEye } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
+import WatchlistAlerts from '../../components/Dashboard/WatchlistAlerts';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -84,17 +85,23 @@ const AdminDashboardPage = () => {
       >
 
         {/* Quick Actions Panel */}
-        <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2 transition-all duration-300 hover:shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">Quick Actions</h2>
-            <Button onClick={() => navigate('/regional-admin/register')}>
-              + Register New User
-            </Button>
-          </div>
-          <p className="text-gray-500 text-sm leading-relaxed">
-            Manage your users and system settings from one place. Use the sidebar to navigate to Hotel Management, Watchlist, or Reports.
-          </p>
-        </section>
+        <div className="lg:col-span-2 space-y-6">
+          <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-800">Quick Actions</h2>
+              <Button onClick={() => navigate('/regional-admin/register')}>
+                + Register New User
+              </Button>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Manage your users and system settings from one place. Use the sidebar to navigate to Hotel Management, Watchlist, or Reports.
+            </p>
+          </section>
+
+          <section>
+            <WatchlistAlerts />
+          </section>
+        </div>
 
         {/* Live Activity Feed */}
         <aside className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
