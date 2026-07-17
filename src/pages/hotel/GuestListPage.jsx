@@ -10,7 +10,8 @@ import PageHeader from '../../components/ui/PageHeader';
 import { FaInbox, FaSearch, FaSort } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
 
-const StatusPill = ({ status }) => {
+const StatusPill = ({ status, isAnonymized }) => {
+  if (isAnonymized) return <Badge status="error">ANONYMIZED</Badge>;
   const badgeStatus = status === 'Checked-In' ? 'active' : 'neutral';
   return <Badge status={badgeStatus}>{status || 'Unknown'}</Badge>;
 };
@@ -92,7 +93,7 @@ const GuestListPage = () => {
     { Header: <HeaderButton active={sortConfig.key === 'room'} onClick={() => requestSort('room')}>Room</HeaderButton>, accessor: 'stayDetails.roomNumber', Cell: (row) => row.stayDetails?.roomNumber || 'N/A' },
     { Header: <HeaderButton active={sortConfig.key === 'checkIn'} onClick={() => requestSort('checkIn')}>Check-in</HeaderButton>, accessor: 'stayDetails.checkIn', Cell: (row) => formatDateTime(row.stayDetails?.checkIn) },
     { Header: <HeaderButton active={sortConfig.key === 'checkout'} onClick={() => requestSort('checkout')}>Checkout</HeaderButton>, accessor: 'stayDetails.checkOut', Cell: (row) => formatDateTime(row.stayDetails?.checkOut) },
-    { Header: <HeaderButton active={sortConfig.key === 'status'} onClick={() => requestSort('status')}>Status</HeaderButton>, accessor: 'status', Cell: (row) => <StatusPill status={row.status} /> },
+    { Header: <HeaderButton active={sortConfig.key === 'status'} onClick={() => requestSort('status')}>Status</HeaderButton>, accessor: 'status', Cell: (row) => <StatusPill status={row.status} isAnonymized={row.isAnonymized} /> },
     {
       Header: 'Actions',
       accessor: 'actions',

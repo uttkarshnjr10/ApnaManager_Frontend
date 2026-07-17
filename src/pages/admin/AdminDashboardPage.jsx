@@ -6,6 +6,7 @@ import Button from '../../components/ui/Button';
 import { FaHotel, FaUsers, FaHistory, FaEye } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 import WatchlistAlerts from '../../components/Dashboard/WatchlistAlerts';
+import AdminUpcomingAnonymizationsWidget from '../../components/Dashboard/AdminUpcomingAnonymizationsWidget';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -100,6 +101,10 @@ const AdminDashboardPage = () => {
 
           <section>
             <WatchlistAlerts />
+          </section>
+          
+          <section>
+            <AdminUpcomingAnonymizationsWidget />
           </section>
         </div>
 

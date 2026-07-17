@@ -43,7 +43,15 @@ const SectionTitle = ({ children }) => (
   </h3>
 );
 
-const StatusBadge = ({ status }) => {
+const StatusBadge = ({ status, isAnonymized }) => {
+  if (isAnonymized) {
+    return (
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+        <span className="w-1.5 h-1.5 rounded-full mr-1.5 bg-red-500" />
+        ANONYMIZED
+      </span>
+    );
+  }
   const isCheckedIn = status === 'Checked-In';
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
@@ -182,7 +190,7 @@ const GuestDetailModal = ({ guestId, isOpen, onClose }) => {
               )}
             </div>
             <div className="flex items-center gap-3">
-              {guest && <StatusBadge status={guest.status} />}
+              {guest && <StatusBadge status={guest.status} isAnonymized={guest.isAnonymized} />}
               <button
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100"

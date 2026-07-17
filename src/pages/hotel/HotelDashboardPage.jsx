@@ -96,6 +96,29 @@ const RoomsStatusModal = ({ status, rooms, onClose }) => {
   );
 };
 
+const UpcomingAnonymizationsBanner = () => {
+  const [upcomingCount, setUpcomingCount] = useState(0);
+
+  useEffect(() => {
+    import('../../api/apiClient').then(({ default: apiClient }) => {
+      apiClient.get('/hotel/retention/upcoming')
+        .then(res => setUpcomingCount(res.data.data.count))
+        .catch(err => console.error('Failed to fetch upcoming anonymizations:', err));
+    });
+  }, []);
+
+  if (upcomingCount === 0) return null;
+
+  return (
+    <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg flex items-start gap-3 shadow-sm mb-6">
+      <FaInfoCircle className="mt-0.5 flex-shrink-0" />
+      <p className="text-sm font-medium leading-relaxed">
+        <strong>Data Retention Notice:</strong> {upcomingCount} guest records from 3 years ago will be automatically anonymized in the next 30 days as per our DPDP Act compliance policy. No action is required.
+      </p>
+    </div>
+  );
+};
+
 const HotelDashboardPage = () => {
   const { user, loading: authLoading } = useAuth();
   const { stats, loading: statsLoading } = useHotelDashboard();
@@ -128,11 +151,14 @@ const HotelDashboardPage = () => {
         action={
           <Link to="/hotel/register-guest" className="hidden md:block">
             <Button>
-              <FaUserPlus /> Register Guest
+              <FaUserPlus className="mr-2" />
+              Register Guest
             </Button>
           </Link>
         }
       />
+
+      <UpcomingAnonymizationsBanner />
 
       <Motion.div
         initial={{ opacity: 0, y: 16 }}
