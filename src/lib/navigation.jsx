@@ -2,12 +2,13 @@
 import {
   FaTachometerAlt, FaUsers, FaFileAlt, FaUserShield,
   FaBuilding, FaUserPlus, FaHistory, FaEnvelopeOpenText,
-  FaCreditCard,FaDoorOpen,FaEye,
+  FaCreditCard,FaDoorOpen,FaEye, FaChartBar
 } from 'react-icons/fa';
 
 export const navigationConfig = {
   Hotel: [
     { to: '/hotel/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/hotel/analytics', label: 'Analytics', icon: <FaChartBar /> },
     { to: '/hotel/register-guest', label: 'Register Guest', icon: <FaUserPlus /> },
     { to: '/hotel/guests', label: 'Guest List', icon: <FaUsers /> },
     { to: '/hotel/manage-rooms', label: 'Manage Rooms', icon: <FaDoorOpen /> },

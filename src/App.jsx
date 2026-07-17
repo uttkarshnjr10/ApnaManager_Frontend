@@ -26,6 +26,7 @@ import GuestListPage from './pages/hotel/GuestListPage';
 import ReportsPage from './pages/hotel/ReportsPage';
 import SubscriptionPage from './pages/hotel/SubscriptionPage';
 import SubscriptionSuccessPage from './pages/hotel/SubscriptionSuccessPage';
+import AnalyticsPage from './pages/hotel/AnalyticsPage';
 
 // Admin Pages
 import ManageHotelsPage from './pages/admin/ManageHotelsPage';
@@ -86,6 +87,7 @@ function App() {
           <Route path="/hotel" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardDispatcherPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="register-guest" element={<GuestRegistrationPage />} />
             <Route path="guests" element={<GuestListPage />} />
             <Route path="manage-rooms" element={<ManageRoomsPage />} />
