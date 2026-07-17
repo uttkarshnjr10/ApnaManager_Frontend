@@ -6,7 +6,6 @@ import { FaUser, FaBuilding, FaUserShield, FaInfoCircle } from 'react-icons/fa';
 const RolePill = ({ role }) => {
   const roleStyles = {
     'Hotel': 'bg-blue-100 text-blue-800',
-    'Police': 'bg-green-100 text-green-800',
     'Regional Admin': 'bg-purple-100 text-purple-800',
   };
   return <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${roleStyles[role]}`}>{role}</span>;
@@ -16,7 +15,6 @@ const LogItem = ({ log }) => (
   <div className="flex items-start space-x-4 p-3 border-b last:border-b-0">
     <div className="flex-shrink-0 mt-1">
       {log.user?.role === 'Hotel' && <FaBuilding className="text-blue-500" />}
-      {log.user?.role === 'Police' && <FaUserShield className="text-green-500" />}
       {log.user?.role === 'Regional Admin' && <FaUser className="text-purple-500" />}
     </div>
     <div className="flex-1">

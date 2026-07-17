@@ -11,7 +11,6 @@ import { FaSpinner } from 'react-icons/fa';
  */
 const ROLE_HOME = {
   Hotel: '/hotel/dashboard',
-  Police: '/police/dashboard',
   'Regional Admin': '/regional-admin/dashboard',
 };
 

@@ -9,7 +9,6 @@ const Footer = () => {
 
   const platformLinks = [
     { icon: <FaHotel className="text-xs" />, text: 'Hotel Dashboard', to: '/login' },
-    { icon: <FaShieldAlt className="text-xs" />, text: 'Police Console', to: '/login' },
     { icon: <FaChartBar className="text-xs" />, text: 'Admin Panel', to: '/login' },
   ];
 

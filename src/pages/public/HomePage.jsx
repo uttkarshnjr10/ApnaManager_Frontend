@@ -210,7 +210,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Product Overview Section: Hotels, Police, Admin */}
+      {/* Product Overview Section: Hotels, Admin */}
       <section className="py-20 bg-white border-t border-[#EBE6DD]/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-16 max-w-3xl text-center">
@@ -221,11 +221,11 @@ const HomePage = () => {
               Who We Serve
             </h2>
             <p className="mt-3 text-base text-[#7C756B] sm:text-lg">
-              Designed as a high-grade verification network connecting three core pillars of compliance and safety.
+              Designed as a high-grade verification network connecting two core pillars of compliance and safety.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2">
             {/* Card 1: For Hotels */}
             <div className="flex flex-col rounded-3xl border border-[#EBE6DD] bg-[#FAF8F5]/30 p-6 sm:p-8 transition-all hover:shadow-md hover:border-blue-200">
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
@@ -245,24 +245,6 @@ const HomePage = () => {
               </ul>
             </div>
 
-            {/* Card 2: For Police */}
-            <div className="flex flex-col rounded-3xl border border-[#EBE6DD] bg-[#FAF8F5]/30 p-6 sm:p-8 transition-all hover:shadow-md hover:border-blue-200">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
-                <FaShieldAlt size={22} />
-              </div>
-              <h3 className="mb-3 text-lg font-extrabold text-[#1F1C18] sm:text-xl">For Police</h3>
-              <p className="mb-5 text-sm leading-relaxed text-[#7C756B]">
-                Access real-time guest registrations in your jurisdiction, query logs securely, and receive critical alerts instantly.
-              </p>
-              <ul className="mt-auto space-y-3 pt-4 border-t border-[#EBE6DD]/60">
-                {['Jurisdiction search console', 'Real-time alert flags', 'Advanced analytics dashboard'].map((feature) => (
-                  <li key={feature} className="flex items-center gap-2.5 text-xs font-bold text-[#5C5346]">
-                    <FaCheckCircle className="text-emerald-500 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
 
             {/* Card 3: For Admins */}
             <div className="flex flex-col rounded-3xl border border-[#EBE6DD] bg-[#FAF8F5]/30 p-6 sm:p-8 transition-all hover:shadow-md hover:border-blue-200">
@@ -274,7 +256,7 @@ const HomePage = () => {
                 Monitor registration trends, audit active hotels and stations, and manage administrative settings on a secure sovereign portal.
               </p>
               <ul className="mt-auto space-y-3 pt-4 border-t border-[#EBE6DD]/60">
-                {['System-wide audit logs', 'Hotel & police account control', 'Verification compliance charts'].map((feature) => (
+                {['System-wide audit logs', 'Hotel account control', 'Verification compliance charts'].map((feature) => (
                   <li key={feature} className="flex items-center gap-2.5 text-xs font-bold text-[#5C5346]">
                     <FaCheckCircle className="text-emerald-500 flex-shrink-0" />
                     {feature}

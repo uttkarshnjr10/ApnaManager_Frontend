@@ -12,7 +12,6 @@ import { FaBuilding, FaLock, FaShieldAlt, FaUserTie } from 'react-icons/fa';
 
 const ROLE_META = {
   Hotel: { icon: <FaBuilding />, tone: 'bg-blue-50 text-blue-700 border-blue-200' },
-  Police: { icon: <FaShieldAlt />, tone: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
   'Regional Admin': { icon: <FaUserTie />, tone: 'bg-violet-50 text-violet-700 border-violet-200' },
 };
 
@@ -68,16 +67,6 @@ const getRoleSpecificDetails = (profile) => {
       { label: 'Owner Signature', value: profile.ownerSignature?.url ? 'Uploaded' : 'Not Uploaded' },
       { label: 'Hotel Stamp', value: profile.hotelStamp?.url ? 'Uploaded' : 'Not Uploaded' },
       { label: 'Aadhaar Card', value: profile.aadhaarCard?.url ? 'Uploaded' : 'Not Uploaded' },
-    ];
-  }
-
-  if (profile.role === 'Police') {
-    return [
-      { label: 'Station', value: profile.station },
-      { label: 'Jurisdiction', value: profile.jurisdiction },
-      { label: 'Rank', value: profile.rank },
-      { label: 'Service ID', value: profile.serviceId },
-      { label: 'Assigned Station ID', value: profile.policeStation },
     ];
   }
 

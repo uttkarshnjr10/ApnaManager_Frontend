@@ -281,7 +281,7 @@ const RegisterUserPage = () => {
                     value={formData.localThana} 
                     onChange={handleChange} 
                     required
-                    placeholder="Police station"
+                    placeholder="Local authority"
                   />
                   <FormField 
                     label="Nationality" 

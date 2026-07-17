@@ -27,7 +27,6 @@ const StatusPill = ({ status }) => {
 const UserProfileModal = ({ user, onClose }) => {
     if (!user) return null;
     const isHotel = user.role === 'Hotel';
-    const isPolice = user.role === 'Police';
 
     return (
         <motion.div
@@ -47,8 +46,7 @@ const UserProfileModal = ({ user, onClose }) => {
             >
                 <div className="flex justify-between items-center p-5 bg-gray-50 border-b">
                     <h2 className="text-xl font-bold text-gray-800">
-                       
-                        {user.role === 'Hotel' ? 'Hotel Profile' : user.role === 'Police' ? 'Police Profile' : 'User Profile'}
+                        {user.role === 'Hotel' ? 'Hotel Profile' : 'User Profile'}
                     </h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                         <FaTimes size={20} />
@@ -63,15 +61,6 @@ const UserProfileModal = ({ user, onClose }) => {
                             <DetailRow label="City" value={user.city} />
                             <DetailRow label="Address" value={user.address} />
                             <DetailRow label="Phone" value={user.phone} />
-                        </>
-                    )}
-                    {isPolice && (
-                        <>
-                            <DetailRow label="Station" value={user.station} />
-                            <DetailRow label="Jurisdiction" value={user.jurisdiction} />
-                            <DetailRow label="Service ID" value={user.serviceId} />
-                            <DetailRow label="Rank" value={user.rank} />
-                            <DetailRow label="Assigned Station ID" value={user.policeStation} />
                         </>
                     )}
                     <div className="py-2">

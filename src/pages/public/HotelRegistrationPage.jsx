@@ -171,7 +171,7 @@ const HotelRegistrationPage = () => {
                 <FormField label="State" name="state" value={formData.state} onChange={handleInputChange} required />
                 <FormField label="District" name="district" value={formData.district} onChange={handleInputChange} required />
                 <FormField label="Post Office" name="postOffice" value={formData.postOffice} onChange={handleInputChange} required />
-                <FormField label="Local Thana (Police Station)" name="localThana" value={formData.localThana} onChange={handleInputChange} required />
+                <FormField label="Local Thana" name="localThana" value={formData.localThana} onChange={handleInputChange} required />
                 <FormField label="Pin Code" name="pinCode" value={formData.pinCode} onChange={handleInputChange} required />
                 <FormField label="Full Address" name="fullAddress" value={formData.fullAddress} onChange={handleInputChange} required className="md:col-span-2" />
               </div>

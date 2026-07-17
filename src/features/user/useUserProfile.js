@@ -5,7 +5,6 @@ import apiClient from '../../api/apiClient';
 
 const EDITABLE_FIELDS_BY_ROLE = {
   Hotel: ['ownerName', 'phone', 'address', 'city', 'state', 'pinCode', 'postOffice', 'localThana', 'pinLocation'],
-  Police: [],
   'Regional Admin': [],
 };
 

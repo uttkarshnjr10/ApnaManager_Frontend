@@ -43,8 +43,8 @@ const WhyUsPage = () => {
     },
     {
       icon: <FaUsers size={22} />,
-      title: "Direct Police Link",
-      description: "A secure, discreet channel to share compliance details and critical info with law enforcement instantly.",
+      title: "Direct Admin Link",
+      description: "A secure, discreet channel to share compliance details and critical info with platform admins instantly.",
       badgeBg: "bg-emerald-50",
       iconColor: "text-emerald-600"
     },
