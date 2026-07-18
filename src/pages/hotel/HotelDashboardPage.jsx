@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Card from '../../components/ui/Card';
@@ -8,7 +8,7 @@ import Badge from '../../components/ui/Badge';
 import PageHeader from '../../components/ui/PageHeader';
 import { useAuth } from '../../hooks/useAuth';
 import { useHotelDashboard } from '../../features/hotel/useHotelDashboard';
-import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight, FaUserShield } from 'react-icons/fa';
+import { FaBed, FaClipboardList, FaCreditCard, FaDoorClosed, FaDoorOpen, FaFileAlt, FaInbox, FaTimes, FaUserPlus, FaUsers, FaChevronRight, FaUserShield, FaInfoCircle } from 'react-icons/fa';
 import DashboardWidget from '../../components/Dashboard/DashboardWidget';
 import CFormWidget from '../../components/hotel/CFormWidget';
 
