@@ -151,7 +151,7 @@ const HomePage = () => {
               </h1>
 
               <p className="mb-8 max-w-xl text-sm leading-relaxed text-[#7C756B] sm:text-base md:text-lg">
-                A secure, high-grade framework for hospitality operators, law enforcement, and government administrators to sync logs, capture identities, and verify guests.
+                A secure, high-grade framework for hospitality operators and platform administrators to sync logs, capture identities, and verify guests.
               </p>
 
               <div className="mb-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
@@ -251,7 +251,7 @@ const HomePage = () => {
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
                 <FaBuilding size={20} />
               </div>
-              <h3 className="mb-3 text-lg font-extrabold text-[#1F1C18] sm:text-xl">For Government Admins</h3>
+              <h3 className="mb-3 text-lg font-extrabold text-[#1F1C18] sm:text-xl">For Platform Admins</h3>
               <p className="mb-5 text-sm leading-relaxed text-[#7C756B]">
                 Monitor registration trends, audit active hotels and stations, and manage administrative settings on a secure sovereign portal.
               </p>
@@ -313,7 +313,7 @@ const HomePage = () => {
               </div>
               <h3 className="mb-2 text-base font-extrabold text-[#1F1C18] pr-8">Encrypted Sync</h3>
               <p className="text-xs leading-relaxed text-[#7C756B]">
-                Data is encrypted and synced immediately, allowing law enforcement and administration to audit compliant logs.
+                Data is encrypted and synced immediately, allowing platform administration to audit compliant logs.
               </p>
             </div>
           </div>
@@ -333,7 +333,7 @@ const HomePage = () => {
                 <FaLock size={10} /> Sovereign Security
               </span>
               <h3 className="text-2xl font-black sm:text-3xl leading-tight">
-                High-Grade Government Standard Data Protection
+                High-Grade Enterprise Standard Data Protection
               </h3>
               <p className="text-sm leading-relaxed text-stone-300">
                 All data is encrypted in transit and at rest using modern secure encryption standards, hosted on sovereign compliant clouds to guarantee complete safety and strict compliance with local regulations.

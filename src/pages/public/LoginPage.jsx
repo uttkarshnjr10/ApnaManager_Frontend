@@ -135,7 +135,7 @@ const LoginPage = () => {
                 <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">smarter</span>
               </h2>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Join 500+ hotels and law enforcement agencies using ApnaManager for seamless guest verification and real-time compliance.
+                Join 500+ hotels and administrators using ApnaManager for seamless guest verification and real-time compliance.
               </p>
 
               {/* Stats */}

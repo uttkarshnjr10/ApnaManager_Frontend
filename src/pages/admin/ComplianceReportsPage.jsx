@@ -394,7 +394,7 @@ const ComplianceReportsPage = () => {
             <form onSubmit={handleLogRequest} className="p-6 overflow-y-auto space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Requesting Authority *</label>
-                <input required type="text" value={formData.requestingAuthority} onChange={e => setFormData({...formData, requestingAuthority: e.target.value})} className="w-full p-2 border border-slate-300 rounded outline-none focus:border-blue-500 text-sm" placeholder="e.g. District Court, Police HQ" />
+                <input required type="text" value={formData.requestingAuthority} onChange={e => setFormData({...formData, requestingAuthority: e.target.value})} className="w-full p-2 border border-slate-300 rounded outline-none focus:border-blue-500 text-sm" placeholder="e.g. District Court, Head Office" />
               </div>
               
               <div className="grid grid-cols-2 gap-4">

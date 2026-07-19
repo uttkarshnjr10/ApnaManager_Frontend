@@ -24,7 +24,7 @@ const CONSENT_NOTICE_EN = {
     heading: 'What data we collect',
     items: [
       'Full name, Date of birth, Gender & Contact details',
-      'Government-issued identity document (Aadhaar / Passport / Voter ID / Driving Licence) — front & back images',
+      'Official identity document (Aadhaar / Passport / Voter ID / Driving Licence) — front & back images',
       'Live photograph captured at check-in',
       'Address & stay details (Room number, Check-in/out times)',
     ],
@@ -34,7 +34,7 @@ const CONSENT_NOTICE_EN = {
     items: [
       'Legal compliance — Form C submission under the Foreigners Act & Registration of Foreigners Rules',
       'Guest identity verification for hotel safety & security',
-      'Sharing verified records with law enforcement upon lawful request',
+      'Sharing verified records with authorized administrators upon lawful request',
     ],
   },
   rights: {
