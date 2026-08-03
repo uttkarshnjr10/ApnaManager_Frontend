@@ -25,7 +25,7 @@ const Sidebar = ({ links = [], user }) => {
   return (
     <aside className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col border-r border-slate-100 bg-white md:flex">
       <div className="flex h-16 items-center gap-3 border-b border-slate-100 px-5">
-        <img src="/logo.png" alt="ApnaManager" className="h-8 w-auto object-contain" />
+        <img src="/logo.png" alt="Apna Register" className="h-8 w-auto object-contain" />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-5">

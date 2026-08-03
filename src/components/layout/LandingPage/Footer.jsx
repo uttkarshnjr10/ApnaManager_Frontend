@@ -38,7 +38,7 @@ const Footer = () => {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-md text-left">
             <div className="mb-3 flex items-center justify-start">
-              <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto object-contain" />
+              <img src="/logo.png" alt="Apna Register Logo" className="h-9 w-auto object-contain" />
             </div>
             <p className="leading-relaxed text-[#7C756B]">
               The bridge between Hospitality and Security. A robust platform for modern guest management, digital verification, and real-time data sharing.
@@ -96,7 +96,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-[#EBE6DD]/60 pt-5 text-xs text-[#9E9587] font-medium md:flex-row md:items-center md:justify-between">
-          <p>© {currentYear} ApnaManager. All rights reserved.</p>
+          <p>© {currentYear} Apna Register. All rights reserved.</p>
           <div className="flex gap-5">
             <span className="hover:text-blue-600 cursor-pointer transition-colors">Privacy Policy</span>
             <span className="hover:text-blue-600 cursor-pointer transition-colors">Terms of Service</span>

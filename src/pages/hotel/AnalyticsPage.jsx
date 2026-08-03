@@ -10,7 +10,7 @@ import StatCard from '../../components/ui/StatCard';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 
-// ApnaManager Color Palette
+// Apna Register Color Palette
 const COLORS = {
   primary: '#2563EB',    // blue-600
   success: '#10B981',    // emerald-500

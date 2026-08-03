@@ -32,7 +32,7 @@ const HotelBadgeSection = () => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'apnamanager-badge.svg');
+      link.setAttribute('download', 'apnaregister-badge.svg');
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -43,7 +43,7 @@ const HotelBadgeSection = () => {
   };
 
   const copyUrl = () => {
-    const url = `https://apnamanager.in/verify/${badgeData.verificationCode}`;
+    const url = `https://apnaregister.in/verify/${badgeData.verificationCode}`;
     navigator.clipboard.writeText(url);
     toast.success('Verification URL copied!');
   };
@@ -76,7 +76,7 @@ const HotelBadgeSection = () => {
         {eligible ? (
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col items-center min-w-[250px]">
-              <div className="text-sm font-bold text-blue-700 tracking-wider mb-2">APNA MANAGER</div>
+              <div className="text-sm font-bold text-blue-700 tracking-wider mb-2">APNA REGISTER</div>
               <div className="text-xs text-slate-500 mb-4">Verified Digital Registration</div>
               <div className="w-32 h-32 bg-white rounded-lg border-2 border-blue-600 flex items-center justify-center mb-4">
                 <span className="text-xs text-slate-400">QR Code</span>
@@ -105,7 +105,7 @@ const HotelBadgeSection = () => {
                   </label>
                   <div className="flex items-center gap-2">
                     <code className="text-sm bg-slate-100 px-3 py-2 rounded text-slate-700 flex-1 overflow-x-auto">
-                      https://apnamanager.in/verify/{verificationCode}
+                      https://apnaregister.in/verify/{verificationCode}
                     </code>
                     <Button variant="secondary" onClick={copyUrl}>
                       <FaCopy />

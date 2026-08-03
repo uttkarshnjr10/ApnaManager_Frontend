@@ -1,4 +1,4 @@
-# ApnaManager Frontend
+# Apna Register Frontend
 
 > Enterprise-grade React dashboard for hotel guest operations, police verification workflows, and regional administration.
 
@@ -30,7 +30,7 @@
 
 ## Overview
 
-ApnaManager frontend is a role-based single-page application built for operational clarity and fast, secure workflows.
+Apna Register frontend is a role-based single-page application built for operational clarity and fast, secure workflows.
 
 It provides:
 

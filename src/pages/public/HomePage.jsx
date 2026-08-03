@@ -53,7 +53,7 @@ const HomePage = () => {
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#EBE6DD]/60 bg-[#FAF8F5]/85 backdrop-blur-md transition-all duration-300">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center" onClick={closeMenu}>
-            <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto object-contain" />
+            <img src="/logo.png" alt="Apna Register Logo" className="h-9 w-auto object-contain" />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

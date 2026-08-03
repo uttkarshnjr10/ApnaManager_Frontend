@@ -129,13 +129,13 @@ const LoginPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <img src="/logo.png" alt="ApnaManager Logo" className="h-14 w-auto mx-auto mb-8" />
+              <img src="/logo.png" alt="Apna Register Logo" className="h-14 w-auto mx-auto mb-8" />
               <h2 className="text-3xl font-bold text-white mb-4 leading-tight">
                 Manage your guests{' '}
                 <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">smarter</span>
               </h2>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Join 500+ hotels and administrators using ApnaManager for seamless guest verification and real-time compliance.
+                Join 500+ hotels and administrators using Apna Register for seamless guest verification and real-time compliance.
               </p>
 
               {/* Stats */}
@@ -180,7 +180,7 @@ const LoginPage = () => {
 
             {/* Logo for mobile */}
             <motion.div variants={itemVariants} className="lg:hidden mb-6">
-              <img src="/logo.png" alt="ApnaManager Logo" className="h-10 w-auto" />
+              <img src="/logo.png" alt="Apna Register Logo" className="h-10 w-auto" />
             </motion.div>
 
             <motion.div variants={itemVariants} className="mb-8">

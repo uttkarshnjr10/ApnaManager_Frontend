@@ -77,7 +77,7 @@ const WhyUsPage = () => {
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#EBE6DD]/60 bg-[#FAF8F5]/85 backdrop-blur-md transition-all duration-300">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center" onClick={closeMenu}>
-            <img src="/logo.png" alt="ApnaManager Logo" className="h-9 w-auto object-contain" />
+            <img src="/logo.png" alt="Apna Register Logo" className="h-9 w-auto object-contain" />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -163,7 +163,7 @@ const WhyUsPage = () => {
                   className="max-w-4xl mx-auto"
                 >
                     <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6 text-[#1F1C18]">
-                        Why <img src="/logo.png" alt="ApnaManager Logo" className="inline-block h-9 md:h-14 lg:h-16 w-auto object-contain mx-2 align-middle" /> is <br className="hidden md:block" />
+                        Why <img src="/logo.png" alt="Apna Register Logo" className="inline-block h-9 md:h-14 lg:h-16 w-auto object-contain mx-2 align-middle" /> is <br className="hidden md:block" />
                         the Right Choice
                     </h1>
                     
