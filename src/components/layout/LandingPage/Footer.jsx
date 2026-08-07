@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar, FaWhatsapp } from 'react-icons/fa';
+import { FaInstagram, FaYoutube, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar, FaWhatsapp } from 'react-icons/fa';
 
 const Motion = motion;
 
@@ -20,7 +20,8 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { href: 'https://www.instagram.com/apnamanager?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', icon: <FaInstagram size={17} />, label: 'Instagram' },
+    { href: 'https://www.instagram.com/apnaregister.official?igsh=b2ozbmRmcDBrbnZs', icon: <FaInstagram size={17} />, label: 'Instagram' },
+    { href: 'https://youtube.com/@apnaregister?si=riaqYQ66KV2Lcuuc', icon: <FaYoutube size={17} />, label: 'YouTube' },
     { href: 'https://www.linkedin.com/company/apnamanager/', icon: <FaLinkedin size={17} />, label: 'LinkedIn' },
     { href: 'https://whatsapp.com/channel/0029VbBdxL26LwHpSS1XdT3J', icon: <FaWhatsapp size={17} />, label: 'WhatsApp' },
     { href: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnamanager91@gmail.com', icon: <FaEnvelope size={15} />, label: 'Email' },
