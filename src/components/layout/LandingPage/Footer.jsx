@@ -16,7 +16,7 @@ const Footer = () => {
   const companyLinks = [
     { text: 'Why Us', to: '/why-us' },
     { text: 'Register Hotel', to: '/hotel-registration' },
-    { text: 'Contact Us', to: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnamanager91@gmail.com' },
+    { text: 'Contact Us', to: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnaregister@gmail.com' },
   ];
 
   const socialLinks = [
@@ -25,7 +25,7 @@ const Footer = () => {
     { href: 'https://youtube.com/@apnaregister?si=riaqYQ66KV2Lcuuc', icon: <FaYoutube size={17} />, label: 'YouTube' },
     { href: 'https://www.linkedin.com/company/apnamanager/', icon: <FaLinkedin size={17} />, label: 'LinkedIn' },
     { href: 'https://whatsapp.com/channel/0029VbBdxL26LwHpSS1XdT3J', icon: <FaWhatsapp size={17} />, label: 'WhatsApp' },
-    { href: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnamanager91@gmail.com', icon: <FaEnvelope size={15} />, label: 'Email' },
+    { href: 'https://mail.google.com/mail/?view=cm&fs=1&to=apnaregister@gmail.com', icon: <FaEnvelope size={15} />, label: 'Email' },
   ];
 
   return (
