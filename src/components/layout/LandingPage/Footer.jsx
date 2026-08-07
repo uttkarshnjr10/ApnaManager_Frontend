@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaYoutube, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar, FaWhatsapp } from 'react-icons/fa';
+import { FaInstagram, FaYoutube, FaLinkedin, FaEnvelope, FaShieldAlt, FaHotel, FaChartBar, FaWhatsapp, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Motion = motion;
 
@@ -20,6 +20,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
+    { href: 'https://maps.app.goo.gl/Xs8xxRvuhKHE6M4P6?g_st=aw', icon: <FaMapMarkerAlt size={16} />, label: 'Address' },
     { href: 'https://www.instagram.com/apnaregister.official?igsh=b2ozbmRmcDBrbnZs', icon: <FaInstagram size={17} />, label: 'Instagram' },
     { href: 'https://youtube.com/@apnaregister?si=riaqYQ66KV2Lcuuc', icon: <FaYoutube size={17} />, label: 'YouTube' },
     { href: 'https://www.linkedin.com/company/apnamanager/', icon: <FaLinkedin size={17} />, label: 'LinkedIn' },
