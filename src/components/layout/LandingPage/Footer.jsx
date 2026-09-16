@@ -40,7 +40,7 @@ const Footer = () => {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-md text-left">
             <div className="mb-3 flex items-center justify-start">
-              <img src="/logo.png" alt="Apna Register Logo" className="h-9 w-auto object-contain" />
+              <img src="/logo.png" alt="Apna Register Logo" className="h-14 md:h-16 w-auto object-contain" />
             </div>
             <p className="leading-relaxed text-[#7C756B]">
               The bridge between Hospitality and Security. A robust platform for modern guest management, digital verification, and real-time data sharing.
@@ -110,3 +110,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
