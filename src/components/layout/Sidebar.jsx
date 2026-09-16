@@ -1,9 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import apiClient from '../../api/apiClient';
 
 const Sidebar = ({ links = [], user }) => {
   const [alertCount, setAlertCount] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     if (user?.role === 'Regional Admin') {
@@ -34,13 +35,20 @@ const Sidebar = ({ links = [], user }) => {
             <li key={link.to}>
               <NavLink
                 to={link.to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors duration-150 ${
-                    isActive
+                className={({ isActive }) => {
+                  let actuallyActive = isActive;
+                  if (link.to.includes('#')) {
+                    actuallyActive = location.hash === '#' + link.to.split('#')[1];
+                  } else if (link.to === '/regional-admin/dashboard' || link.to === '/hotel/dashboard') {
+                    actuallyActive = isActive && !location.hash;
+                  }
+                  
+                  return `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors duration-150 ${
+                    actuallyActive
                       ? 'bg-blue-50 font-medium text-blue-700'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }`
-                }
+                  }`;
+                }}
               >
                 <span className="flex h-4 w-4 flex-shrink-0 items-center justify-center text-base">{link.icon}</span>
                 <span className="truncate flex-1">{link.label}</span>
