@@ -116,25 +116,19 @@ const LoginPage = () => {
       
       <div className="font-poppins min-h-screen w-screen flex relative overflow-hidden">
         {/* ── Left Panel: Brand / Illustration ── */}
-        <div className="hidden lg:flex lg:w-[45%] relative bg-gradient-to-br from-[#1e1b4b] via-[#1e1b4b] to-[#312e81] items-center justify-center p-12 overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute w-[500px] h-[500px] bg-indigo-500/25 rounded-full -top-32 -left-32 blur-3xl pointer-events-none"></div>
-          <div className="absolute w-[400px] h-[400px] bg-violet-500/20 rounded-full -bottom-20 -right-20 blur-3xl pointer-events-none"></div>
-          <div className="absolute w-[300px] h-[300px] bg-indigo-400/10 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none"></div>
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #818cf8 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-
+        <div className="hidden lg:flex lg:w-[45%] relative bg-[#FAF8F5] items-center justify-center p-12 overflow-hidden border-r border-[#EBE6DD]/60">
           <div className="relative z-10 max-w-md text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <img src="/logo.png" alt="Apna Register Logo" className="h-14 w-auto mx-auto mb-8" />
-              <h2 className="text-3xl font-bold text-white mb-4 leading-tight">
+              <img src="/logo.png" alt="Apna Register Logo" className="h-20 md:h-24 w-auto mx-auto mb-8 object-contain" />
+              <h2 className="text-3xl font-bold text-[#2C2925] mb-4 leading-tight">
                 Manage your guests{' '}
-                <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">smarter</span>
+                <span className="text-blue-600">smarter</span>
               </h2>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-[#5C5346] text-sm leading-relaxed">
                 Join 500+ hotels and administrators using Apna Register for seamless guest verification and real-time compliance.
               </p>
 
@@ -146,8 +140,8 @@ const LoginPage = () => {
                   { num: '24/7', label: 'Support' },
                 ].map((stat, i) => (
                   <div key={i} className="text-center">
-                    <p className="text-2xl font-bold text-white">{stat.num}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                    <p className="text-2xl font-bold text-[#2C2925]">{stat.num}</p>
+                    <p className="text-xs text-[#5C5346] mt-0.5">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -180,7 +174,7 @@ const LoginPage = () => {
 
             {/* Logo for mobile */}
             <motion.div variants={itemVariants} className="lg:hidden mb-6">
-              <img src="/logo.png" alt="Apna Register Logo" className="h-10 w-auto" />
+              <img src="/logo.png" alt="Apna Register Logo" className="h-16 w-auto object-contain mx-auto" />
             </motion.div>
 
             <motion.div variants={itemVariants} className="mb-8">
