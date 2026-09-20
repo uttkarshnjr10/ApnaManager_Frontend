@@ -121,34 +121,10 @@ const RegisterUserPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Register New User</h1>
-      <p className="text-gray-600 mb-6">Create credentials for hotel staff or platform admins</p>
+      <p className="text-gray-600 mb-6">Create credentials for hotel staff</p>
       
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        {/* User Type Switcher */}
-        <div className="flex justify-center mb-8 p-1 bg-gray-100 rounded-xl shadow-inner">
-          <button
-            onClick={() => handleTypeChange('Hotel')}
-            disabled={isFromInquiry}
-            className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-              userType === 'Hotel' 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-gray-600 hover:text-gray-800'
-            } ${isFromInquiry ? 'cursor-not-allowed opacity-60' : ''}`}
-          >
-            Hotel
-          </button>
-          <button
-            onClick={() => handleTypeChange('Regional Admin')}
-            disabled={isFromInquiry}
-            className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-              userType === 'Regional Admin' 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-gray-600 hover:text-gray-800'
-            } ${isFromInquiry ? 'cursor-not-allowed opacity-60' : ''}`}
-          >
-            Platform Admin
-          </button>
-        </div>
+
 
         {isFromInquiry && (
           <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
