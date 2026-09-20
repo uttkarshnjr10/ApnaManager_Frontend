@@ -346,16 +346,48 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-600">
                   Secure your admin account with an authenticator app (like Google Authenticator or Authy).
                 </p>
-                {/* Note: In a complete implementation we might want an API to check if it's already enabled, but for now we assume we show setup */}
-                <div className="flex items-center gap-3">
-                  <FaShieldAlt className="text-indigo-600 text-xl" />
-                  <span className="text-sm font-medium text-gray-800">
-                    2FA Status: <span className="text-amber-600 font-bold">Recommended</span>
-                  </span>
-                </div>
-                <Button onClick={() => setShowTotpModal(true)}>
-                  Set Up Two-Factor Authentication
-                </Button>
+                
+                {profile?.totpEnabled ? (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <FaShieldAlt className="text-green-600 text-xl" />
+                      <span className="text-sm font-medium text-gray-800">
+                        2FA Status: <span className="text-green-600 font-bold">Enabled</span>
+                      </span>
+                    </div>
+                    <Button 
+                      className="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200"
+                      onClick={async () => {
+                        if(window.confirm('Are you sure you want to disable 2FA? This will reduce the security of your account.')) {
+                          try {
+                            const apiClient = (await import('../../api/apiClient')).default;
+                            await apiClient.post('/auth/admin/totp/disable');
+                            const toast = (await import('react-hot-toast')).default;
+                            toast.success('2FA Disabled Successfully');
+                            window.location.reload();
+                          } catch (err) {
+                            const toast = (await import('react-hot-toast')).default;
+                            toast.error('Failed to disable 2FA');
+                          }
+                        }
+                      }}
+                    >
+                      Disable Two-Factor Authentication
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <FaShieldAlt className="text-indigo-600 text-xl" />
+                      <span className="text-sm font-medium text-gray-800">
+                        2FA Status: <span className="text-amber-600 font-bold">Recommended</span>
+                      </span>
+                    </div>
+                    <Button onClick={() => setShowTotpModal(true)}>
+                      Set Up Two-Factor Authentication
+                    </Button>
+                  </>
+                )}
               </div>
             </Card>
           )}
