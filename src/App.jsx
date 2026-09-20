@@ -32,7 +32,6 @@ import AnalyticsPage from './pages/hotel/AnalyticsPage';
 import ManageHotelsPage from './pages/admin/ManageHotelsPage';
 import HotelInquiriesPage from './pages/admin/HotelInquiriesPage';
 import RegisterUserPage from './pages/admin/RegisterUserPage';
-import AccessLogsPage from './pages/admin/AccessLogsPage';
 import ManageRoomsPage from './pages/hotel/ManageRoomsPage';
 import WatchlistPage from './pages/admin/WatchlistPage';
 import ComplianceReportsPage from './pages/admin/ComplianceReportsPage';
@@ -109,7 +108,6 @@ function App() {
             <Route path="hotels" element={<ManageHotelsPage />} />
             <Route path="inquiries" element={<HotelInquiriesPage />} />
             <Route path="register" element={<RegisterUserPage />} />
-            <Route path="access-logs" element={<AccessLogsPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="watchlist" element={<WatchlistPage />} />
             <Route path="compliance" element={<ComplianceReportsPage />} />

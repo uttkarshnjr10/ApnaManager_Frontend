@@ -24,7 +24,6 @@ export const navigationConfig = {
     { to: '/regional-admin/watchlist', label: 'Watchlist Config', icon: <FaEye /> },
     { to: '/regional-admin/compliance', label: 'Compliance Reports', icon: <FaFileContract /> },
     { to: '/regional-admin/register', label: 'Register User', icon: <FaUserPlus /> },
-    { to: '/regional-admin/access-logs', label: 'Access Logs', icon: <FaHistory /> },
     { to: '/regional-admin/profile', label: 'My Profile', icon: <FaUserShield /> },
   ],
 };
