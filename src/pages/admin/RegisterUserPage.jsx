@@ -120,10 +120,10 @@ const RegisterUserPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">Register New User</h1>
+      <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 mb-2">Register Hotel</h1>
       <p className="text-gray-600 mb-6">Create credentials for hotel staff</p>
       
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+      <div className="max-w-4xl mx-auto bg-white p-8 md:p-10 rounded-2xl shadow-xl shadow-blue-900/5 border border-slate-100">
 
 
         {isFromInquiry && (
@@ -159,8 +159,8 @@ const RegisterUserPage = () => {
           {userType === 'Hotel' && (
             <>
               {/* Hotel Basic Info */}
-              <fieldset className="border border-gray-200 rounded-lg p-6 space-y-6">
-                <legend className="text-lg font-semibold text-gray-800 px-2">Hotel Information</legend>
+              <fieldset className="border border-slate-200 bg-slate-50/50 rounded-xl p-6 space-y-6 shadow-sm">
+                <legend className="text-lg font-bold text-slate-800 px-3 bg-white border border-slate-200 rounded-lg py-1 shadow-sm">Hotel Information</legend>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField 
@@ -203,8 +203,8 @@ const RegisterUserPage = () => {
               </fieldset>
 
               {/* Hotel Address */}
-              <fieldset className="border border-gray-200 rounded-lg p-6 space-y-6">
-                <legend className="text-lg font-semibold text-gray-800 px-2">Address Details</legend>
+              <fieldset className="border border-slate-200 bg-slate-50/50 rounded-xl p-6 space-y-6 shadow-sm">
+                <legend className="text-lg font-bold text-slate-800 px-3 bg-white border border-slate-200 rounded-lg py-1 shadow-sm">Address Details</legend>
                 
                 <FormField 
                   label="Full Address" 
@@ -271,8 +271,8 @@ const RegisterUserPage = () => {
               </fieldset>
 
               {/* FIXED: Document Uploads */}
-              <fieldset className="border border-gray-200 rounded-lg p-6 space-y-6">
-                <legend className="text-lg font-semibold text-gray-800 px-2">Document Uploads</legend>
+              <fieldset className="border border-slate-200 bg-slate-50/50 rounded-xl p-6 space-y-6 shadow-sm">
+                <legend className="text-lg font-bold text-slate-800 px-3 bg-white border border-slate-200 rounded-lg py-1 shadow-sm">Document Uploads</legend>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FileInputField 
@@ -318,10 +318,10 @@ const RegisterUserPage = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Registering...
+                  Registering Hotel...
                 </span>
               ) : (
-                'Register User'
+                'Register Hotel'
               )}
             </Button>
           </div>
