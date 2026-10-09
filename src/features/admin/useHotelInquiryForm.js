@@ -2,17 +2,19 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import apiClient from '../../api/apiClient';
+import { formatInputValue } from '../../utils/formatters';
 
 const initialFormState = {
   hotelName: '',
   gstNumber: '',
   ownerName: '', 
   email: '',
-  mobileNumber: '',
+  phone: '',
+  nationality: 'Indian',
   state: '',
-  district: '',
+  city: '',
   pinCode: '',
-  fullAddress: '',
+  address: '',
   postOffice: '', 
   localThana: '',
 };
@@ -24,7 +26,7 @@ export const useHotelInquiryForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: formatInputValue(name, value) });
   };
 
   const handleFileChange = (e) => {

@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import apiClient from '../../api/apiClient';
+import { formatInputValue } from '../../utils/formatters';
 
 const EDITABLE_FIELDS_BY_ROLE = {
   Hotel: ['ownerName', 'phone', 'address', 'city', 'state', 'pinCode', 'postOffice', 'localThana', 'pinLocation'],
@@ -31,6 +32,7 @@ export const useUserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({ email: '', details: {} });
+  const [files, setFiles] = useState({ ownerSignature: null, hotelStamp: null, aadhaarCard: null });
 
   const fetchProfile = useCallback(async () => {
     setLoading(true);
@@ -64,10 +66,27 @@ export const useUserProfile = () => {
     }, {});
 
     try {
-      await apiClient.put('/users/profile', {
-        email: formData.email,
-        details: safeDetails,
-      });
+      let response;
+      const hasFiles = files.ownerSignature || files.hotelStamp || files.aadhaarCard;
+      
+      if (hasFiles) {
+        const submissionData = new FormData();
+        submissionData.append('email', formData.email);
+        submissionData.append('details', JSON.stringify(safeDetails));
+        
+        if (files.ownerSignature) submissionData.append('ownerSignature', files.ownerSignature);
+        if (files.hotelStamp) submissionData.append('hotelStamp', files.hotelStamp);
+        if (files.aadhaarCard) submissionData.append('aadhaarCard', files.aadhaarCard);
+        
+        response = await apiClient.put('/users/profile', submissionData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      } else {
+        response = await apiClient.put('/users/profile', {
+          email: formData.email,
+          details: safeDetails,
+        });
+      }
       toast.success('Profile updated successfully!', { id: toastId });
       setIsEditing(false);
       fetchProfile(); // Refresh profile data
@@ -78,13 +97,19 @@ export const useUserProfile = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const { name, files: selectedFiles } = e.target;
+    setFiles((prev) => ({ ...prev, [name]: selectedFiles[0] }));
+  };
+
   const handleCancel = () => {
+    setFiles({ ownerSignature: null, hotelStamp: null, aadhaarCard: null });
     setIsEditing(false);
     setFormData(buildFormDataFromProfile(profile));
   };
 
   const updateEmail = (email) => {
-    setFormData((prev) => ({ ...prev, email }));
+    setFormData((prev) => ({ ...prev, email: email.toLowerCase() }));
   };
 
   const updateDetailField = (key, value) => {
@@ -92,7 +117,7 @@ export const useUserProfile = () => {
       ...prev,
       details: {
         ...prev.details,
-        [key]: value,
+        [key]: formatInputValue(key, value),
       },
     }));
   };
@@ -106,6 +131,8 @@ export const useUserProfile = () => {
     formData,
     editableFieldKeys: getEditableFieldKeys(profile?.role),
     updateEmail,
+    files,
+    handleFileChange,
     updateDetailField,
     handleSave,
     handleCancel,

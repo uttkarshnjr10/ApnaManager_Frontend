@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import toast from 'react-hot-toast';
+import { formatInputValue } from '../../utils/formatters';
 
 const initialHotelState = {
   username: '',
@@ -50,9 +51,9 @@ export const useRegisterUser = () => {
         hotelName: inquiryData.hotelName || '',
         ownerName: inquiryData.ownerName || '',
         gstNumber: inquiryData.gstNumber || '',
-        phone: inquiryData.mobileNumber || '',
-        address: inquiryData.fullAddress || '',
-        city: inquiryData.district || '', 
+        phone: inquiryData.phone || '',
+        address: inquiryData.address || '',
+        city: inquiryData.city || '', 
         state: inquiryData.state || '',
         pinCode: inquiryData.pinCode || '',
         nationality: inquiryData.nationality || 'Indian',
@@ -83,7 +84,7 @@ export const useRegisterUser = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: formatInputValue(name, value) }));
   };
 
   // NEW: Handle file input changes

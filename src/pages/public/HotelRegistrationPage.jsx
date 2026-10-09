@@ -158,7 +158,7 @@ const HotelRegistrationPage = () => {
                 <FormField label="GST Number" name="gstNumber" value={formData.gstNumber} onChange={handleInputChange} required />
                 <FormField label="Owner Name" name="ownerName" value={formData.ownerName} onChange={handleInputChange} required />
                 <FormField label="Hotel / Owner Email" name="email" type="email" value={formData.email} onChange={handleInputChange} required />
-                <FormField label="Hotel Mobile Number" name="mobileNumber" type="tel" value={formData.mobileNumber} onChange={handleInputChange} required />
+                <FormField label="Hotel Mobile Number" name="phone" type="tel" value={formData.phone} onChange={handleInputChange} required />
               </div>
             </fieldset>
 
@@ -168,12 +168,13 @@ const HotelRegistrationPage = () => {
                 Address Details
               </legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField label="Nationality" name="nationality" value={formData.nationality} onChange={handleInputChange} required />
                 <FormField label="State" name="state" value={formData.state} onChange={handleInputChange} required />
-                <FormField label="District" name="district" value={formData.district} onChange={handleInputChange} required />
+                <FormField label="City" name="city" value={formData.city} onChange={handleInputChange} required />
                 <FormField label="Post Office" name="postOffice" value={formData.postOffice} onChange={handleInputChange} required />
                 <FormField label="Local Thana" name="localThana" value={formData.localThana} onChange={handleInputChange} required />
                 <FormField label="Pin Code" name="pinCode" value={formData.pinCode} onChange={handleInputChange} required />
-                <FormField label="Full Address" name="fullAddress" value={formData.fullAddress} onChange={handleInputChange} required className="md:col-span-2" />
+                <FormField label="Address" name="address" value={formData.address} onChange={handleInputChange} required />
               </div>
             </fieldset>
 

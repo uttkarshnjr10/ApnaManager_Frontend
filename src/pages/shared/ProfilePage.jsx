@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import apiClient from '../../api/apiClient'; 
 import toast from 'react-hot-toast';        
-import { FaBuilding, FaLock, FaShieldAlt, FaUserTie } from 'react-icons/fa';
+import { FaBuilding, FaLock, FaShieldAlt, FaUserTie, FaUpload, FaFileAlt } from 'react-icons/fa';
 import HotelBadgeSection from '../../components/hotel/HotelBadgeSection';
 import TotpSetupModal from '../../components/ui/TotpSetupModal';
 
@@ -83,6 +83,27 @@ const DetailItem = ({ label, value }) => (
 );
 
 // Sub-component for the password change modal
+
+const FileInputField = ({ label, name, file, onChange }) => (
+  <div className="flex flex-col gap-2 col-span-1 md:col-span-2">
+    <span className="text-sm font-bold text-slate-700">{label}</span>
+    <label className="relative flex items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-300 bg-white p-4 text-center cursor-pointer hover:border-blue-500 transition-colors">
+      <input type="file" name={name} onChange={onChange} className="sr-only" />
+      {file ? (
+        <div className="flex items-center gap-2 text-sm text-slate-800">
+          <FaFileAlt className="text-blue-600" />
+          <span className="font-semibold truncate max-w-[200px]">{file.name}</span>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-1 text-sm text-slate-500">
+          <FaUpload className="text-slate-400 group-hover:text-blue-500" />
+          <span className="font-medium text-slate-700">Upload new document (optional)</span>
+        </div>
+      )}
+    </label>
+  </div>
+);
+
 const ChangePasswordModal = ({ onClose }) => {
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
@@ -187,6 +208,8 @@ const ProfilePage = () => {
     updateDetailField,
     handleSave,
     handleCancel,
+    files,
+    handleFileChange,
   } = useUserProfile();
   const [showModal, setShowModal] = useState(false);
   const [showTotpModal, setShowTotpModal] = useState(false);
@@ -328,7 +351,16 @@ const ProfilePage = () => {
 
                   {!hasEditableDetails && (
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-                      Additional role details are managed by administrators and are read-only.
+                      Additional role details are managed by administrators.
+                  {profile?.role === 'Hotel' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 border-t border-slate-200 pt-6">
+                      <h3 className="text-md font-bold text-slate-800 md:col-span-2">Update Documents</h3>
+                      <FileInputField label="New Shop Owner Signature" name="ownerSignature" file={files.ownerSignature} onChange={handleFileChange} />
+                      <FileInputField label="New Hotel Stamp" name="hotelStamp" file={files.hotelStamp} onChange={handleFileChange} />
+                      <FileInputField label="New Aadhaar Card" name="aadhaarCard" file={files.aadhaarCard} onChange={handleFileChange} />
+                    </div>
+                  )}
+
                     </div>
                   )}
                 </div>
