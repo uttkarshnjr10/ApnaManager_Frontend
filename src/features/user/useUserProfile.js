@@ -78,9 +78,7 @@ export const useUserProfile = () => {
         if (files.hotelStamp) submissionData.append('hotelStamp', files.hotelStamp);
         if (files.aadhaarCard) submissionData.append('aadhaarCard', files.aadhaarCard);
         
-        response = await apiClient.put('/users/profile', submissionData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        response = await apiClient.put('/users/profile', submissionData);
       } else {
         response = await apiClient.put('/users/profile', {
           email: formData.email,

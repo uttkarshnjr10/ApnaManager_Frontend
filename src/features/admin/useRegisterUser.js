@@ -144,11 +144,7 @@ export const useRegisterUser = () => {
             submissionData.append('aadhaarCard', files.aadhaarCard);
           }
 
-          response = await apiClient.post('/users/register', submissionData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
+          response = await apiClient.post('/users/register', submissionData);
         } else {
           // JSON payload — either no files or files are already-uploaded references from inquiry
           const { username, email, ...hotelDetails } = formData;

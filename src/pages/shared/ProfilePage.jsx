@@ -352,15 +352,15 @@ const ProfilePage = () => {
                   {!hasEditableDetails && (
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
                       Additional role details are managed by administrators.
+                    </div>
+                  )}
+
                   {profile?.role === 'Hotel' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 border-t border-slate-200 pt-6">
                       <h3 className="text-md font-bold text-slate-800 md:col-span-2">Update Documents</h3>
                       <FileInputField label="New Shop Owner Signature" name="ownerSignature" file={files.ownerSignature} onChange={handleFileChange} />
                       <FileInputField label="New Hotel Stamp" name="hotelStamp" file={files.hotelStamp} onChange={handleFileChange} />
                       <FileInputField label="New Aadhaar Card" name="aadhaarCard" file={files.aadhaarCard} onChange={handleFileChange} />
-                    </div>
-                  )}
-
                     </div>
                   )}
                 </div>
